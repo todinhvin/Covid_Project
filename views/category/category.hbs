@@ -1,0 +1,84 @@
+
+<!-- Body -->
+<div class="row mt-4" style="position: relative">
+  <div class="col-xs-0 col-sm-0 col-md-2 col-lg-3">
+    <div class="card mb-3" style="height: 100%">
+      <div class="card-header text-white bg-primary">Side title</div>
+      
+    </div>
+  </div>
+
+  <div class="col-xs-12 col-sm-12 col-md-10 col-lg-9">
+    <div class="card">
+      <div class="card-header bg-primary">Main title</div>
+      <div class="card-body">
+        {{#compareString create "success"}}
+          <h2 style="color:green">Tạo category thành công</h2>
+        {{/compareString}}
+          {{#compareString create "error"}}
+          <h2 style="color:red">Tạo category thất bại</h2>
+        {{/compareString}}
+        {{#compareString update "success"}}
+          <h2 style="color:green">Cập nhật category thành công</h2>
+        {{/compareString}}
+          {{#compareString update "error"}}
+          <h2 style="color:red">Cập nhật category thất bại</h2>
+        {{/compareString}}
+
+        {{#compareString delete "success"}}
+          <h2 style="color:green">Xóa category thành công</h2>
+        {{/compareString}}
+
+        <a
+          href="/category/create"
+          style="
+                float: right;
+                margin-bottom: 16px;
+                border-radius: 5px;
+                height: 45px;
+                background: #007bff;
+                color: #fff;
+                outline: none;
+                padding: 0 8px;
+                line-height: 45px;
+                text-decoration: none;
+              "
+        >
+          Thêm category
+        </a>
+
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Category ID</th>
+              <th scope="col">Category Name</th
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody class="table-body">
+
+            {{#each categories}}
+              <tr>
+                <th scope="row">{{CatID}}</th>
+                <td>{{CatName}}</td>
+                <td
+                  style="display: flex;align-items: center;justify-content:space-evenly"
+                >
+                  <a
+                    href="/category/{{CatID}}"
+                    style="width:80px; text-align:center;background:green;border-radius:5px;color:#fff;height: 35px;text-decoration: none;line-height: 35px;"
+                  >Cập nhật</a>
+                  <a
+                    href="/category/{{CatID}}/delete"
+                    style="width:80px; text-align:center;background:red;border-radius:5px;color:#fff ;height: 35px;text-decoration: none;line-height: 35px;"
+                  >Xóa</a>
+                </td>
+              </tr>
+
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
