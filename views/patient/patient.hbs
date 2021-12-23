@@ -1,152 +1,125 @@
 <div class="container">
-        <div
-          style="
+  <!-- Thêm người bệnh -->
+  <a href="/patient/create" class="navbar-item" style="display: block; width: 200px; margin: 20px 0">THÊM NGƯỜI BỆNH</a>
+  <div style="
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 16px;
             margin-top: 20px;
-          "
-        >
-          <div class="victim-category">
-            <p>Sắp xếp theo:</p>
-            <select class="custom-select" style="width: 60%">
-              <option selected>Lựa chọn</option>
-              <option value="1">Họ tên</option>
-              <option value="2">CMND/CCCD</option>
-            </select>
-          </div>
-          <div class="victim-search">
-            <form class="form-inline md-form">
-              <input
-                class="form-control mr-sm-2"
-                type="text"
-                placeholder="Tìm kiếm"
-                aria-label="Search"
-              />
-              <button class="btn" style="background: #3fa4e2" type="submit">
-                Tìm kiếm
-              </button>
-            </form>
-          </div>
-        </div>
-        <!-- Thêm người bệnh -->
-        <!-- <div>
-        <a href="/" class="btn">Thêm người bệnh</a>
-      </div> -->
-        <!-- Table -->
-        <table class="table table-striped" style="background-color: #ffffff">
-          <thead>
-            <tr style="text-align: center">
-              <th scope="col">STT</th>
-              <th scope="col">Họ tên</th>
-              <th scope="col">CMND/CCCD</th>
-              <th scope="col">Địa chỉ</th>
-              <th scope="col">Trạng thái</th>
-              <th scope="col">Nơi điều trị</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Trần Nguyễn Lê Như Ý</td>
-              <td>213333546</td>
-              <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
-              <td class="taC">F1</td>
-              <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
-              <td class="victim-btns">
-                <a href="/victims/{{vicID}}/update" class="btn btn-primary"
-                  >Chi tiết</a
-                >
-                <a href="/victims/{{vicID}}/update" class="btn btn-success mT8"
-                  >Cập nhật</a
-                >
-                <a href="/victims/{{vicID}}/delete" class="btn btn-danger mT8"
-                  >Xóa</a
-                >
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">1</th>
-              <td>Trần Nguyễn Lê Như Ý</td>
-              <td>213333546</td>
-              <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
-              <td class="taC">F1</td>
-              <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
-              <td class="victim-btns">
-                <a href="/victims/{{vicID}}/update" class="btn btn-primary"
-                  >Chi tiết</a
-                >
-                <a href="/victims/{{vicID}}/update" class="btn btn-success mT8"
-                  >Cập nhật</a
-                >
-                <a href="/victims/{{vicID}}/delete" class="btn btn-danger mT8"
-                  >Xóa</a
-                >
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">1</th>
-              <td>Trần Nguyễn Lê Như Ý</td>
-              <td>213333546</td>
-              <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
-              <td class="taC">F1</td>
-              <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
-              <td class="victim-btns">
-                <a href="/victims/{{vicID}}/update" class="btn btn-primary"
-                  >Chi tiết</a
-                >
-                <a href="/victims/{{vicID}}/update" class="btn btn-success mT8"
-                  >Cập nhật</a
-                >
-                <a href="/victims/{{vicID}}/delete" class="btn btn-danger mT8"
-                  >Xóa</a
-                >
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">1</th>
-              <td>Trần Nguyễn Lê Như Ý</td>
-              <td>213333546</td>
-              <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
-              <td class="taC">F1</td>
-              <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
-              <td class="victim-btns">
-                <a href="/victims/{{vicID}}/update" class="btn btn-primary"
-                  >Chi tiết</a
-                >
-                <a href="/victims/{{vicID}}/update" class="btn btn-success mT8"
-                  >Cập nhật</a
-                >
-                <a href="/victims/{{vicID}}/delete" class="btn btn-danger mT8"
-                  >Xóa</a
-                >
-              </td>
-            </tr>
-          </tbody>
-        </table>
+          ">
+    <div class="victim-category">
+      <p>Sắp xếp theo:</p>
+      <select class="custom-select" style="width: 100%">
+        <option selected>Lựa chọn</option>
+        <option value="1">Họ tên</option>
+        <option value="2">CMND/CCCD</option>
+      </select>
+    </div>
+    <div class="victim-search">
+      <form class="form-inline md-form">
+        <input class="form-control mr-sm-2" type="text" placeholder="Tìm kiếm" aria-label="Search" />
+        <button class="btn" style="background: #3fa4e2" type="submit">
+          Tìm kiếm
+        </button>
+      </form>
+    </div>
+  </div>
 
-        <!-- Pagination -->
-        <nav class="pagination-outer" aria-label="Page navigation">
-          <ul class="pagination">
-            <li class="page-item">
-              <a href="#" class="page-link" aria-label="Previous">
-                <span aria-hidden="true">«</span>
-              </a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item active">
-              <a class="page-link" href="#">3</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">5</a></li>
-            <li class="page-item">
-              <a href="#" class="page-link" aria-label="Next">
-                <span aria-hidden="true">»</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
+  <!-- Table -->
+  <table class="table table-striped" style="background-color: #ffffff">
+    <thead>
+      <tr style="text-align: center">
+        <th scope="col">STT</th>
+        <th scope="col">Họ tên</th>
+        <th scope="col">CMND/CCCD</th>
+        <th scope="col">Địa chỉ</th>
+        <th scope="col">Trạng thái</th>
+        <th scope="col">Liên quan đến người</th>
+        <th scope="col">Nơi điều trị</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>Trần Nguyễn Lê Như Ý</td>
+        <td>213333546</td>
+        <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
+        <td class="taC">F1</td>
+        <td class="taC">Trần Văn Trí</td>
+        <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
+        <td class="victim-btns">
+          <a href="/victims/{{vicID}}/update" class="btn btn-primary">Chi tiết</a>
+          <a href="/victims/{{vicID}}/update" class="btn btn-success mT8">Cập nhật</a>
+          <a href="/victims/{{vicID}}/delete" class="btn btn-danger mT8">Xóa</a>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">1</th>
+        <td>Trần Nguyễn Lê Như Ý</td>
+        <td>213333546</td>
+        <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
+        <td class="taC">F1</td>
+        <td class="taC">Trần Văn Trí</td>
+        <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
+        <td class="victim-btns">
+          <a href="/victims/{{vicID}}/update" class="btn btn-primary">Chi tiết</a>
+          <a href="/victims/{{vicID}}/update" class="btn btn-success mT8">Cập nhật</a>
+          <a href="/victims/{{vicID}}/delete" class="btn btn-danger mT8">Xóa</a>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">1</th>
+        <td>Trần Nguyễn Lê Như Ý</td>
+        <td>213333546</td>
+        <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
+        <td class="taC">F1</td>
+        <td class="taC">Trần Văn Trí</td>
+        <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
+        <td class="victim-btns">
+          <a href="/victims/{{vicID}}/update" class="btn btn-primary">Chi tiết</a>
+          <a href="/victims/{{vicID}}/update" class="btn btn-success mT8">Cập nhật</a>
+          <a href="/victims/{{vicID}}/delete" class="btn btn-danger mT8">Xóa</a>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">1</th>
+        <td>Trần Nguyễn Lê Như Ý</td>
+        <td>213333546</td>
+        <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
+        <td class="taC">F1</td>
+        <td class="taC">Trần Văn Trí</td>
+        <td>Văn Phú, Quận 1, Thành Phố Hồ Chí Minh</td>
+        <td class="victim-btns">
+          <a href="/victims/{{vicID}}/update" class="btn btn-primary">Chi tiết</a>
+          <a href="/victims/{{vicID}}/update" class="btn btn-success mT8">Cập nhật</a>
+          <a href="/victims/{{vicID}}/delete" class="btn btn-danger mT8">Xóa</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination -->
+  <nav class="pagination-outer" aria-label="Page navigation">
+    <ul class="pagination">
+      <li class="page-item">
+        <a href="#" class="page-link" aria-label="Previous">
+          <span aria-hidden="true">«</span>
+        </a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item active">
+        <a class="page-link" href="#">3</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">4</a></li>
+      <li class="page-item"><a class="page-link" href="#">5</a></li>
+      <li class="page-item">
+        <a href="#" class="page-link" aria-label="Next">
+          <span aria-hidden="true">»</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 </div>
