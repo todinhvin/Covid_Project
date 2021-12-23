@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port  = 3000;
+const port = 3000;
 const exhbs = require('express-handlebars');
 const router = express.Router();
 
@@ -22,10 +22,10 @@ app.set('views', './views');
 
 
 
-app.get('/', (req,res)=>{
+app.get('/', (req, res) => {
     res.render('home');
 });
-app.get('/home', (req,res)=>{
+app.get('/home', (req, res) => {
     res.render('home');
 });
 
@@ -35,7 +35,3 @@ app.use('/patient', require('./controllers/patient.C'))
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 })
-
-
-
-
