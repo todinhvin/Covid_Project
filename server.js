@@ -1,34 +1,41 @@
-const express = require("express");
-const cookieParser = require("cookie-parser");
-// const {checkExistsUser} = require('./middlewares/checkExistsUser')
-
-const vicimsController = require("./controllers/victims");
-
-const port = 3000;
+const express = require('express');
 const app = express();
-
-require("./middlewares/handlebars")(app);
-require("./middlewares/session")(app);
-
-app.use("/public", express.static(`${__dirname}/public`));
+const port  = 3000;
+const exhbs = require('express-handlebars');
+const router = express.Router();
 
 app.use(express.json());
-app.use(cookieParser());
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
+app.use(express.urlencoded({ extended: true }));
 
-// app.use((req, res, next) => {
-//   const user = req.cookies.user ? JSON.parse(req.cookies?.user) : req.user;
-//   req.user = user;
-//   app.locals.username = user?.f_Username;
-//   next();
-// });
+// Public thư mục ra ngoài
+app.use(express.static(`${__dirname}/public`));
 
-app.use("/victims", vicimsController);
+
+
+var hbs = exhbs.create({
+    defaultLayout: 'main',
+    extname: "hbs",
+});
+app.engine('hbs', hbs.engine);
+app.set('view engine', 'hbs');
+app.set('views', './views');
+
+
+
+app.get('/', (req,res)=>{
+    res.render('home');
+});
+app.get('/home', (req,res)=>{
+    res.render('home');
+});
+
+// route cho nguoi benh
+app.use('/patient', require('./controllers/patient.C'))
 
 app.listen(port, () => {
-  console.log(`Listen in port ${port}`);
-});
+    console.log(`Example app listening on port ${port}`);
+})
+
+
+
+
