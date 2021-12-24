@@ -10,7 +10,7 @@ module.exports = db.define(
       primaryKey: true,
     },
     role_name: {
-      type: DataTypes.STRING(50),
+      type: Sequelize.STRING(50),
       allowNull: true,
     },
   },

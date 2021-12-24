@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-module.exports = new Sequelize('QuanLyCovid', 'postgres', '021299', {
+module.exports = new Sequelize('QuanLyCovid', 'postgres', '12345', {
   host: 'localhost',
   dialect: 'postgres',
 
