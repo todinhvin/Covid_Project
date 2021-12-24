@@ -1,19 +1,27 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
+router.get("/", (req, res) => {
+  res.render("patient/patient");
+});
 
-router.get('/', (req, res) => {
-    res.render('patient/patient');
-})
+router.get("/create", (req, res) => {
+  res.render("patient/createPatient");
+});
 
-router.get('/create', (req, res) => {
+router.get("/:id/update", async (req, res) => {
+  res.render("patient/updatePatient", {
+    css: () => "css",
+  });
+});
 
-    res.render('patient/createPatient');
-})
+router.get("/:id/abc", (req, res) => {
+  console.log(123);
+  res.render("patient/updatePatient");
+});
 
-router.get('/detail', (req, res) => {
-
-    res.render('patient/detailPatient');
-})
+router.get("/:id", (req, res) => {
+  res.render("patient/detailPatient");
+});
 
 module.exports = router;
