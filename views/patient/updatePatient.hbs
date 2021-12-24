@@ -2,13 +2,14 @@
   <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
     Thêm người liên quan Covid
   </h2>
-  <form class="form-create-victim row" action="/patient/create" method="POST">
+  <form class="form-create-victim row" action="/patient/{{patient.person_id}}/update" method="POST">
     <div class="col col-6">
       <div class="">
         <label class="flabel mb-1" for="name">Họ và tên</label><input
           class="form-control"
           type="text"
-          name="name"
+          name="full_name"
+          value={{patient.full_name}}
           required="required"
         />
       </div>
@@ -19,6 +20,7 @@
           name="person_id"
           required="required"
           pattern="^\\\d{9,15}$"
+          value={{patient.cccd}}
           title="Số CMT/CCCD phải có từ 9-12 chữ số"
         />
       </div>
@@ -27,40 +29,41 @@
           class="form-control"
           type="date"
           name="birthday"
+          value={{patient.birthday}}
           required="required"
         />
       </div>
       <div class="form-div">
         <label class="flabel mb-1" for="sex">Trạng thái</label><select
           class="form-select"
-          name="gioiTinh"
+          name="status"
         >
-          <option value="NAM">F0</option>
-          <option value="NỮ">F1</option>
-          <option value="NỮ">F2</option>
+
+          <option value="F0" {{#compareString patient.status 'F0'}}selected {{/compareString}}>F0</option>
+          <option value="F1" {{#compareString patient.status 'F1'}}selected {{/compareString}}>F1</option>
+          <option value="F2" {{#compareString patient.status 'F2'}}selected {{/compareString}}>F2</option>
         </select>
       </div>
     </div>
     <div class="col col-6">
       <div class="form-div">
-        <label class="flabel mb-1">Địa chỉ nơi ở</label><input
-          class="form-control"
-          type="text"
-          name="address"
-          required="required"
-          pattern="^[A-Za-z0-9]{0,}"
-          placeholder="Xã - Huyện -Tỉnh"
-        />
+        <label class="flabel mb-1" for="sex">Địa chỉ nơi ở</label><select
+          class="form-select"
+          name="address_id"
+        >
+          {{#each addresses}}
+            <option {{#compareInt ../patient.address_id address_id }} selected{{/compareInt}} value={{address_id}}>{{xa}}-{{huyen}}-{{tinh}}</option>
+          {{/each}}
+        </select>
       </div>
       <div class="form-div">
         <label class="flabel mb-1" for="sex">Nơi đang điều trị</label><select
           class="form-select"
-          name="address_treated"
+          name="treatment_id"
         >
-          <option value="">Trống</option>
-          <option value="MỚI SINH">Mới sinh</option>
-          <option value="ĐÃ MẤT">Đã mất</option>
-          <option value="NHẬP CƯ">Nhập cư</option>
+          {{#each treatments}}
+            <option {{#compareInt ../patient.treatment_id treatment_id }} selected{{/compareInt}} value={{treatment_id}}>{{name}}</option>
+          {{/each}}
         </select>
       </div>
       <div class="form-div">

@@ -1,22 +1,14 @@
 const express = require("express");
 const app = express();
 const port = 3000;
-const exhbs = require("express-handlebars");
-const router = express.Router();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+require("./middlewares/handlebars")(app);
+require("./middlewares/session")(app);
 // Public thư mục ra ngoài
 app.use(express.static(`${__dirname}/public`));
-
-var hbs = exhbs.create({
-  defaultLayout: "main",
-  extname: "hbs",
-});
-app.engine("hbs", hbs.engine);
-app.set("view engine", "hbs");
-app.set("views", "./views");
 
 app.get("/", (req, res) => {
   res.render("home");

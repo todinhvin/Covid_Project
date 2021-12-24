@@ -16,9 +16,8 @@
         <label class="flabel mb-1" for="cmt">Số CMT/CCCD</label><input
           class="form-control"
           type="text"
-          name="person_id"
+          name="cccd"
           required="required"
-          pattern="^\\d{9,15}$"
           title="Số CMT/CCCD phải có từ 9-12 chữ số"
         />
       </div>
@@ -33,43 +32,41 @@
       <div class="form-div">
         <label class="flabel mb-1" for="sex">Trạng thái</label><select
           class="form-select"
-          name="gioiTinh"
+          name="status"
         >
-          <option value="NAM">F0</option>
-          <option value="NỮ">F1</option>
-          <option value="NỮ">F2</option>
+          <option value="F0">F0</option>
+          <option value="F1">F1</option>
+          <option value="F2">F2</option>
         </select>
       </div>
     </div>
     <div class="col col-6">
       <div class="form-div">
-        <label class="flabel mb-1">Địa chỉ nơi ở</label><input
-          class="form-control"
-          type="text"
-          name="address"
-          required="required"
-          pattern="^[A-Za-z0-9]{0,}"
-          placeholder="Xã - Huyện -Tỉnh"
-        />
+        <label class="flabel mb-1" for="sex">Địa chỉ nơi ở</label><select
+          class="form-select"
+          name="address_id"
+        >
+          {{#each addresses}}
+            <option value={{address_id}}>{{xa}}-{{huyen}}-{{tinh}}</option>
+          {{/each}}
+        </select>
       </div>
       <div class="form-div">
         <label class="flabel mb-1" for="sex">Nơi đang điều trị</label><select
           class="form-select"
-          name="address_treated"
+          name="treatment_id"
         >
-          <option value="">Trống</option>
-          <option value="MỚI SINH">Mới sinh</option>
-          <option value="ĐÃ MẤT">Đã mất</option>
-          <option value="NHẬP CƯ">Nhập cư</option>
+          {{#each treatments}}
+            <option value={{treatment_id}}>{{name}}</option>
+          {{/each}}
         </select>
       </div>
       <div class="form-div">
         <label class="flabel mb-1">Liên quan đến người COVID</label><input
           class="form-control"
           type="text"
-          name="person_related"
+          name="related_person_cccd"
           required="required"
-          pattern="^[A-Za-z0-9]{0,}"
           placeholder="Nhập CMND/CCCD người COVID"
         />
       </div>
