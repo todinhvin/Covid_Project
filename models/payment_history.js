@@ -1,23 +1,15 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
 module.exports = db.define(
-  'treatment',
+  'payment_history',
   {
-    treatment_id: {
+    payment_history_id: {
       autoIncrement: true,
       type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
     },
-    name: {
-      type: Sequelize.STRING(50),
-      allowNull: true,
-    },
-    capacity: {
-      type: Sequelize.INTEGER,
-      allowNull: true,
-    },
-    manager_id: {
+    account_id: {
       autoIncrement: false,
       type: Sequelize.INTEGER,
       allowNull: false,
@@ -26,17 +18,25 @@ module.exports = db.define(
         key: 'account_id',
       },
     },
+    payment_on: {
+      type: Sequelize.DATE,
+      allowNull: true,
+    },
+    total_money: {
+      type: Sequelize.REAL,
+      allowNull: true,
+    },
   },
   {
     db,
-    tableName: 'treatment',
+    tableName: 'payment_history',
     schema: 'public',
     timestamps: false,
     indexes: [
       {
-        name: 'treatment_pkey',
+        name: 'payment_history_pkey',
         unique: true,
-        fields: [{ name: 'treatment_id' }],
+        fields: [{ name: 'payment_history_id' }],
       },
     ],
   }

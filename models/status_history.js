@@ -1,20 +1,29 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
 module.exports = db.define(
-  'treatment',
+  'status_history',
   {
-    treatment_id: {
+    status_history_id: {
       autoIncrement: true,
       type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true,
     },
-    name: {
-      type: Sequelize.STRING(50),
+    person_id: {
+      autoIncrement: false,
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: 'person',
+        key: 'person_id',
+      },
+    },
+    status: {
+      type: Sequelize.STRING(255),
       allowNull: true,
     },
-    capacity: {
-      type: Sequelize.INTEGER,
+    time: {
+      type: Sequelize.DATE,
       allowNull: true,
     },
     manager_id: {
@@ -29,14 +38,14 @@ module.exports = db.define(
   },
   {
     db,
-    tableName: 'treatment',
+    tableName: 'status_history',
     schema: 'public',
     timestamps: false,
     indexes: [
       {
-        name: 'treatment_pkey',
+        name: 'status_history_pkey',
         unique: true,
-        fields: [{ name: 'treatment_id' }],
+        fields: [{ name: 'status_history_id' }],
       },
     ],
   }

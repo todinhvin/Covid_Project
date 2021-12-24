@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize');
 const db = require('../config/database');
 module.exports = db.define(
-  'treatment',
+  'item',
   {
-    treatment_id: {
+    item_id: {
       autoIncrement: true,
       type: Sequelize.INTEGER,
       allowNull: false,
@@ -13,8 +13,20 @@ module.exports = db.define(
       type: Sequelize.STRING(50),
       allowNull: true,
     },
-    capacity: {
-      type: Sequelize.INTEGER,
+    image: {
+      type: Sequelize.ARRAY(Sequelize.STRING),
+      allowNull: true,
+    },
+    price: {
+      type: Sequelize.REAL,
+      allowNull: true,
+    },
+    unit: {
+      type: Sequelize.STRING(50),
+      allowNull: true,
+    },
+    created_on: {
+      type: Sequelize.DATE,
       allowNull: true,
     },
     manager_id: {
@@ -29,14 +41,14 @@ module.exports = db.define(
   },
   {
     db,
-    tableName: 'treatment',
+    tableName: 'item',
     schema: 'public',
     timestamps: false,
     indexes: [
       {
-        name: 'treatment_pkey',
+        name: 'item_pkey',
         unique: true,
-        fields: [{ name: 'treatment_id' }],
+        fields: [{ name: 'item_id' }],
       },
     ],
   }

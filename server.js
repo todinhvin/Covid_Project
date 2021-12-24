@@ -1,24 +1,27 @@
-const express = require("express");
+const express = require('express');
 const app = express();
 const port = 3000;
+
+// Database
+const db = require('./config/database');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-require("./middlewares/handlebars")(app);
-require("./middlewares/session")(app);
+require('./middlewares/handlebars')(app);
+require('./middlewares/session')(app);
 // Public thư mục ra ngoài
 app.use(express.static(`${__dirname}/public`));
 
-app.get("/", (req, res) => {
-  res.render("home");
+app.get('/', (req, res) => {
+  res.render('home');
 });
-app.get("/home", (req, res) => {
-  res.render("home");
+app.get('/home', (req, res) => {
+  res.render('home');
 });
 
 // route cho nguoi benh
-app.use("/patient", require("./controllers/patient.C"));
+app.use('/patient', require('./controllers/patient.C'));
 
 app.listen(port, () => {
   console.log(`Listen in port ${port}`);
