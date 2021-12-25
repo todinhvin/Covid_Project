@@ -1,207 +1,436 @@
+drop table if exists account
+cascade;
+
+drop table if exists account_payment
+cascade;
+
+drop table if exists address
+cascade;
+
+drop table if exists checkout
+cascade;
+
+drop table if exists indept
+cascade;
+
+drop table if exists item
+cascade;
+
+drop table if exists package
+cascade;
+
+drop table if exists package_item
+cascade;
+
+drop table if exists payment_history
+cascade;
+
+drop table if exists person
+cascade;
+
+drop table if exists role
+cascade;
+
+drop table if exists status_history
+cascade;
+
+drop table if exists treatment
+cascade;
+
+drop table if exists treatment_history
+cascade;
+
 create table role
 (
-    role_id   varchar(40) not null,
+    role_id serial,
     role_name varchar(50),
-    constraint role_pkey
-        primary key (role_id)
+    primary key (role_id)
 );
 
 create table indept
 (
-    indept_id   varchar(40) not null,
-    indept      real,
-    due_date    timestamp,
+    indept_id serial,
+    indept real,
+    due_date timestamp,
     minimum_pay real,
-    account_id  varchar(40),
-    constraint indept_pkey
-        primary key (indept_id)
+    primary key (indept_id)
 );
 
 create table account
 (
-    account_id varchar(40) not null,
-    username   varchar(50),
-    password   varchar(100),
-    status     varchar(40),
-    role_id    varchar(40),
-    indebt_id  varchar(40),
-    person_id  varchar(40),
-    constraint account_pkey
-        primary key (account_id),
+    account_id serial,
+    username varchar(50),
+    password varchar(100),
+    status varchar(100),
+    role_id serial,
+    person_id integer,
+    indebt_id integer,
+    primary key (account_id),
     constraint fk_acc_role
-        foreign key (role_id) references role,
-    constraint fk_acc_debt
-        foreign key (indebt_id) references indept
+        foreign key (role_id) references role
 );
 
 create table item
 (
-    item_id    varchar(40) not null,
-    name       varchar(50),
-    image      varchar(255)[],
+    item_id serial,
+    name varchar(50),
+    image varchar(255)
+    [],
     price      real,
-    unit       varchar(50),
+    unit       varchar
+    (50),
     created_on timestamp,
-    manager_id varchar(40),
-    constraint item_pkey
-        primary key (item_id),
+    manager_id serial,
+    primary key
+    (item_id),
     constraint fk_item_manager
-        foreign key (manager_id) references account
+        foreign key
+    (manager_id) references account
 );
 
-create table package
-(
-    package_id varchar(40) not null,
-    name       varchar(50),
-    due_date   timestamp,
-    created_on timestamp,
-    manager_id varchar(40),
-    constraint package_pkey
+    create table package
+    (
+        package_id serial,
+        name varchar(50),
+        due_date timestamp,
+        created_on timestamp,
+        manager_id serial,
         primary key (package_id),
-    constraint fk_package_manager
+        constraint fk_package_manager
         foreign key (manager_id) references account
-);
+    );
 
-create table payment_history
-(
-    payment_history_id varchar(40) not null,
-    account_id         varchar(40),
-    payment_on         timestamp,
-    total_money        real,
-    constraint payment_history_pkey
+    create table payment_history
+    (
+        payment_history_id serial,
+        account_id serial,
+        payment_on timestamp,
+        total_money real,
         primary key (payment_history_id),
-    constraint fk_payhis_acc
+        constraint fk_payhis_acc
         foreign key (account_id) references account
-);
+    );
 
-create table account_payment
-(
-    account_payment_id varchar(40) not null,
-    password           varchar(40),
-    account_id         varchar(40),
-    balance            real,
-    constraint account_payment_pkey
+    create table account_payment
+    (
+        account_payment_id serial,
+        password serial,
+        account_id serial,
+        balance real,
         primary key (account_payment_id),
-    constraint fk_accpay_acc
+        constraint fk_accpay_acc
         foreign key (account_id) references account
-);
+    );
 
-create table treatment
-(
-    treatment_id varchar(40) not null,
-    name         varchar(50),
-    capacity     integer,
-    manager_id   varchar(40),
-    constraint treatment_pkey
+    create table treatment
+    (
+        treatment_id serial,
+        name varchar(50),
+        capacity integer,
+        manager_id serial,
         primary key (treatment_id),
-    constraint fk_treat_acc
+        constraint fk_treat_acc
         foreign key (manager_id) references account
-);
+    );
 
-create table address
-(
-    address_id varchar(40) not null,
-    tinh       varchar(40),
-    huyen      varchar(40),
-    xa         varchar(40),
-    manager_id varchar(40),
-    constraint address_pkey
+    create table address
+    (
+        address_id serial,
+        tinh varchar(100),
+        huyen varchar(100),
+        xa varchar(100),
+        manager_id serial,
         primary key (address_id),
-    constraint fk_manager
+        constraint fk_manager
         foreign key (manager_id) references account
-);
+    );
 
-create table person
-(
-    person_id         varchar(40) not null,
-    full_name         varchar(50),
-    cccd              varchar(20),
-    birthday          date,
-    address_id        varchar(40),
-    related_person_id varchar(40),
-    treatment_id      varchar(40),
-    status            varchar(255),
-    manager_id        varchar(40),
-    constraint person_pkey
+    create table person
+    (
+        person_id serial,
+        full_name varchar(50),
+        cccd varchar(20),
+        birthday date,
+        address_id serial,
+        related_person_id integer,
+        treatment_id serial,
+        status varchar(255),
+        manager_id serial,
         primary key (person_id),
-    constraint fk_related
+        constraint fk_related
         foreign key (related_person_id) references person,
-    constraint fk_manager
+        constraint fk_manager
         foreign key (manager_id) references account,
-    constraint fk_treat
+        constraint fk_treat
         foreign key (treatment_id) references treatment,
-    constraint fk_address
+        constraint fk_address
         foreign key (address_id) references address
-);
+    );
 
-alter table account
+    alter table account
     add constraint fk_acc_person
         foreign key (person_id) references person;
 
-create table treatment_history
-(
-    treatment_history_id varchar(40) not null,
-    treatment_id         varchar(40),
-    person_id            varchar(40),
-    time                 timestamp,
-    manager_id           varchar(40),
-    constraint treatment_history_pkey
+    create table treatment_history
+    (
+        treatment_history_id serial,
+        treatment_id serial,
+        person_id serial,
+        time timestamp,
+        manager_id serial,
         primary key (treatment_history_id),
-    constraint fk_treathis_treat
+        constraint fk_treathis_treat
         foreign key (treatment_id) references treatment,
-    constraint fk_treathis_person
+        constraint fk_treathis_person
         foreign key (person_id) references person,
-    constraint fk_treat_manager
+        constraint fk_treat_manager
         foreign key (manager_id) references account
-);
+    );
 
-create table status_history
-(
-    status_history_id varchar(40) not null,
-    person_id         varchar(40),
-    status            varchar(255),
-    time              timestamp,
-    manager_id        varchar(40),
-    constraint status_history_pkey
+    create table status_history
+    (
+        status_history_id serial,
+        person_id serial,
+        status varchar(255),
+        time timestamp,
+        manager_id serial,
         primary key (status_history_id),
-    constraint fk_stat_person
+        constraint fk_stat_person
         foreign key (person_id) references person,
-    constraint fk_stat_manager
+        constraint fk_stat_manager
         foreign key (manager_id) references account
-);
+    );
 
-create table package_item
-(
-    package_id varchar(40) not null,
-    item_id    varchar(40) not null,
-    quantity   integer,
-    item_limit integer,
-    constraint package_item_pkey
+    create table package_item
+    (
+        package_id serial,
+        item_id serial,
+        quantity integer,
+        item_limit integer,
         primary key (package_id, item_id),
-    constraint fk_pi_package
+        constraint fk_pi_package
         foreign key (package_id) references package,
-    constraint fk_pi_item
+        constraint fk_pi_item
         foreign key (item_id) references item
-);
+    );
 
-create table checkout
-(
-    checkout_id        varchar(40) not null,
-    account_id         varchar(40),
-    package_id         varchar(40),
-    item_id            varchar(40),
-    checkout_date      timestamp,
-    state              boolean,
-    payment_history_id varchar(40),
-    constraint checkout_pkey
+    create table checkout
+    (
+        checkout_id serial,
+        account_id serial,
+        package_id serial,
+        item_id serial,
+        checkout_date timestamp,
+        state boolean,
+        payment_history_id integer,
+        quantity integer,
         primary key (checkout_id),
-    constraint fk_checkout_account
+        constraint fk_checkout_account
         foreign key (account_id) references account,
-    constraint fk_checkout_package
+        constraint fk_checkout_package
         foreign key (package_id) references package,
-    constraint fk_checkout_item
+        constraint fk_checkout_item
         foreign key (item_id) references item,
-    constraint fk_checkout_payment_history
+        constraint fk_checkout_payment_history
         foreign key (payment_history_id) references payment_history
-);
+    );
+
+    insert into role
+        (role_id, role_name)
+    values
+        (1, 'Admin');
+    insert into role
+        (role_id, role_name)
+    values
+        (2, 'Manager');
+    insert into role
+        (role_id, role_name)
+    values
+        (3, 'Customer');
+
+    -- Account
+    -- ALTER TABLE account ALTER COLUMN person_id  DROP NOT NULL;
+    -- ALTER TABLE account ALTER COLUMN indebt_id  DROP NOT NULL;
+
+    insert into account
+        (account_id, username, password, status, role_id, person_id)
+    values
+        (1, 'admin', '123456', 'active', 1, null);
+    insert into account
+        (account_id, username, password, status, role_id, person_id)
+    values
+        (2, 'manager', '123456', 'active', 2, null);
+
+
+    -- Address
+    insert into address
+        (address_id, tinh, huyen, xa, manager_id)
+    values
+        (1, 'Tra Vinh', 'Cau Ngang', 'Vinh Kim', 2);
+    insert into address
+        (address_id, tinh, huyen, xa, manager_id)
+    values
+        (2, 'Binh Duong', 'Di An', 'Dong Hoa', 2);
+
+    -- Treatment place
+    insert into treatment
+        (treatment_id, name, capacity, manager_id)
+    values
+        (1, 'KTX DHQG', 20000, 2);
+    insert into treatment
+        (treatment_id, name, capacity, manager_id)
+    values
+        (2, 'Benh Vien', 3000, 2);
+
+    -- Person
+    -- ALTER TABLE person ALTER COLUMN related_person_id  DROP NOT NULL;
+
+    insert into person
+        (person_id, full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        (1, 'Nguyen van customer', '0011223344', '2000-1-1', 1, null, 1, 'f0', 2);
+
+    insert into person
+        (person_id, full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        (2, 'Pham Thi customer', '999993344', '2001-1-1', 1, 1, 1, 'f1', 2);
+
+    -- Treatment history
+    insert into treatment_history
+        (treatment_history_id, treatment_id, person_id, "time", manager_id)
+    values
+        (1, 1, 1, '2021-01-01', 2);
+    insert into treatment_history
+        (treatment_history_id, treatment_id, person_id, "time", manager_id)
+    values
+        (2, 2, 1, '2020-12-31', 2);
+    insert into treatment_history
+        (treatment_history_id, treatment_id, person_id, "time", manager_id)
+    values
+        (3, 1, 2, '2021-12-31', 2);
+
+    -- Status history
+    insert into status_history
+        (status_history_id, person_id, status, "time", manager_id)
+    values
+        (1, 1, 'f0', '2021-01-01', 2);
+    insert into status_history
+        (status_history_id, person_id, status, "time", manager_id)
+    values
+        (3, 2, 'f1', '2021-12-01', 2);
+
+    -- Item
+    insert into item
+        (item_id, name, image, price, unit, created_on, manager_id)
+    values
+        (1, 'Xoai', null, 10000, 'kg', '2021-12-25', 2);
+    insert into item
+        (item_id, name, image, price, unit, created_on, manager_id)
+    values
+        (2, 'Dua', null, 10000, 'trai', '2021-12-25', 2);
+    insert into item
+        (item_id, name, image, price, unit, created_on, manager_id)
+    values
+        (3, 'Mang cau', null, 30000, 'kg', '2021-12-25', 2);
+
+    insert into item
+        (item_id, name, image, price, unit, created_on, manager_id)
+    values
+        (4, 'Thit heo', null, 100000, 'kg', '2021-12-25', 2);
+    insert into item
+        (item_id, name, image, price, unit, created_on, manager_id)
+    values
+        (5, 'Ca', null, 120000, 'kg', '2021-12-25', 2);
+    insert into item
+        (item_id, name, image, price, unit, created_on, manager_id)
+    values
+        (6, 'Thit bo', null, 200000, 'kg', '2021-12-25', 2);
+
+    -- Package
+    insert into package
+        (package_id, name, due_date, created_on, manager_id)
+    values
+        (1, 'Trai cay pack', '2022-02-02', '2021-12-25', 2);
+    insert into package
+        (package_id, name, due_date, created_on, manager_id)
+    values
+        (2, 'Dong vat pack', '2022-02-02', '2021-12-25', 2);
+
+    -- Package item
+    insert into package_item
+        (package_id, item_id, quantity, item_limit)
+    values
+        (1, 1, 1, 2);
+    insert into package_item
+        (package_id, item_id, quantity, item_limit)
+    values
+        (1, 2, 1, 2);
+    insert into package_item
+        (package_id, item_id, quantity, item_limit)
+    values
+        (1, 3, 1, 2);
+
+    insert into package_item
+        (package_id, item_id, quantity, item_limit)
+    values
+        (2, 4, 1, 4);
+    insert into package_item
+        (package_id, item_id, quantity, item_limit)
+    values
+        (2, 5, 1, 2);
+    insert into package_item
+        (package_id, item_id, quantity, item_limit)
+    values
+        (2, 6, 1, 5);
+
+
+    -- In debt
+    -- alter table indept drop column  account_id;
+    insert into indept
+        (indept_id, indept, due_date, minimum_pay)
+    values
+        (1, 0, '2022-01-01', 20000);
+    insert into indept
+        (indept_id, indept, due_date, minimum_pay)
+    values
+        (2, 420000, '2022-01-01', 20000);
+
+    -- user
+    insert into account
+        (account_id, username, password, status, role_id, person_id, indebt_id)
+    values
+        (3, 'user1', '123456', 'active', 3, 1, 1);
+    insert into account
+        (account_id, username, password, status, role_id, person_id, indebt_id)
+    values
+        (4, 'user2', '123456', 'active', 3, 2, 2);
+
+    -- Checkout
+    -- alter table checkout alter column payment_history_id drop not null;
+    -- alter table checkout add column quantity int;
+    insert into checkout
+        (checkout_id, account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
+    values
+        (1, 4, 2, 4, '2021-12-25', false, null, 1);
+    insert into checkout
+        (checkout_id, account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
+    values
+        (2, 4, 2, 5, '2021-12-25', false, null, 1);
+    insert into checkout
+        (checkout_id, account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
+    values
+        (3, 4, 2, 6, '2021-12-25', false, null, 1);
+
+    -- Account payment
+    insert into account_payment
+        (account_payment_id, password, account_id, balance)
+    values
+        (1, '123456', 3, 2000000);
+    insert into account_payment
+        (account_payment_id, password, account_id, balance)
+    values
+        (2, '123456', 4, 200000);
+
 
