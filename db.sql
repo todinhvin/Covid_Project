@@ -432,3 +432,5 @@ create table item
         (account_payment_id, password, account_id, balance)
     values
         (2, '123456', 4, 200000);
+
+
