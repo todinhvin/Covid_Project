@@ -1,14 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const { getAllAddresses } = require("../models/address");
-const { getAllTreatments } = require("../models/treatment");
+const { getAllAddresses, getAddressByID } = require("../models/address");
+const { getAllTreatments, getTreatmentByID } = require("../models/treatment");
+const { getPatients } = require("../models/patient");
+const { convertDate } = require("../helper");
 const {
   createPatient,
   getPatientByCCCD,
   getPatientById,
 } = require("../models/patient");
-router.get("/", (req, res) => {
-  res.render("patient/patient");
+router.get("/", async (req, res) => {
+  const { page = 1, per_page = 4 } = req.query;
+  const { totalPage, patients } = await getPatients({ page, per_page });
+  res.render("patient/patient", {
+    patients: patients,
+    totalPage,
+    page,
+  });
 });
 
 router.get("/create", async (req, res) => {
@@ -21,7 +29,7 @@ router.get("/create", async (req, res) => {
 });
 
 router.post("/create", async (req, res) => {
-  const manager = req.manager;
+  // const manager = req.manager;
   console.log(req.body);
   const {
     full_name,
@@ -33,6 +41,7 @@ router.post("/create", async (req, res) => {
     related_person_cccd,
   } = req.body;
   const relatedPerson = await getPatientByCCCD(related_person_cccd);
+  console.log(relatedPerson);
   const data = await createPatient({
     full_name,
     cccd,
@@ -40,7 +49,7 @@ router.post("/create", async (req, res) => {
     address_id,
     treatment_id,
     status,
-    manager_id: manager.id,
+    manager_id: 2,
     related_person_id: relatedPerson.person_id,
   });
   if (data) {
@@ -54,6 +63,8 @@ router.get("/:id/update", async (req, res) => {
   const patient = await getPatientById(req.params.id);
   const addresses = await getAllAddresses();
   const treatments = await getAllTreatments();
+  patient.birthday = convertDate(patient.birthday);
+  console.log(patient.birthday);
   res.render("patient/updatePatient", {
     addresses,
     treatments,
@@ -73,6 +84,7 @@ router.post("/:id/update", (req, res) => {
     treatment_id,
     related_person_cccd,
   } = req.body;
+  console.log(new Date(birthday));
   res.render("patient/updatePatient");
 });
 
