@@ -2,13 +2,14 @@
   <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
     Thêm người liên quan Covid
   </h2>
-  <form class="form-create-victim row" action="/patient/create" method="POST">
+  <form class="form-create-victim row" action="/patient/{{patient.person_id}}/update" method="POST">
     <div class="col col-6">
       <div class="">
         <label class="flabel mb-1" for="name">Họ và tên</label><input
           class="form-control"
           type="text"
-          name="name"
+          name="full_name"
+          value={{patient.full_name}}
           required="required"
         />
       </div>
@@ -16,8 +17,9 @@
         <label class="flabel mb-1" for="cmt">Số CMT/CCCD</label><input
           class="form-control"
           type="text"
-          name="cccd"
+          name="person_id"
           required="required"
+          value={{patient.cccd}}
           title="Số CMT/CCCD phải có từ 9-12 chữ số"
         />
       </div>
@@ -26,6 +28,7 @@
           class="form-control"
           type="date"
           name="birthday"
+          value={{patient.birthday}}
           required="required"
         />
       </div>
@@ -34,9 +37,11 @@
           class="form-select"
           name="status"
         >
-          <option value="F0">F0</option>
-          <option value="F1">F1</option>
-          <option value="F2">F2</option>
+
+          <option value="F0" {{#compareString patient.status 'F0'}}selected {{/compareString}}>F0</option>
+          <option value="F1" {{#compareString patient.status 'F1'}}selected {{/compareString}}>F1</option>
+          <option value="F2" {{#compareString patient.status 'F2'}}selected {{/compareString}}>F2</option>
+          <option value="F2" {{#compareString patient.status 'KB'}}selected {{/compareString}}>KB</option>
         </select>
       </div>
     </div>
@@ -47,7 +52,7 @@
           name="address_id"
         >
           {{#each addresses}}
-            <option value={{address_id}}>{{xa}}-{{huyen}}-{{tinh}}</option>
+            <option {{#compareInt ../patient.address_id address_id }} selected{{/compareInt}} value={{address_id}}>{{xa}}-{{huyen}}-{{tinh}}</option>
           {{/each}}
         </select>
       </div>
@@ -57,7 +62,7 @@
           name="treatment_id"
         >
           {{#each treatments}}
-            <option value={{treatment_id}}>{{name}}</option>
+            <option {{#compareInt ../patient.treatment_id treatment_id }} selected{{/compareInt}} value={{treatment_id}}>{{name}}</option>
           {{/each}}
         </select>
       </div>
@@ -65,9 +70,9 @@
         <label class="flabel mb-1">Liên quan đến người COVID</label><input
           class="form-control"
           type="text"
-          name="related_person_cccd"
+          name="person_related"
           required="required"
-          placeholder="Nhập CMND/CCCD người COVID"
+          placeholder="Nhập CMND/CCCD người COVID. Chưa rõ ghi 0"
         />
       </div>
 

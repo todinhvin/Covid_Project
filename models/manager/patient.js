@@ -1,11 +1,7 @@
-const db = require("./db");
+const db = require("../db");
+
 const { getAddressByID } = require("./address");
 const { getTreatmentByID } = require("./treatment");
-// exports.getTotalPatients = async () => {
-//   const { rows } = await db.query("SELECT COUNT(*) FROM person");
-//   console.log(rows[0].count);
-//   return rows[0].count;
-// };
 
 const getTotalPatients = async () => {
   const { rows } = await db.query("SELECT COUNT(*) FROM person");
@@ -55,7 +51,7 @@ const getPatientById = async (patient_id) => {
   return rows[0];
 };
 
-exports.getAddressByID;
+exports.getPatientById = getPatientById;
 
 exports.getPatientByCCCD = async (cccd) => {
   const { rows } = await db.query('SELECT * FROM person where "cccd" =$1 ', [
@@ -85,6 +81,34 @@ exports.createPatient = async ({
       treatment_id,
       status,
       manager_id,
+    ]
+  );
+  return rows[0];
+};
+
+exports.updatePatient = async ({
+  person_id,
+  full_name,
+  cccd,
+  birthday,
+  address_id,
+  related_person_id,
+  treatment_id,
+  status,
+  manager_id,
+}) => {
+  const { rows } = await db.query(
+    'UPDATE public."person" SET "full_name"=$1, "cccd"=$2, "birthday"=$3, "address_id"=$4, "related_person_id"=$5, "treatment_id"=$6 "status"=$7 "manager_id"=$8 WHERE "person_id"=$9 RETURNING *;',
+    [
+      full_name,
+      cccd,
+      birthday,
+      address_id,
+      related_person_id,
+      treatment_id,
+      status,
+      manager_id,
+      person_id,
     ]
   );
   return rows[0];

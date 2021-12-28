@@ -18,7 +18,7 @@ app.get("/home", (req, res) => {
 });
 
 // route cho nguoi benh
-app.use("/patient", require("./controllers/patient.C"));
+app.use("/patient", require("./controllers/manager/patient.C"));
 
 app.listen(port, () => {
   console.log(`Listen in port ${port}`);
