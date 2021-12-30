@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/manager', (req, res) => {
-  return res.render('admin/manager');
+  return res.render('admin/manager', { layout: false });
 });
 
 router.get('/treatment', (req, res) => {});

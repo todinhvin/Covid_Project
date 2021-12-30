@@ -434,4 +434,4 @@ insert into role
     values
         ( '123456', 4, 200000);
 
-
+Alter TABLE Person ALTER COLUMN related_person_id DROP not NULL;
