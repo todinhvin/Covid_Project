@@ -1,10 +1,20 @@
 <div class="container">
-  <!-- Thêm người bệnh -->
-  <a
-    href="/patient/create"
+
+  <div style=" display: flex;
+            align-items: center;
+            justify-content: space-between;">
+    <!-- Thêm người bệnh -->
+ <a
+    href="/manager/patient/create"
     class="navbar-item"
     style="display: block; width: 200px; margin: 20px 0"
   >THÊM NGƯỜI BỆNH</a>
+   <a
+    href="/manager/patient/KB?page=1"
+    class="navbar-item"
+    style="display: block; width: 300px; margin: 20px 0"
+  >DANH SÁCH KHỎI BỆNH</a>
+  </div>
   <div
     style="
             display: flex;
@@ -15,11 +25,13 @@
           "
   >
     <div class="victim-category">
-      <p>Sắp xếp theo:</p>
+      <p>Sắp xếp giảm dần theo:</p>
       <select class="custom-select" style="width: 100%">
         <option selected>Lựa chọn</option>
-        <option value="1">Họ tên</option>
-        <option value="2">CMND/CCCD</option>
+        <option value="full_name"><a href="{{url}}?page=1&filter=full_name" >Họ tên</a></option>
+        <option value="cccd" onclick={{handleClick}}>CMND/CCCD</option>
+        <option value="status">Trạng thái</option>
+        <option value="treatment_id">Nơi điều trị</option>
       </select>
     </div>
     <div class="victim-search">
@@ -62,9 +74,9 @@
           <td class="taC">{{related_person}}</td>
           <td>{{treatment}}</td>
           <td class="victim-btns">
-            <a href="/patient/1" class="btn btn-primary">Chi tiết</a>
-            <a href="/patient/1/update" class="btn btn-success mT8">Cập nhật</a>
-            <a href="/patient/1/delete" class="btn btn-danger mT8">Xóa</a>
+            <a href="/manager/patient/{{person_id}}" class="btn btn-primary">Chi tiết</a>
+            <a href="/manager/patient/{{person_id}}/update" class="btn btn-success mT8">Cập nhật</a>
+            <a href="/manager/patient/{{person_id}}/delete" class="btn btn-danger mT8">Xóa</a>
           </td>
         </tr>
       {{/each}}
@@ -82,7 +94,7 @@
         {{else}}
           <li class="page-item"><a
               class="page-link"
-              href="/patient?page={{this}}"
+              href="{{url}}?page={{this}}"
             >{{this}}</a></li>
 
         {{/compareInt}}

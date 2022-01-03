@@ -157,8 +157,6 @@ create table item
         status varchar(255),
         manager_id serial,
         primary key (person_id),
-        constraint fk_related
-        foreign key (related_person_id) references person,
         constraint fk_manager
         foreign key (manager_id) references account,
         constraint fk_treat
@@ -235,128 +233,129 @@ create table item
         foreign key (payment_history_id) references payment_history
     );
 
-    insert into role
-        (role_id, role_name)
+
+insert into role
+        ( role_name)
     values
-        (1, 'Admin');
+        ( 'Admin');
     insert into role
-        (role_id, role_name)
+        ( role_name)
     values
-        (2, 'Manager');
+        ('Manager');
     insert into role
-        (role_id, role_name)
+        (role_name)
     values
-        (3, 'Customer');
+        ('Customer');
 
     -- Account
     -- ALTER TABLE account ALTER COLUMN person_id  DROP NOT NULL;
     -- ALTER TABLE account ALTER COLUMN indebt_id  DROP NOT NULL;
 
     insert into account
-        (account_id, username, password, status, role_id, person_id)
+        ( username, password, status, role_id, person_id)
     values
-        (1, 'admin', '123456', 'active', 1, null);
+        ( 'admin', '123456', 'active', 1, null);
     insert into account
-        (account_id, username, password, status, role_id, person_id)
+        ( username, password, status, role_id, person_id)
     values
-        (2, 'manager', '123456', 'active', 2, null);
+        ( 'manager', '123456', 'active', 2, null);
 
 
     -- Address
     insert into address
-        (address_id, tinh, huyen, xa, manager_id)
+        ( tinh, huyen, xa, manager_id)
     values
-        (1, 'Tra Vinh', 'Cau Ngang', 'Vinh Kim', 2);
+        ('Tra Vinh', 'Cau Ngang', 'Vinh Kim', 2);
     insert into address
-        (address_id, tinh, huyen, xa, manager_id)
+        ( tinh, huyen, xa, manager_id)
     values
-        (2, 'Binh Duong', 'Di An', 'Dong Hoa', 2);
+        ( 'Binh Duong', 'Di An', 'Dong Hoa', 2);
 
     -- Treatment place
     insert into treatment
-        (treatment_id, name, capacity, manager_id)
+        ( name, capacity, manager_id)
     values
-        (1, 'KTX DHQG', 20000, 2);
+        ( 'KTX DHQG', 20000, 2);
     insert into treatment
-        (treatment_id, name, capacity, manager_id)
+        ( name, capacity, manager_id)
     values
-        (2, 'Benh Vien', 3000, 2);
+        ( 'Benh Vien', 3000, 2);
 
     -- Person
     -- ALTER TABLE person ALTER COLUMN related_person_id  DROP NOT NULL;
 
     insert into person
-        (person_id, full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
         manager_id)
     values
-        (1, 'Nguyen van customer', '0011223344', '2000-1-1', 1, null, 1, 'f0', 2);
+        ( 'Nguyen van customer', '0011223344', '2000-1-1', 1, null, 1, 'f0', 2);
 
     insert into person
-        (person_id, full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
         manager_id)
     values
-        (2, 'Pham Thi customer', '999993344', '2001-1-1', 1, 1, 1, 'f1', 2);
+        ( 'Pham Thi customer', '999993344', '2001-1-1', 1, 1, 1, 'f1', 2);
 
     -- Treatment history
     insert into treatment_history
-        (treatment_history_id, treatment_id, person_id, "time", manager_id)
+        ( treatment_id, person_id, "time", manager_id)
     values
-        (1, 1, 1, '2021-01-01', 2);
+        ( 1, 1, '2021-01-01', 2);
     insert into treatment_history
-        (treatment_history_id, treatment_id, person_id, "time", manager_id)
+        ( treatment_id, person_id, "time", manager_id)
     values
-        (2, 2, 1, '2020-12-31', 2);
+        ( 2, 1, '2020-12-31', 2);
     insert into treatment_history
-        (treatment_history_id, treatment_id, person_id, "time", manager_id)
+        ( treatment_id, person_id, "time", manager_id)
     values
-        (3, 1, 2, '2021-12-31', 2);
+        ( 1, 2, '2021-12-31', 2);
 
     -- Status history
     insert into status_history
-        (status_history_id, person_id, status, "time", manager_id)
+        ( person_id, status, "time", manager_id)
     values
-        (1, 1, 'f0', '2021-01-01', 2);
+        ( 1, 'f0', '2021-01-01', 2);
     insert into status_history
-        (status_history_id, person_id, status, "time", manager_id)
+        ( person_id, status, "time", manager_id)
     values
-        (3, 2, 'f1', '2021-12-01', 2);
+        ( 2, 'f1', '2021-12-01', 2);
 
     -- Item
     insert into item
-        (item_id, name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id)
     values
-        (1, 'Xoai', null, 10000, 'kg', '2021-12-25', 2);
+        ( 'Xoai', null, 10000, 'kg', '2021-12-25', 2);
     insert into item
-        (item_id, name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id)
     values
-        (2, 'Dua', null, 10000, 'trai', '2021-12-25', 2);
+        ( 'Dua', null, 10000, 'trai', '2021-12-25', 2);
     insert into item
-        (item_id, name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id)
     values
-        (3, 'Mang cau', null, 30000, 'kg', '2021-12-25', 2);
+        ( 'Mang cau', null, 30000, 'kg', '2021-12-25', 2);
 
     insert into item
-        (item_id, name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id)
     values
-        (4, 'Thit heo', null, 100000, 'kg', '2021-12-25', 2);
+        ( 'Thit heo', null, 100000, 'kg', '2021-12-25', 2);
     insert into item
-        (item_id, name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id)
     values
-        (5, 'Ca', null, 120000, 'kg', '2021-12-25', 2);
+        ( 'Ca', null, 120000, 'kg', '2021-12-25', 2);
     insert into item
-        (item_id, name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id)
     values
-        (6, 'Thit bo', null, 200000, 'kg', '2021-12-25', 2);
+        ( 'Thit bo', null, 200000, 'kg', '2021-12-25', 2);
 
     -- Package
     insert into package
-        (package_id, name, due_date, created_on, manager_id)
+        ( name, due_date, created_on, manager_id)
     values
-        (1, 'Trai cay pack', '2022-02-02', '2021-12-25', 2);
+        ( 'Trai cay pack', '2022-02-02', '2021-12-25', 2);
     insert into package
-        (package_id, name, due_date, created_on, manager_id)
+        (name, due_date, created_on, manager_id)
     values
-        (2, 'Dong vat pack', '2022-02-02', '2021-12-25', 2);
+        ( 'Dong vat pack', '2022-02-02', '2021-12-25', 2);
 
     -- Package item
     insert into package_item
@@ -389,46 +388,48 @@ create table item
     -- In debt
     -- alter table indept drop column  account_id;
     insert into indept
-        (indept_id, indept, due_date, minimum_pay)
+        ( indept, due_date, minimum_pay)
     values
-        (1, 0, '2022-01-01', 20000);
+        ( 0, '2022-01-01', 20000);
     insert into indept
-        (indept_id, indept, due_date, minimum_pay)
+        ( indept, due_date, minimum_pay)
     values
-        (2, 420000, '2022-01-01', 20000);
+        ( 420000, '2022-01-01', 20000);
 
     -- user
     insert into account
-        (account_id, username, password, status, role_id, person_id, indebt_id)
+        ( username, password, status, role_id, person_id, indebt_id)
     values
-        (3, 'user1', '123456', 'active', 3, 1, 1);
+        ( 'user1', '123456', 'active', 3, 1, 1);
     insert into account
-        (account_id, username, password, status, role_id, person_id, indebt_id)
+        ( username, password, status, role_id, person_id, indebt_id)
     values
-        (4, 'user2', '123456', 'active', 3, 2, 2);
+        ( 'user2', '123456', 'active', 3, 2, 2);
 
     -- Checkout
     -- alter table checkout alter column payment_history_id drop not null;
     -- alter table checkout add column quantity int;
     insert into checkout
-        (checkout_id, account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
+        ( account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
     values
-        (1, 4, 2, 4, '2021-12-25', false, null, 1);
+        ( 4, 2, 4, '2021-12-25', false, null, 1);
     insert into checkout
-        (checkout_id, account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
+        ( account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
     values
-        (2, 4, 2, 5, '2021-12-25', false, null, 1);
+        ( 4, 2, 5, '2021-12-25', false, null, 1);
     insert into checkout
-        (checkout_id, account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
+        ( account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
     values
-        (3, 4, 2, 6, '2021-12-25', false, null, 1);
+        ( 4, 2, 6, '2021-12-25', false, null, 1);
 
     -- Account payment
     insert into account_payment
-        (account_payment_id, password, account_id, balance)
+        ( password, account_id, balance)
     values
-        (1, '123456', 3, 2000000);
+        ( '123456', 3, 2000000);
     insert into account_payment
-        (account_payment_id, password, account_id, balance)
+        ( password, account_id, balance)
     values
-        (2, '123456', 4, 200000);
+        ( '123456', 4, 200000);
+
+Alter TABLE Person ALTER COLUMN related_person_id DROP not NULL;

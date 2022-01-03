@@ -22,6 +22,9 @@ module.exports = (app) => {
         }
         return acum;
       },
+      handleClick(value) {
+        console.log(value);
+      },
     },
   });
 

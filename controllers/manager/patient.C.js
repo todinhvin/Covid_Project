@@ -8,7 +8,12 @@ const {
   getAllTreatments,
   getTreatmentByID,
 } = require("../../models/manager/treatment");
-const { getPatients, updatePatient } = require("../../models/manager/patient");
+const {
+  getPatients,
+  getPatientsKB,
+  updatePatient,
+  removePatient,
+} = require("../../models/manager/patient");
 const { convertDate } = require("../../helper");
 const {
   createPatient,
@@ -17,12 +22,24 @@ const {
 } = require("../../models/manager/patient");
 
 router.get("/", async (req, res) => {
-  const { page = 1, per_page = 4 } = req.query;
-  const { totalPage, patients } = await getPatients({ page, per_page });
+  const { page = 1 } = req.query;
+  const { totalPage, patients } = await getPatients({ page });
   res.render("manager/patient/patient", {
     patients: patients,
     totalPage,
     page,
+    url: "/manager/patient",
+  });
+});
+
+router.get("/KB", async (req, res) => {
+  const { page = 1 } = req.query;
+  const { totalPage, patients } = await getPatientsKB({ page });
+  res.render("manager/patient/patient", {
+    patients: patients,
+    totalPage,
+    page,
+    url: "/manager/patient/KB",
   });
 });
 
@@ -37,7 +54,6 @@ router.get("/create", async (req, res) => {
 
 router.post("/create", async (req, res) => {
   // const manager = req.manager;
-  console.log(req.body);
   const {
     full_name,
     cccd,
@@ -49,7 +65,7 @@ router.post("/create", async (req, res) => {
   } = req.body;
 
   let relatedPerson;
-  if (related_person_cccd != "0") {
+  if (related_person_cccd) {
     relatedPerson = await getPatientByCCCD(related_person_cccd);
   }
   const data = await createPatient({
@@ -60,13 +76,12 @@ router.post("/create", async (req, res) => {
     treatment_id,
     status,
     manager_id: 2,
-    related_person_id:
-      related_person_cccd != "0" ? relatedPerson.person_id : "0",
+    related_person_id: related_person_cccd ? relatedPerson.person_id : -1,
   });
   if (data) {
-    return res.redirect("patient/createP?create=success");
+    return res.redirect("/manager/patient?create=success");
   } else {
-    return res.redirect("patient/create?create=error");
+    return res.redirect("/manager/patient?create=error");
   }
 });
 
@@ -98,7 +113,7 @@ router.post("/:id/update", async (req, res) => {
     related_person_cccd,
   } = req.body;
   let relatedPerson;
-  if (related_person_cccd != "0") {
+  if (related_person_cccd) {
     relatedPerson = await getPatientByCCCD(related_person_cccd);
   }
 
@@ -111,14 +126,20 @@ router.post("/:id/update", async (req, res) => {
     treatment_id,
     status,
     manager_id: 2,
-    related_person_id:
-      related_person_cccd != "0" ? relatedPerson.person_id : "0",
+    related_person_id: related_person_cccd ? relatedPerson.person_id : -1,
   });
   if (data) {
-    return res.redirect("patient/:id/update?update=success");
+    return res.redirect("/manager/patient/?update=success");
   } else {
-    return res.redirect("patient/:id/update?update=error");
+    return res.redirect("/manager/patient/?update=error");
   }
+});
+
+router.get("/:id/delete", async (req, res) => {
+  const { id } = req.params;
+
+  removePatient({ person_id: id, manager_id: 2 });
+  return res.redirect("/manager/patient/?remove=success");
 });
 
 router.get("/:id", (req, res) => {
