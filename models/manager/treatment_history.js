@@ -1,9 +1,16 @@
 const db = require("../db");
-
+const { getTreatmentByID } = require("./treatment");
 exports.getTreatmentsHPerson = async (person_id) => {
   const { rows } = await db.query(
-    'SELECT * FROM "treatment_history" WHERE "person_id"=$1'
+    'SELECT * FROM "treatment_history" WHERE "person_id"=$1',
+    [person_id]
   );
+  for (let i = 0; i < rows.length; i++) {
+    const treamentO = await getTreatmentByID(rows[i].treatment_id);
+    Object.assign(rows[i], {
+      treatment_name: treamentO.name,
+    });
+  }
   return rows;
 };
 
