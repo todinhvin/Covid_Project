@@ -16,6 +16,7 @@ const { convertDate } = require("../../helper");
 //[GET] /user/profile
 router.get("/profile", async(req, res) => {
     const user = await getOneUser('person_id', '2');
+    user.birthday = convertDate(user.birthday);
     const address = await getAddress('address_id', user.address_id);
     const treatment = await getTreatment('treatment_id', user.treatment_id);
 

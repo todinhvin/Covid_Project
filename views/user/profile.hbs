@@ -9,10 +9,10 @@
                 <th scope="col">CCCD</th>
                 <th scope="col">Birthday</th>
                 <th scope="col">Address</th>
-                <th scope="col">Related Person</th>
+                {{!-- <th scope="col">Related Person</th> --}}
                 <th scope="col">Treatment</th>
                 <th scope="col">Status</th>
-                <th scope="col">Manager</th>
+                {{!-- <th scope="col">Manager</th> --}}
             </tr>
         </thead>
         <tbody>
@@ -20,16 +20,18 @@
                 {{!-- <th scope="row">{{user.person_id}}</th> --}}
                 <td>{{user.full_name}}</td>
                 <td>{{user.cccd}}</td>
-                <td>{{user.birthday}} - Cần xem lại format</td>
+                <td>{{user.birthday}}</td>
                 <td>Xã {{address.xa}} - Huyện {{address.huyen}} - Tỉnh {{address.tinh}}</td>
+                {{!-- 
                 {{#if user.related_person_id}}
-                <td>{{user.related_person_id}} - Cần xem lại DB</td>
+                <td>{{user.related_person_id}}</td>
                 {{else}}
                 <td>0</td>
-                {{/if}}
+                {{/if}} 
+                --}}
                 <td>{{treatment.name}} - Sức chứa: {{treatment.capacity}}</td>
                 <td>{{user.status}}</td>
-                <td>{{user.manager_id}}</td>
+                {{!-- <td>{{user.manager_id}}</td> --}}
             </tr>
         </tbody>
     </table>
