@@ -288,7 +288,7 @@ insert into role
         ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
         manager_id)
     values
-        ( 'Nguyen van customer', '0011223344', '2000-1-1', 1, null, 1, 'f0', 2);
+        ( 'Nguyen van customer', '0011223344', '2000-1-1', 1, -1, 1, 'f0', 2);
 
     insert into person
         ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
