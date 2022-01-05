@@ -1,7 +1,7 @@
 const exphbs = require("express-handlebars");
 module.exports = (app) => {
   const hbs = exphbs.create({
-    defaultLayout: "main",
+    defaultLayout: "manager",
     extname: "hbs",
     helpers: {
       compareString(s1, s2, options) {

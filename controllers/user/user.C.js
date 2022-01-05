@@ -13,11 +13,6 @@ const { getTreatment } = require("../../models/user/treatment");
 
 const { convertDate } = require("../../helper");
 
-router.all("/*", function (req, res, next) {
-  req.app.locals.layout = "user";
-  next();
-});
-
 //[GET] /user/profile
 router.get("/profile", async (req, res) => {
   const user = await getOneUser("person_id", "2");
