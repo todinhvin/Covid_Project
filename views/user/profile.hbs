@@ -1,0 +1,47 @@
+<div class="mt-4">
+    <h3>User Profile</h3>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                {{!-- <th scope="col">#</th> --}}
+                <th scope="col">Full Name</th>
+                <th scope="col">CCCD</th>
+                <th scope="col">Birthday</th>
+                <th scope="col">Address</th>
+                {{!-- <th scope="col">Related Person</th> --}}
+                <th scope="col">Treatment</th>
+                <th scope="col">Status</th>
+                {{!-- <th scope="col">Manager</th> --}}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {{!-- <th scope="row">{{user.person_id}}</th> --}}
+                <td>{{user.full_name}}</td>
+                <td>{{user.cccd}}</td>
+                <td>{{user.birthday}}</td>
+                <td>Xã {{address.xa}} - Huyện {{address.huyen}} - Tỉnh {{address.tinh}}</td>
+                {{!-- 
+                {{#if user.related_person_id}}
+                <td>{{user.related_person_id}}</td>
+                {{else}}
+                <td>0</td>
+                {{/if}} 
+                --}}
+                <td>{{treatment.name}} - Sức chứa: {{treatment.capacity}}</td>
+                <td>{{user.status}}</td>
+                {{!-- <td>{{user.manager_id}}</td> --}}
+            </tr>
+        </tbody>
+    </table>
+
+    <ul class="list-group">
+        <li class="list-group-item"><a href="/user/manageHistory/{{user.person_id}}">Lịch sử được quản lý</a></li>
+        <li class="list-group-item"><a href="/user/packageHistory/{{user.person_id}}">Lịch sử tiêu thụ gói Nhu yếu phẩm</a></li>
+        <li class="list-group-item"><a href="/user/indept/{{user.person_id}}">Xem dư nợ</a></li>
+        <li class="list-group-item"><a href="/user/paymentHistory/{{user.person_id}}">Lịch sử thanh toán</a></li>
+        <li class="list-group-item"><a href="/user/paymentNotice/{{user.person_id}}">Thông báo nhắc thanh toán</a></li>
+        <li class="list-group-item"><a href="/user/changePassword/{{user.person_id}}">Đổi mật khẩu</a></li>
+    </ul>
+</div>
