@@ -1,0 +1,93 @@
+<div class="container container-details">
+  <div style="text-align: center; margin-bottom: 20px;">
+    <h2><b>{{name}}</b></h2>
+  </div>
+  <table id="itable" class="table table-striped" style="background-color: white;">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Tên sản phẩm</th>
+        <th scope="col">Hình ảnh</th>
+        <th scope="col">Giá</th>
+        <th scope="col">Đơn vị</th>
+        <th scope="col">Số lượng</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each Items}}
+        <tr>
+        <th scope="row">{{this.item_id}}</th>
+        <td>{{this.name}}</td>
+        <td></td>
+        <td>{{this.price}}</td>
+        <td>{{this.unit}}</td>
+        <td>
+          <input type="number"
+          {{#compareString this.unit 'kg'}}
+            step="0.1" 
+          {{/compareString}} 
+          id="{{this.item_id}}_quantity" class="form-control ql" min="0" max="{{this.item_limit}}" value={{this.quantity}}>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="2">Tổng giá tiền:</td>
+        <td colspan="3" id="pkprice">
+          {{price}}
+        </td>
+        <td>
+          <a class="btn btn-primary">Mua</a>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+  <nav class="pagination-outer" aria-label="Page navigation">
+    <ul class="pagination">
+      <li class="page-item">
+        <a href="#" class="page-link" aria-label="Previous">
+          <span aria-hidden="true">«</span>
+        </a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item active">
+        <a class="page-link" href="#">3</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">4</a></li>
+      <li class="page-item"><a class="page-link" href="#">5</a></li>
+      <li class="page-item">
+        <a href="#" class="page-link" aria-label="Next">
+          <span aria-hidden="true">»</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+</div>
+
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+
+<script>
+  $('body').on('change', '.ql', function() {
+    let n = {{countItems}};
+
+    let newprice = 0;
+
+    for (let i = 0; i < n; i++) {
+      let irow = document.getElementById("itable").rows[i+1];
+
+      let iid = irow.cells.item(0).innerHTML;
+      let iprice = irow.cells.item(3).innerHTML;
+      let iquantity = document.getElementById(iid + "_quantity").value;
+
+      newprice += iprice*iquantity;
+    }
+
+    $('#pkprice').text(newprice)
+  });
+</script>

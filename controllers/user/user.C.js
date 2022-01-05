@@ -10,6 +10,7 @@ const { getIndept } = require("../../models/user/indept");
 const { getPaymentHistory } = require("../../models/user/paymentHistory");
 const { getAddress } = require("../../models/user/address");
 const { getTreatment } = require("../../models/user/treatment");
+const { getAllProduct, getPackage, getItemsInPackage } = require('../../models/user/buy')
 
 const { convertDate } = require("../../helper");
 
@@ -91,5 +92,31 @@ router.get("/paymentNotice/:id", async (req, res) => {
 router.get("/", (req, res) => {
   res.render("homeUser");
 });
+
+//[GET] /buy
+router.get('/buy', async(req, res) => {
+  let pds = await getAllProduct();
+  res.render('user/buy/buyList', {
+      Packages: pds,
+  });
+})
+
+//[GET] /buy/:id/detail
+router.get('/buy/:id/detail', async(req, res) => {
+  let tempid = req.params.id;
+  let pd = await getPackage(tempid);
+
+  let its = await getItemsInPackage(tempid);
+  
+  let count = its.length;
+
+  res.render('user/buy/buyDetail', {
+      name: pd.name,
+      price: pd.price,
+      Items: its,
+      countItems: count,
+  });
+})
+
 
 module.exports = router;
