@@ -34,6 +34,19 @@ exports.setManagerInactive = async (account_id) => {
   }
 };
 
+exports.setManagerActive = async (account_id) => {
+  try {
+    const { rowCount } = await db.query(
+      `UPDATE public.account
+	  SET status='active'
+	  WHERE account_id = ${account_id};`
+    );
+    return rowCount === 1;
+  } catch (err) {
+    return false;
+  }
+};
+
 exports.getStatusHistoryByManagerId = async (manager_id) => {
   const { rows } = await db.query(
     `SELECT * FROM public.status_history
@@ -72,6 +85,23 @@ exports.countPersonByTreatmentId = async (treatment_id) => {
   return count;
 };
 
+exports.countManager = async () => {
+  const { rows } = await db.query(
+    `SELECT count(*) as count FROM public.account
+	  where role_id = 2`
+  );
+  const count = +rows[0].count;
+  return count;
+};
+
+exports.countTreatment = async () => {
+  const { rows } = await db.query(
+    `SELECT count(*) as count FROM public.treatment`
+  );
+  const count = +rows[0].count;
+  return count;
+};
+
 exports.getAllTreatments = async () => {
   const { rows } = await db.query(
     `SELECT th.treatment_id, tm."name", tm.capacity, count(person_id) as current_capacity
@@ -92,4 +122,29 @@ exports.updateTreatmentCapacity = async (treatment_id, newCapacity) => {
 	  WHERE treatment_id = ${treatment_id}`
   );
   return rowCount === 1;
+};
+
+exports.paginate = (list, pageIndex, pageSize) => {
+  pageIndex = pageIndex ? pageIndex : 1;
+  pageSize = pageSize ? pageSize : 10;
+  const count = list.length;
+  const totalPage = Math.ceil(count / pageSize);
+
+  let data = [...list];
+  data = data.splice((pageIndex - 1) * pageSize, pageSize);
+  const hasNext = pageIndex !== totalPage;
+  const hasPrevious = pageIndex !== 1;
+  const indexList = [];
+  for (let index = 1; index <= totalPage; index++) {
+    indexList.push({ index: index, isCurrent: index === pageIndex });
+  }
+  return {
+    data,
+    pageIndex,
+    pageSize,
+    totalPage,
+    hasNext,
+    hasPrevious,
+    indexList,
+  };
 };
