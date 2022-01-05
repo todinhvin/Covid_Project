@@ -1,5 +1,4 @@
 const exphbs = require("express-handlebars");
-
 module.exports = (app) => {
   const hbs = exphbs.create({
     defaultLayout: "main",
@@ -21,6 +20,12 @@ module.exports = (app) => {
           acum += block.fn(i);
         }
         return acum;
+      },
+      formatTime(time) {
+        return time.toLocaleString();
+      },
+      formatBirthday(time) {
+        return time.toLocaleDateString();
       },
     },
   });

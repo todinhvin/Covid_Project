@@ -2,15 +2,15 @@
   <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
     Thêm người liên quan Covid
   </h2>
-  <form class="form-create-victim row" action="/patient/{{patient.person_id}}/update" method="POST">
+  <form class="form-create-victim row" action="/manager/patient/{{patient.person_id}}/update" method="POST">
     <div class="col col-6">
       <div class="">
         <label class="flabel mb-1" for="name">Họ và tên</label><input
           class="form-control"
           type="text"
           name="full_name"
-          value={{patient.full_name}}
           required="required"
+          value="{{patient.full_name}}"
         />
       </div>
       <div class="">
@@ -19,8 +19,8 @@
           type="text"
           name="person_id"
           required="required"
-          value={{patient.cccd}}
-          title="Số CMT/CCCD phải có từ 9-12 chữ số"
+          placeholder="Số CMT/CCCD phải có từ 9-12 chữ số"
+          value="{{patient.cccd}}"
         />
       </div>
       <div class="form-div">
@@ -28,7 +28,7 @@
           class="form-control"
           type="date"
           name="birthday"
-          value={{patient.birthday}}
+          value="{{patient.birthday}}"
           required="required"
         />
       </div>
@@ -41,7 +41,7 @@
           <option value="F0" {{#compareString patient.status 'F0'}}selected {{/compareString}}>F0</option>
           <option value="F1" {{#compareString patient.status 'F1'}}selected {{/compareString}}>F1</option>
           <option value="F2" {{#compareString patient.status 'F2'}}selected {{/compareString}}>F2</option>
-          <option value="F2" {{#compareString patient.status 'KB'}}selected {{/compareString}}>KB</option>
+          <option value="KB" {{#compareString patient.status 'KB'}}selected {{/compareString}}>Khỏi bệnh</option>
         </select>
       </div>
     </div>
@@ -71,8 +71,8 @@
           class="form-control"
           type="text"
           name="person_related"
-          required="required"
           placeholder="Nhập CMND/CCCD người COVID. Chưa rõ ghi 0"
+          value="{{patient.related_person_cccd}}"
         />
       </div>
 

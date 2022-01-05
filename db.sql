@@ -157,8 +157,6 @@ create table item
         status varchar(255),
         manager_id serial,
         primary key (person_id),
-        constraint fk_related
-        foreign key (related_person_id) references person,
         constraint fk_manager
         foreign key (manager_id) references account,
         constraint fk_treat
