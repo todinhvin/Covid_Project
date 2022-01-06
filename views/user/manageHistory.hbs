@@ -5,19 +5,19 @@
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">#</th>
+                {{!-- <th scope="col">#</th> --}}
                 <th scope="col">Status</th>
                 <th scope="col">Time</th>
-                <th scope="col">Manager</th>
+                {{!-- <th scope="col">Manager</th> --}}
             </tr>
         </thead>
         <tbody>
             {{#each status_historys}}
             <tr>
-                <th scope="row">{{this.status_history_id}}</th>
+                {{!-- <th scope="row">{{this.status_history_id}}</th> --}}
                 <td>{{this.status}}</td>
                 <td>{{this.time}}</td>
-                <td>{{this.manager_id}}</td>
+                {{!-- <td>{{this.manager_id}}</td> --}}
             </tr>
             {{/each}}
         </tbody>
@@ -29,19 +29,19 @@
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">#</th>
+                {{!-- <th scope="col">#</th> --}}
                 <th scope="col">Treatment</th>
                 <th scope="col">Time</th>
-                <th scope="col">Manager</th>
+                {{!-- <th scope="col">Manager</th> --}}
             </tr>
         </thead>
         <tbody>
             {{#each treatment_historys}}
             <tr>
-                <th scope="row">{{this.treatment_history_id}}</th>
-                <td>{{this.treatment_id}}</td>
+                {{!-- <th scope="row">{{this.treatment_history_id}}</th> --}}
+                <td>{{this.treatment_name}}</td>
                 <td>{{this.time}}</td>
-                <td>{{this.manager_id}}</td>
+                {{!-- <td>{{this.manager_id}}</td> --}}
             </tr>
             {{/each}}
         </tbody>
