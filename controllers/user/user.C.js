@@ -10,7 +10,7 @@ const { getIndept } = require("../../models/user/indept");
 const { getPaymentHistory } = require("../../models/user/paymentHistory");
 const { getAddress } = require("../../models/user/address");
 const { getTreatment } = require("../../models/user/treatment");
-const { getAllProduct, getPackage, getItemsInPackage } = require('../../models/user/buy')
+const { getAllPackage, getPackageBySearch, getPackageById, getPackageDetail } = require('../../models/user/buy')
 
 const { convertDate } = require("../../helper");
 
@@ -95,18 +95,45 @@ router.get("/", (req, res) => {
 
 //[GET] /buy
 router.get('/buy', async(req, res) => {
-  let pds = await getAllProduct();
+  const { page = 1, filter } = req.query;
+  const { totalPage, Packages } = await getAllPackage({ page, filter });
+  res.render('user/buy/buyList', {
+      Packages: Packages,
+      totalPage,
+      page,
+      filter,
+      url: "/user/buy",
+  });
+})
+/*
+//[GET] /buy
+router.get('/buy', async(req, res) => {
+  let pds = await getAllPackage();
   res.render('user/buy/buyList', {
       Packages: pds,
+  });
+})
+*/
+
+//[GET] /buy/search
+router.get('/buy/search', async(req, res) => {
+  const { page = 1, search } = req.query;
+  const { totalPage, Packages } = await getPackageBySearch({ page, search });
+  res.render('user/buy/buyList', {
+      Packages: Packages,
+      totalPage,
+      page,
+      search,
+      url: `/user/buy/?search=${search}`,
   });
 })
 
 //[GET] /buy/:id/detail
 router.get('/buy/:id/detail', async(req, res) => {
   let tempid = req.params.id;
-  let pd = await getPackage(tempid);
+  let pd = await getPackageById(tempid);
 
-  let its = await getItemsInPackage(tempid);
+  let its = await getPackageDetail(tempid);
   
   let count = its.length;
 
