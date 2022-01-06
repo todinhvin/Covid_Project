@@ -4,25 +4,31 @@
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">#</th>
+                {{!-- <th scope="col">#</th> --}}
                 <th scope="col">Package</th>
                 <th scope="col">Item</th>
                 <th scope="col">Checkout Date</th>
                 <th scope="col">State</th>
-                <th scope="col">Payment History</th>
+                {{!-- <th scope="col">Payment History</th> --}}
                 <th scope="col">Quantity</th>
+                <th scope="col">Unit</th>
             </tr>
         </thead>
         <tbody>
             {{#each checkouts}}
             <tr>
-                <th scope="row">{{this.checkout_id}}</th>
-                <td>{{this.package_id}}</td>
-                <td>{{this.item_id}}</td>
+                {{!-- <th scope="row">{{this.checkout_id}}</th> --}}
+                <td>{{this.package_name}}</td>
+                <td>{{this.item_name}}</td>
                 <td>{{this.checkout_date}}</td>
-                <td>{{this.state}}</td>
-                <td>{{this.payment_history_id}}</td>
+                {{#if this.state}}
+                <td>Đã thanh toán</td>
+                {{else}}
+                <td>Chưa thanh toán</td>
+                {{/if}}
+                {{!-- <td>{{this.payment_history_id}}</td> --}}
                 <td>{{this.quantity}}</td>
+                <td>{{this.item_unit}}</td>
             </tr>
             {{/each}}
         </tbody>

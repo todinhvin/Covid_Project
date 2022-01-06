@@ -51,6 +51,10 @@ router.get("/packageHistory/:id", async(req, res) => {
     const account = await getAccount("person_id", req.params.id);
     const checkouts = await getCheckout("account_id", account.account_id);
 
+    checkouts.forEach(checkout => {
+        checkout.checkout_date = convertDate(checkout.checkout_date);
+    });
+
     res.render("user/packageHistory", {
         checkouts: checkouts,
     });
@@ -61,6 +65,8 @@ router.get("/indept/:id", async(req, res) => {
     const account = await getAccount("person_id", req.params.id);
     const indept = await getIndept("indept_id", account.indebt_id);
 
+    indept.due_date = convertDate(indept.due_date);
+
     res.render("user/indept", {
         indept: indept,
     });
@@ -69,10 +75,11 @@ router.get("/indept/:id", async(req, res) => {
 //[GET] /user/paymentHistory/:id
 router.get("/paymentHistory/:id", async(req, res) => {
     const account = await getAccount("person_id", req.params.id);
-    const payment_historys = await getPaymentHistory(
-        "account_id",
-        account.account_id
-    );
+    const payment_historys = await getPaymentHistory("account_id", account.account_id);
+
+    payment_historys.forEach(payment => {
+        payment.payment_on = convertDate(payment.payment_on);
+    })
 
     res.render("user/paymentHistory", {
         payment_historys: payment_historys,
@@ -82,13 +89,12 @@ router.get("/paymentHistory/:id", async(req, res) => {
 //[GET] /user/paymentNotice/:id
 router.get("/paymentNotice/:id", async(req, res) => {
     const account = await getAccount("person_id", req.params.id);
-    const payment_historys = await getPaymentHistory(
-        "account_id",
-        account.account_id
-    );
+    const indept = await getIndept("indept_id", account.indebt_id);
 
-    res.render("user/paymentHistory", {
-        payment_historys: payment_historys,
+    indept.due_date = convertDate(indept.due_date);
+
+    res.render("user/indept", {
+        indept: indept,
     });
 });
 
