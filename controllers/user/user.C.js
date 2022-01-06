@@ -100,7 +100,9 @@ router.get("/paymentNotice/:id", async(req, res) => {
 
 //[GET] /user
 router.get("/", (req, res) => {
-    res.render("homeUser");
+    res.render("homeUser", {
+        account: res.locals.account,
+    });
 });
 
 module.exports = router;

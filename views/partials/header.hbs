@@ -1,4 +1,12 @@
 <div class="header">
   <h1>COVID MANAGEMENT</h1>
-  <a href="/logout">ĐĂNG XUẤT</a>
+
+  <ul>
+    {{#if account}}
+    <li>Welcome, {{account.username}}</li>
+    <li><a href="/auth/logout">Log Out</a></li>
+    {{else}}
+    <li><a href="/auth/login">Log In</a></li>
+    {{/if}}
+  </ul>
 </div>
