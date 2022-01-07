@@ -2,10 +2,9 @@ const express = require("express");
 
 const router = express.Router();
 router.use("/", function(req, res, next) {
-    console.log("123213");
-    req.app.locals.layout = "user";
+    req.app.locals.layout = "auth";
     next();
 });
-router.use("/", require("../controllers/user/user.C"));
+router.use("/", require("../controllers/auth/auth.C"));
 
 module.exports = router;
