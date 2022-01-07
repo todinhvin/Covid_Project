@@ -55,7 +55,7 @@ router.post('/login', async(req, res, next) => {
         //Tạo jwt cho user, lưu vào cookie (đã đăng nhập)
         const token = createJWToken(account.account_id);
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
-        res.status(200).json({ account: account.account_id });
+        res.status(200).json({ account: account.role_id });
     } catch (e) {
         const err = handleErrors(e);
         res.status(400).json(err);

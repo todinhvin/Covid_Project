@@ -49,7 +49,20 @@
                 usernameError.innerText = resData.username;
                 passwordError.innerText = resData.password;
             } else {
-                location.assign('/user');
+                switch (resData.account) {
+                    case 1:
+                        location.assign('/manager/patient');
+                        break;
+                    case 2:
+                        location.assign('/manager/patient');
+                        break;
+                    case 3:
+                        location.assign('/user');
+                        break;
+                    default:
+                        location.assign('/user');
+                        break;
+                }
             }
         }
         catch (e) {
