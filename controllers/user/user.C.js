@@ -10,7 +10,7 @@ const { getIndept } = require("../../models/user/indept");
 const { getPaymentHistory } = require("../../models/user/paymentHistory");
 const { getAddress } = require("../../models/user/address");
 const { getTreatment } = require("../../models/user/treatment");
-const { getAllPackage, getPackageBySearch, getPackageById, getPackageDetail } = require('../../models/user/buy')
+const { getAllPackage, getPackageById, getPackageDetail } = require('../../models/user/buy')
 
 const { convertDate } = require("../../helper");
 
@@ -95,16 +95,20 @@ router.get("/", (req, res) => {
 
 //[GET] /buy
 router.get('/buy', async(req, res) => {
-  const { page = 1, filter } = req.query;
-  const { totalPage, Packages } = await getAllPackage({ page, filter });
+  const { page = 1, filter, search } = req.query;
+  //console.log("filter = ", filter, " search = ", search);
+
+  const { totalPage, Packages } = await getAllPackage({ page, filter, search });
+
   res.render('user/buy/buyList', {
       Packages: Packages,
       totalPage,
       page,
       filter,
-      url: "/user/buy",
+      search,
   });
 })
+
 /*
 //[GET] /buy
 router.get('/buy', async(req, res) => {
@@ -114,19 +118,6 @@ router.get('/buy', async(req, res) => {
   });
 })
 */
-
-//[GET] /buy/search
-router.get('/buy/search', async(req, res) => {
-  const { page = 1, search } = req.query;
-  const { totalPage, Packages } = await getPackageBySearch({ page, search });
-  res.render('user/buy/buyList', {
-      Packages: Packages,
-      totalPage,
-      page,
-      search,
-      url: `/user/buy/?search=${search}`,
-  });
-})
 
 //[GET] /buy/:id/detail
 router.get('/buy/:id/detail', async(req, res) => {
