@@ -1,7 +1,8 @@
 const db = require('../db');
 
-exports.getTotalPackage = async() => {
-    const total = await db.query('select count(*) from package;')
+exports.getTotalPackage = async(search) => {
+    const total = await db.query(`select count(*) from package;
+    ${search ? `where name like '${search}%'` : ""}`);
     return total.rows[0].count;
 }
 
@@ -20,7 +21,7 @@ group by p.package_id
 ${filter ? `ORDER BY ${filter} ASC` : ` ORDER BY p.package_id ASC`}
 LIMIT ${per_page} OFFSET ${offset}`);
 
-    const totalPk = await this.getTotalPackage();
+    const totalPk = await this.getTotalPackage(search);
 
     const totalPage = totalPk % per_page === 0
       ? totalPk / per_page

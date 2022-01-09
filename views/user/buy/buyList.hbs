@@ -95,14 +95,13 @@
     <ul class="pagination">
       {{#forN totalPage}}
         {{#compareInt this ../page}}
-          <li class="page-item active">
-            <a class="page-link" href="/user/buy/?page={{this}}">{{this}}</a>
-          </li>
+        <li class="page-item active">
+          <a class="page-link" href="buy?page={{this}}&filter={{../filter}}&search={{../search}}">{{this}}</a>
+        </li>
         {{else}}
-          <li class="page-item"><a
-              class="page-link"
-              href="/user/buy?page={{this}}&filter={{../filter}}&search={{../search}}"
-            >{{this}}</a></li>
+        <li class="page-item">
+          <a class="page-link" href="buy?page={{this}}&filter={{../filter}}&search={{../search}}">{{this}}</a>
+        </li>
         {{/compareInt}}
       {{/forN}}
     </ul>
