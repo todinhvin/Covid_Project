@@ -254,11 +254,11 @@ insert into role
     insert into account
         ( username, password, status, role_id, person_id)
     values
-        ( 'admin', '123456', 'active', 1, null);
+        ( 'admin', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 'active', 1, null);
     insert into account
         ( username, password, status, role_id, person_id)
     values
-        ( 'manager', '123456', 'active', 2, null);
+        ( 'manager', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 'active', 2, null);
 
 
     -- Address
@@ -400,11 +400,11 @@ insert into role
     insert into account
         ( username, password, status, role_id, person_id, indebt_id)
     values
-        ( 'user1', '123456', 'active', 3, 1, 1);
+        ( 'user1', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 'active', 3, 1, 1);
     insert into account
         ( username, password, status, role_id, person_id, indebt_id)
     values
-        ( 'user2', '123456', 'active', 3, 2, 2);
+        ( 'user2', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 'active', 3, 2, 2);
 
     -- Checkout
     -- alter table checkout alter column payment_history_id drop not null;
@@ -426,10 +426,10 @@ insert into role
     insert into account_payment
         ( password, account_id, balance)
     values
-        ( '123456', 3, 2000000);
+        ( '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 3, 2000000);
     insert into account_payment
         ( password, account_id, balance)
     values
-        ( '123456', 4, 200000);
+        ( '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 4, 200000);
 
 Alter TABLE Person ALTER COLUMN related_person_id DROP not NULL;
