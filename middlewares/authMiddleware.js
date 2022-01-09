@@ -47,7 +47,7 @@ exports.requireAuth = (req, res, next) => {
 
 exports.checkUser = (req, res, next) => {
   const role = req.role;
-  if (role == 3) {
+  if (role == 3 || role == 2 || role == 1) {
     next();
   } else {
     res.json("Not Permission");

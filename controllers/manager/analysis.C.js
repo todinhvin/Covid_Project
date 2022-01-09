@@ -1,4 +1,5 @@
 const express = require("express");
+const { route } = require("express/lib/application");
 const router = express.Router();
 const {
   getTotalPatientsByDay,
@@ -6,7 +7,7 @@ const {
 } = require("../../models/manager/analysis");
 
 router.get("/", async (req, res) => {
-  const { filter } = req.query;
+  const { filter = "week" } = req.query;
   let day;
   if (filter === "week") {
     day = 7;
@@ -47,6 +48,10 @@ router.get("/", async (req, res) => {
     totalChangeF0KB,
     filter,
   });
+});
+
+router.get("/consume", async (req, res) => {
+  res.render("manager/analysis/consume", {});
 });
 
 module.exports = router;

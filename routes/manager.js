@@ -5,6 +5,11 @@ router.use("/", function (req, res, next) {
   req.app.locals.layout = "manager";
   next();
 });
+
+router.use("/analysis*", function (req, res, next) {
+  req.app.locals.layout = "analysis";
+  next();
+});
 router.use("/", require("../controllers/manager/home.C"));
 router.use("/patient", require("../controllers/manager/patient.C"));
 router.use("/package", require("../controllers/manager/necessity.C"));
