@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   getTotalPatientsByDay,
   getTotalStatusChangeByDay,
+  analysisPackages,
 } = require("../../models/manager/analysis");
 
 router.get("/", async (req, res) => {
@@ -51,7 +52,23 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/consume", async (req, res) => {
-  res.render("manager/analysis/consume", {});
+  const { filter = "week" } = req.query;
+  let day;
+  if (filter === "week") {
+    day = 7;
+  } else if (filter === "one_month") {
+    day = 30;
+  } else if (filter === "three_month") {
+    day = 90;
+  } else if (filter === "year") {
+    day = 365;
+  }
+  const { packages, items } = await analysisPackages({ day });
+  res.render("manager/analysis/consume", {
+    packages,
+    items,
+    filter,
+  });
 });
 
 module.exports = router;

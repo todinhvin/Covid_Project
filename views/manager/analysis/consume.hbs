@@ -19,110 +19,44 @@
       
     </div>
     <div style="background:#FFFFFF;border-radius:8px;padding:40px;">
-      <h2 style="margin-bottom:16px">Thống kê số lượng F0, F1, F2 và khỏi bệnh</h2>
+      <h2 style="margin-bottom:16px">Thống kê tiêu thụ các gói nhu yếu phẩm</h2>
       <div  style=" display:grid; grid-template-columns:1fr 1fr 1fr;grid-gap:32px 0">
-        <div style="width: 300px;
-        text-align: center;
-        height: 200px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        box-shadow: 1px 1px 8px rgb(0 0 0 / 40%);
-        border-radius: 8px;" >
-          <h2 style="font-weight: 900; font-size: 25px">NGƯỜI BỆNH F0</h2>
-          <span style="font-size: 35px"
-            >{{totalF0}}<i style="margin-left: 8px;color:red" class="fas fa-users"></i
-          ></span>
-      </div>
-      <div style="width: 300px;
-        text-align: center;
-        height: 200px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        box-shadow: 1px 1px 8px rgb(0 0 0 / 40%);
-        border-radius: 8px;" >
-          <h2 style="font-weight: 900; font-size: 25px">NGƯỜI BỆNH F1</h2>
-          <span style="font-size: 35px"
-            >{{totalF1}}<i style="margin-left: 8px;color:rgb(109, 109, 30)" class="fas fa-users"></i
-          ></span>
-      </div>
-      <div style="width: 300px;
-        text-align: center;
-        height: 200px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        box-shadow: 1px 1px 8px rgb(0 0 0 / 40%);
-        border-radius: 8px;" >
-          <h2 style="font-weight: 900; font-size: 25px">NGƯỜI BỆNH F2</h2>
-          <span style="font-size: 35px"
-            >{{totalF2}}<i style="margin-left: 8px;color:yellowgreen" class="fas fa-users"></i
-          ></span>
+        {{#each packages}} 
+             <div style="width: 300px;
+                text-align: center;
+                height: 200px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                box-shadow: 1px 1px 8px rgb(0 0 0 / 40%);
+                border-radius: 8px;" >
+                <h2 style="font-weight: 900; font-size: 25px">{{name}}</h2>
+                <span style="font-size: 35px"
+                  >{{count}}<i style="margin-left: 8px" class="fas fa-cube"></i
+                ></span>
+            </div>
+        {{/each}}
       </div>
 
-      <div style="width: 300px;
-        text-align: center;
-        height: 200px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        box-shadow: 1px 1px 8px rgb(0 0 0 / 40%);
-        border-radius: 8px;" >
-          <h2 style="font-weight: 900; font-size: 25px">NGƯỜI KHỎI BỆNH</h2>
-          <span style="font-size: 35px"
-            >{{totalKB}}<i style="margin-left: 8px;color:green" class="fas fa-users"></i
-          ></span>
-      </div>
-      </div>
-
-        <h2 style="margin:16px 0">Số chuyển trạng thái</h2>
-      <div  style=" display:grid; grid-template-columns:1fr 1fr 1fr;grid-gap:32px 0">
-        <div style="width: 300px;
-        text-align: center;
-        height: 200px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        box-shadow: 1px 1px 8px rgb(0 0 0 / 40%);
-        border-radius: 8px;" >
-          <h2 style="font-weight: 900; font-size: 25px">F1 <i style="color:red" class="fas fa-arrow-right"></i> F0</h2>
-          <span style="font-size: 35px"
-          
-            >{{totalChangeF10}}<i style="margin-left: 8px;color:red" class="fas fa-users"></i
-          ></span>
+        <h2 style="margin:16px 0">Thống kê tiêu thụ sản phẩm</h2>
+       <div  style=" display:grid; grid-template-columns:1fr 1fr 1fr;grid-gap:32px 0">
+        {{#each items}} 
+             <div style="width: 300px;
+                text-align: center;
+                height: 200px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                box-shadow: 1px 1px 8px rgb(0 0 0 / 40%);
+                border-radius: 8px;" >
+                <h2 style="font-weight: 900; font-size: 25px">{{name}}</h2>
+                <span style="font-size: 35px"
+                  >{{count}}<i style="margin-left: 8px" class="fas fa-dumpster-fire"></i
+                ></span>
+            </div>
+        {{/each}}
       </div>
 
-        <div style="width: 300px;
-        text-align: center;
-        height: 200px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        box-shadow: 1px 1px 8px rgb(0 0 0 / 40%);
-        border-radius: 8px;" >
-          <h2 style="font-weight: 900; font-size: 25px">F2 <i style="color:rgb(109, 109, 30)" class="fas fa-arrow-right"></i> F1</h2>
-          <span style="font-size: 35px"
-          
-            >{{totalChangeF21}}<i style="margin-left: 8px;color:rgb(109, 109, 30)" class="fas fa-users"></i
-          ></span>
-      </div>
-
-          <div style="width: 300px;
-        text-align: center;
-        height: 200px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        box-shadow: 1px 1px 8px rgb(0 0 0 / 40%);
-        border-radius: 8px;" >
-          <h2 style="font-weight: 900; font-size: 25px">F0 <i style="color:green" class="fas fa-arrow-right"></i> KB</h2>
-          <span style="font-size: 35px"
-          
-            >{{totalChangeF0KB}}<i style="margin-left: 8px;color:green" class="fas fa-users"></i
-          ></span>
-      </div>
-      </div>
     </div>
  
 </div>
