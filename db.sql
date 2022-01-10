@@ -114,7 +114,7 @@ create table item
     create table account_payment
     (
         account_payment_id serial,
-        password serial,
+        password varchar(100),
         account_id serial,
         balance real,
         primary key (account_payment_id),
@@ -249,7 +249,7 @@ insert into role
 
     -- Account
     -- ALTER TABLE account ALTER COLUMN person_id  DROP NOT NULL;
-    -- ALTER TABLE account ALTER COLUMN indebt_id  DROP NOT NULL;
+    -- ALTER TABLE account ALTER COLUMN indept_id  DROP NOT NULL;
 
     insert into account
         ( username, password, status, role_id, person_id)
@@ -433,3 +433,50 @@ insert into role
         ( '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 4, 200000);
 
 Alter TABLE Person ALTER COLUMN related_person_id DROP not NULL;
+
+-- Tạo ph cho user2
+insert into public.payment_history (account_id, payment_on)
+values (4, '2022-01-10');
+
+-- Thanh toán từng sản phẩm
+update public.checkout
+set state = true, payment_history_id = 1
+where checkout_id = 1;
+
+update public.checkout
+set state = true, payment_history_id = 1
+where checkout_id = 2;
+
+update public.checkout
+set state = true, payment_history_id = 1
+where checkout_id = 3;
+
+-- Cập nhật số tiền thanh toán
+update public.payment_history
+set total_money = (select sum(item.price) from checkout, item where checkout.item_id = item.item_id and (checkout_id=1
+                                                                 or checkout_id=2 or checkout_id=3))
+where payment_history_id = 1;
+
+-- Trừ nợ
+update public.indept
+set indept = 0
+where indept_id = (select indebt_id from account where account_id = 4);
+
+-- User1 mua đồ
+insert into public.checkout ( account_id, package_id, item_id, checkout_date, state, payment_history_id,
+                             quantity)
+values (3, 1, 1, '2022-01-10', false, null, 1);
+
+insert into public.checkout ( account_id, package_id, item_id, checkout_date, state, payment_history_id,
+                             quantity)
+values (3, 1, 2, '2022-01-10', false, null, 1);
+
+insert into public.checkout ( account_id, package_id, item_id, checkout_date, state, payment_history_id,
+                             quantity)
+values (3, 1, 3, '2022-01-10', false, null, 1);
+
+-- Cập nhật số nợ
+update public.indept
+set indept = (select sum(item.price) from checkout, item where checkout.item_id = item.item_id and (checkout_id=4
+                                                                 or checkout_id=5 or checkout_id=6))
+where indept_id = (select indebt_id from account where account_id = 3);
