@@ -35,3 +35,35 @@ exports.analysisPackages = async ({ day }) => {
   }
   return { packages, items };
 };
+
+exports.analysisPayment = async ({ day }) => {
+  const totalUsersInDebt = await getTotalUserInDebt(day);
+  const totalDebt = await getTotalDebt(day);
+  const totalPaid = await getTotalPaid(day);
+
+  return { totalUsersInDebt, totalDebt, totalPaid };
+};
+
+const getTotalUserInDebt = async (day) => {
+  const { rows } = await db.query(
+    "select count(*) from (select distinct account_id from indept where status is null and abs(now() :: date - due_date :: date)<=$1) as A",
+    [day]
+  );
+  return rows[0].count;
+};
+
+const getTotalDebt = async (day) => {
+  const { rows } = await db.query(
+    "select sum(indept) from indept where abs(now() :: date - due_date :: date)<=$1",
+    [day]
+  );
+  return rows[0].sum;
+};
+
+const getTotalPaid = async (day) => {
+  const { rows } = await db.query(
+    "select sum(total_money) from payment_history where abs(now() :: date - payment_on :: date)<=$1",
+    [day]
+  );
+  return rows[0].sum;
+};
