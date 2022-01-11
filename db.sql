@@ -47,27 +47,29 @@ create table role
     primary key (role_id)
 );
 
+create table account
+(
+    account_id serial,
+    username varchar(50) unique ,
+    password varchar(100),
+    status varchar(100),
+    role_id serial,
+    person_id integer,
+    primary key (account_id),
+    constraint fk_acc_role
+        foreign key (role_id) references role
+);
+
 create table indept
 (
     indept_id serial,
     indept real,
     due_date timestamp,
-    minimum_pay real,
-    primary key (indept_id)
-);
-
-create table account
-(
     account_id serial,
-    username varchar(50),
-    password varchar(100),
-    status varchar(100),
-    role_id serial,
-    person_id integer,
-    indebt_id integer,
-    primary key (account_id),
-    constraint fk_acc_role
-        foreign key (role_id) references role
+    minimum_pay real,
+    primary key (indept_id),
+    constraint fk_indept_account
+        foreign key (account_id) references account
 );
 
 create table item
@@ -398,13 +400,13 @@ insert into role
 
     -- user
     insert into account
-        ( username, password, status, role_id, person_id, indebt_id)
+        ( username, password, status, role_id, person_id)
     values
-        ( 'user1', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 'active', 3, 1, 1);
+        ( 'user1', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 'active', 3, 1);
     insert into account
-        ( username, password, status, role_id, person_id, indebt_id)
+        ( username, password, status, role_id, person_id)
     values
-        ( 'user2', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 'active', 3, 2, 2);
+        ( 'user2', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 'active', 3, 2);
 
     -- Checkout
     -- alter table checkout alter column payment_history_id drop not null;
@@ -430,7 +432,7 @@ insert into role
     insert into account_payment
         ( password, account_id, balance)
     values
-        ( '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 4, 200000);
+        ( '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 4, 2000000);
 
 Alter TABLE Person ALTER COLUMN related_person_id DROP not NULL;
 
@@ -457,10 +459,15 @@ set total_money = (select sum(item.price) from checkout, item where checkout.ite
                                                                  or checkout_id=2 or checkout_id=3))
 where payment_history_id = 1;
 
+
+
 -- Trừ nợ
-update public.indept
-set indept = 0
-where indept_id = (select indebt_id from account where account_id = 4);
+-- update public.indept
+-- set indept = 0
+-- where indept_id = (select indebt_id from account where account_id = 4);
+
+insert into public.indept ( indept, due_date, account_id, minimum_pay)
+values (0, '2022-12-31', 4, 50000);
 
 -- User1 mua đồ
 insert into public.checkout ( account_id, package_id, item_id, checkout_date, state, payment_history_id,
@@ -476,7 +483,11 @@ insert into public.checkout ( account_id, package_id, item_id, checkout_date, st
 values (3, 1, 3, '2022-01-10', false, null, 1);
 
 -- Cập nhật số nợ
-update public.indept
-set indept = (select sum(item.price) from checkout, item where checkout.item_id = item.item_id and (checkout_id=4
-                                                                 or checkout_id=5 or checkout_id=6))
-where indept_id = (select indebt_id from account where account_id = 3);
+-- update public.indept
+-- set indept = (select sum(item.price) from checkout, item where checkout.item_id = item.item_id and (checkout_id=4
+--                                                                  or checkout_id=5 or checkout_id=6))
+-- where indept_id = (select indebt_id from account where account_id = 3);
+
+insert into public.indept ( indept, due_date, account_id, minimum_pay)
+values ((select sum(item.price) from checkout, item where checkout.item_id = item.item_id and (checkout_id=4
+                                                                 or checkout_id=5 or checkout_id=6)), '2022-12-31', 3, 50000);
