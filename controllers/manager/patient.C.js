@@ -1,13 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const {
-  getAllAddresses,
-  getAddressByID,
-} = require('../../models/manager/address');
-const {
-  getAllTreatments,
-  getTreatmentByID,
-} = require('../../models/manager/treatment');
+const { getAllAddresses } = require('../../models/manager/address');
+const { getAllTreatments } = require('../../models/manager/treatment');
 const {
   getPatients,
   getDetailsPatientById,
@@ -69,7 +63,6 @@ router.get('/create', async (req, res) => {
 });
 
 router.post('/create', async (req, res) => {
-  // const manager = req.manager;
   const {
     full_name,
     cccd,
@@ -79,7 +72,10 @@ router.post('/create', async (req, res) => {
     treatment_id,
     related_person_cccd,
   } = req.body;
-
+  const patientCheck = await getPatientByCCCD(cccd);
+  if (patientCheck) {
+    return res.redirect('/manager/patient?create=error');
+  }
   let relatedPerson;
   if (related_person_cccd) {
     relatedPerson = await getPatientByCCCD(related_person_cccd);
@@ -91,7 +87,7 @@ router.post('/create', async (req, res) => {
     address_id,
     treatment_id,
     status,
-    manager_id: 2,
+    manager_id: req.account_id,
     related_person_id: related_person_cccd ? relatedPerson.person_id : -1,
   });
   if (data) {
@@ -115,7 +111,6 @@ router.get('/:id/update', async (req, res) => {
 
 router.post('/:id/update', async (req, res) => {
   const { id } = req.params;
-  const manager = req.manager;
   const {
     full_name,
     cccd,
@@ -125,6 +120,12 @@ router.post('/:id/update', async (req, res) => {
     treatment_id,
     related_person_cccd,
   } = req.body;
+
+  const patientCheck = await getPatientByCCCD(cccd);
+  if (patientCheck) {
+    return res.redirect('/manager/patient?update=error');
+  }
+
   let relatedPerson;
   if (related_person_cccd) {
     relatedPerson = await getPatientByCCCD(related_person_cccd);
@@ -138,7 +139,7 @@ router.post('/:id/update', async (req, res) => {
     address_id,
     treatment_id,
     status,
-    manager_id: 2,
+    manager_id: req.account_id,
     related_person_id: related_person_cccd ? relatedPerson.person_id : -1,
   });
   if (data) {
@@ -151,7 +152,7 @@ router.post('/:id/update', async (req, res) => {
 router.get('/:id/delete', async (req, res) => {
   const { id } = req.params;
 
-  removePatient({ person_id: id, manager_id: 2 });
+  removePatient({ person_id: id, manager_id: req.account_id });
   return res.redirect('/manager/patient/?remove=success');
 });
 

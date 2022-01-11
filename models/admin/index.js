@@ -146,5 +146,7 @@ exports.paginate = (list, pageIndex, pageSize) => {
     hasNext,
     hasPrevious,
     indexList,
+    next: pageIndex + 1,
+    prev: pageIndex - 1,
   };
 };

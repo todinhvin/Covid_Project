@@ -41,16 +41,26 @@ router.get('/manager/', async (req, res) => {
   }
 
   const paginated = paginate(managerList, pageIndex, 5);
-  console.log(paginated);
 
   return res.render('admin/manager', {
     managerList: paginated.data,
     indexList: paginated.indexList,
     hasPrevious: paginated.hasPrevious,
     hasNext: paginated.hasNext,
+    next: paginated.pageIndex + 1,
+    previous: paginated.pageIndex - 1,
     currentPage: paginated.pageIndex,
     totalPage: paginated.totalPage,
-    layout: false,
+    // layout: false,
+  });
+});
+
+router.get('/manager/history/treatment/:account_id', async (req, res) => {
+  const account_id = +req.params.account_id;
+  const treatment_history = await getTreatmentHistoryByManagerId(account_id);
+  return res.render('admin/history/treatment', {
+    treatment_history,
+    hasTreatmentHistory: treatment_history.length > 0,
   });
 });
 
