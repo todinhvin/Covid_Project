@@ -492,3 +492,5 @@ values (3, 1, 3, '2022-01-10', false, null, 1);
 insert into public.indept ( indept, due_date, account_id, minimum_pay)
 values ((select sum(item.price) from checkout, item where checkout.item_id = item.item_id and (checkout_id=4
                                                                  or checkout_id=5 or checkout_id=6)), '2022-12-31', 3, 50000);
+
+alter table treatment alter column manager_id drop not null;

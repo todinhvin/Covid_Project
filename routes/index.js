@@ -20,6 +20,6 @@ router.use('/auth', authRoute);
 
 router.use('/manager', requireAuth, checkManager, managerRoute);
 router.use('/user', requireAuth, checkUser, userRoute);
-router.use('/admin', adminRoute);
+router.use('/admin', requireAuth, checkAdmin, adminRoute);
 
 module.exports = router;

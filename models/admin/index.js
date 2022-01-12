@@ -11,8 +11,8 @@ exports.createManager = async (username, password) => {
   try {
     const { rowCount } = await db.query(
       `INSERT INTO public.account(
-	    username, password, status, role_id, person_id, indebt_id)
-	    VALUES ('${username}', '${password}', 'single', 2, null, null)`
+	    username, password, status, role_id, person_id)
+	    VALUES ('${username}', '${password}', 'active', 2, null)`
     );
 
     return rowCount === 1;
@@ -49,18 +49,21 @@ exports.setManagerActive = async (account_id) => {
 
 exports.getStatusHistoryByManagerId = async (manager_id) => {
   const { rows } = await db.query(
-    `SELECT * FROM public.status_history
-      WHERE manager_id = ${manager_id}
-      ORDER BY status_history_id DESC`
+    `SELECT sh.*, ps.full_name
+FROM public.status_history sh, person ps
+      WHERE sh.manager_id = ${manager_id}
+        and ps.person_id = sh.person_id
+      ORDER BY status_history_id DESC;`
   );
   return rows;
 };
 
 exports.getTreatmentHistoryByManagerId = async (manager_id) => {
   const { rows } = await db.query(
-    `SELECT treatment_history_id, treatment_id, person_id, "time", manager_id
-	    FROM public.treatment_history
-      WHERE manager_id = ${manager_id}
+    `SELECT tmh.treatment_history_id, tmh.treatment_id, tmh.person_id, tmh."time", tmh.manager_id, ps.full_name, tm.name
+	    FROM public.treatment_history tmh, treatment tm, person ps
+      WHERE tmh.manager_id = ${manager_id}
+        and tmh.treatment_id = tm.treatment_id and ps.person_id = tmh.person_id
       ORDER BY treatment_history_id DESC`
   );
   return rows;
@@ -69,8 +72,8 @@ exports.getTreatmentHistoryByManagerId = async (manager_id) => {
 exports.createTreatment = async (name, capacity) => {
   const { rowCount } = await db.query(
     `INSERT INTO public.treatment(
-	  name, capacity)
-	  VALUES ('${name}', ${capacity});`
+	  name, capacity, manager_id)
+	  VALUES ('${name}', ${capacity}, null);`
   );
   return rowCount === 1;
 };
@@ -104,12 +107,16 @@ exports.countTreatment = async () => {
 
 exports.getAllTreatments = async () => {
   const { rows } = await db.query(
-    `SELECT th.treatment_id, tm."name", tm.capacity, count(person_id) as current_capacity
-	  FROM public.treatment_history as th, public.treatment as tm
-	  WHERE time = (SELECT MAX(time) from public.treatment_history 
-	  where person_id = th.person_id) and tm.treatment_id = th.treatment_id
-	  group by (th.treatment_id, tm."name", tm.capacity)`
+    `select treatment_id, name, capacity,  username as manager
+    from treatment tm full outer join account acc
+    on tm.manager_id = acc.account_id
+    where (treatment_id is not null) order by treatment_id asc`
   );
+  for (const row of rows) {
+    row['current_capacity'] = await this.countPersonByTreatmentId(
+      row.treatment_id
+    );
+  }
   return rows;
 };
 
@@ -122,6 +129,24 @@ exports.updateTreatmentCapacity = async (treatment_id, newCapacity) => {
 	  WHERE treatment_id = ${treatment_id}`
   );
   return rowCount === 1;
+};
+
+exports.updateTreatmentManager = async (treatment_id, manager_id) => {
+  const { rowCount } = await db.query(
+    `update treatment
+set manager_id = ${manager_id}
+where treatment_id = ${treatment_id};`
+  );
+  return rowCount === 1;
+};
+
+exports.searchManagerByUsername = async (username) => {
+  const { rows } = await db.query(
+    `SELECT account_id, username 
+    from account where role_id = 2 and username LIKE $1`,
+    ['%' + username + '%']
+  );
+  return rows;
 };
 
 exports.paginate = (list, pageIndex, pageSize) => {

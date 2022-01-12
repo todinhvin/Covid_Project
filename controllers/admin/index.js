@@ -11,8 +11,14 @@ const {
   setManagerActive,
   createManager,
   paginate,
+  getAllTreatments,
+  searchManagerByUsername,
+  updateTreatmentCapacity,
+  updateTreatmentManager,
+  createTreatment,
 } = require('../../models/admin/index');
 
+// [GET] /admin/
 router.get('/', async (req, res) => {
   const noManager = await countManager();
   const noTreatment = await countTreatment();
@@ -23,6 +29,7 @@ router.get('/', async (req, res) => {
   });
 });
 
+// [GET] /admin/manager/
 router.get('/manager/', async (req, res) => {
   const pageIndex = +req.query.pageIndex || 1;
   const managerList = await getAllManagers();
@@ -55,12 +62,40 @@ router.get('/manager/', async (req, res) => {
   });
 });
 
+// [GET] /admin/manager/history/treatment/:account_id
 router.get('/manager/history/treatment/:account_id', async (req, res) => {
   const account_id = +req.params.account_id;
   const treatment_history = await getTreatmentHistoryByManagerId(account_id);
   return res.render('admin/history/treatment', {
     treatment_history,
     hasTreatmentHistory: treatment_history.length > 0,
+  });
+});
+
+// [GET] /admin/manager/history/status/:account_id
+router.get('/manager/history/status/:account_id', async (req, res) => {
+  const account_id = +req.params.account_id;
+  const status_history = await getStatusHistoryByManagerId(account_id);
+  return res.render('admin/history/status', {
+    status_history,
+    hasStatusHistory: status_history.length > 0,
+  });
+});
+
+// [GET] /admin/treatment
+router.get('/treatment', async (req, res) => {
+  const pageIndex = +req.query.pageIndex || 1;
+  const treatments = await getAllTreatments();
+  const treatmentPaged = paginate(treatments, pageIndex, 10);
+  res.render('admin/treatment', {
+    treatmentList: treatmentPaged.data,
+    indexList: treatmentPaged.indexList,
+    previous: treatmentPaged.prev,
+    next: treatmentPaged.next,
+    hasNext: treatmentPaged.hasNext,
+    hasPrevious: treatmentPaged.hasPrevious,
+    pageIndex: treatmentPaged.pageIndex,
+    totalPage: treatmentPaged.totalPage,
   });
 });
 
@@ -80,9 +115,45 @@ router.post('/manager/create', async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
+  console.log(username + ' ' + password);
+
   const createRes = await createManager(username, password);
   return res.redirect('/admin/manager');
 });
 
-router.get('/treatment', (req, res) => {});
+router.post('/treatment/updateCapacity', async (req, res) => {
+  const treatmentId = +req.body.treatmentId;
+  const newCapacity = +req.body.newCapacity;
+  console.log(treatmentId + ' ' + newCapacity);
+  const updateRes = await updateTreatmentCapacity(treatmentId, newCapacity);
+  return res.redirect('/admin/treatment');
+});
+
+router.post('/treatment/updateManager', async (req, res) => {
+  const treatmentId = +req.body.treatmentId;
+  const managerId = +req.body.id;
+  console.log(treatmentId + ' ' + managerId);
+
+  const updateRes = await updateTreatmentManager(treatmentId, managerId);
+  return res.redirect('/admin/treatment');
+});
+
+router.post('/treatment', async (req, res) => {
+  const treatmentName = req.body.treatmentName;
+  const capacity = +req.body.capacity;
+  console.log(treatmentName, capacity);
+
+  const updateRes = await createTreatment(treatmentName, capacity);
+  return res.redirect('/admin/treatment');
+});
+
+// API
+router.get('/manager/search', async (req, res) => {
+  const username = req.query.username.replaceAll('"', '');
+  console.log(username);
+  const rows = await searchManagerByUsername(username);
+  console.log(rows);
+  return res.send(rows.length === 0 ? [] : rows[0]);
+});
+
 module.exports = router;
