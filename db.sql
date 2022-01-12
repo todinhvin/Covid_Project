@@ -67,6 +67,7 @@ create table indept
     due_date timestamp,
     account_id serial,
     minimum_pay real,
+    status varchar(100),
     primary key (indept_id),
     constraint fk_indept_account
         foreign key (account_id) references account

@@ -5,6 +5,7 @@ const {
   getTotalPatientsByDay,
   getTotalStatusChangeByDay,
   analysisPackages,
+  analysisPayment,
 } = require("../../models/manager/analysis");
 
 router.get("/", async (req, res) => {
@@ -68,6 +69,29 @@ router.get("/consume", async (req, res) => {
     packages,
     items,
     filter,
+  });
+});
+
+router.get("/payment", async (req, res) => {
+  const { filter = "week" } = req.query;
+  let day;
+  if (filter === "week") {
+    day = 7;
+  } else if (filter === "one_month") {
+    day = 30;
+  } else if (filter === "three_month") {
+    day = 90;
+  } else if (filter === "year") {
+    day = 365;
+  }
+  const { totalUsersInDebt, totalDebt, totalPaid } = await analysisPayment({
+    day,
+  });
+  res.render("manager/analysis/payment", {
+    filter,
+    totalUsersInDebt: totalUsersInDebt ? totalUsersInDebt : 0,
+    totalDebt: totalDebt ? totalDebt : 0,
+    totalPaid: totalPaid ? totalPaid : 0,
   });
 });
 
