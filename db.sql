@@ -40,6 +40,9 @@ cascade;
 drop table if exists treatment_history
 cascade;
 
+drop table if exists checkout_item
+cascade;
+
 create table role
 (
     role_id serial,
@@ -67,7 +70,7 @@ create table indept
     due_date timestamp,
     account_id serial,
     minimum_pay real,
-    status varchar(100),
+    state boolean,
     primary key (indept_id),
     constraint fk_indept_account
         foreign key (account_id) references account
@@ -84,6 +87,7 @@ create table item
     (50),
     created_on timestamp,
     manager_id serial,
+    state boolean,
     primary key
     (item_id),
     constraint fk_item_manager
@@ -94,25 +98,16 @@ create table item
     create table package
     (
         package_id serial,
-        name varchar(50),
+        name varchar(100),
         due_date timestamp,
         created_on timestamp,
         manager_id serial,
+        state boolean,
         primary key (package_id),
         constraint fk_package_manager
         foreign key (manager_id) references account
     );
 
-    create table payment_history
-    (
-        payment_history_id serial,
-        account_id serial,
-        payment_on timestamp,
-        total_money real,
-        primary key (payment_history_id),
-        constraint fk_payhis_acc
-        foreign key (account_id) references account
-    );
 
     create table account_payment
     (
@@ -220,21 +215,47 @@ create table item
         checkout_id serial,
         account_id serial,
         package_id serial,
-        item_id serial,
         checkout_date timestamp,
         state boolean,
-        payment_history_id integer,
-        quantity integer,
         primary key (checkout_id),
         constraint fk_checkout_account
         foreign key (account_id) references account,
         constraint fk_checkout_package
-        foreign key (package_id) references package,
-        constraint fk_checkout_item
-        foreign key (item_id) references item,
-        constraint fk_checkout_payment_history
-        foreign key (payment_history_id) references payment_history
+        foreign key (package_id) references package
+--         constraint fk_checkout_item
+--         foreign key (item_id) references item,
+--         constraint fk_checkout_payment_history
+--         foreign key (payment_history_id) references payment_history
     );
+
+create table payment_history
+    (
+        payment_history_id serial,
+        account_id serial,
+        payment_on timestamp,
+        checkout_id integer null ,
+        total_money real,
+        primary key (payment_history_id),
+        constraint fk_payhis_acc
+        foreign key (account_id) references account,
+        constraint fk_payhis_ck
+        foreign key (checkout_id) references checkout
+    );
+
+
+    create table checkout_item (
+        checkout_item_id serial,
+        checkout_id integer,
+        item_id integer,
+        user_quantity integer,
+
+        primary key (checkout_item_id),
+        constraint fk_ckit_ck
+        foreign key (checkout_id) references checkout,
+        constraint fk_ckit_it
+        foreign key (item_id) references item
+    );
+alter table treatment alter column manager_id drop not null;
 
 
 insert into role
@@ -325,40 +346,40 @@ insert into role
 
     -- Item
     insert into item
-        ( name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Xoai', null, 10000, 'kg', '2021-12-25', 2);
+        ( 'Xoai', null, 10000, 'kg', '2021-12-25', 2, true);
     insert into item
-        ( name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Dua', null, 10000, 'trai', '2021-12-25', 2);
+        ( 'Dua', null, 10000, 'trai', '2021-12-25', 2, true);
     insert into item
-        ( name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Mang cau', null, 30000, 'kg', '2021-12-25', 2);
+        ( 'Mang cau', null, 30000, 'kg', '2021-12-25', 2, true);
 
     insert into item
-        ( name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Thit heo', null, 100000, 'kg', '2021-12-25', 2);
+        ( 'Thit heo', null, 100000, 'kg', '2021-12-25', 2, true);
     insert into item
-        ( name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Ca', null, 120000, 'kg', '2021-12-25', 2);
+        ( 'Ca', null, 120000, 'kg', '2021-12-25', 2, true);
     insert into item
-        ( name, image, price, unit, created_on, manager_id)
+        ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Thit bo', null, 200000, 'kg', '2021-12-25', 2);
+        ( 'Thit bo', null, 200000, 'kg', '2021-12-25', 2, true);
 
     -- Package
     insert into package
-        ( name, due_date, created_on, manager_id)
+        ( name, due_date, created_on, manager_id, state)
     values
-        ( 'Trai cay pack', '2022-02-02', '2021-12-25', 2);
+        ( 'Trai cay pack', '2022-02-02', '2021-12-25', 2, true);
     insert into package
-        (name, due_date, created_on, manager_id)
+        (name, due_date, created_on, manager_id, state)
     values
-        ( 'Dong vat pack', '2022-02-02', '2021-12-25', 2);
+        ( 'Dong vat pack', '2022-02-02', '2021-12-25', 2, true);
 
     -- Package item
     insert into package_item
@@ -388,17 +409,6 @@ insert into role
         (2, 6, 1, 5);
 
 
-    -- In debt
-    -- alter table indept drop column  account_id;
-    insert into indept
-        ( indept, due_date, minimum_pay)
-    values
-        ( 0, '2022-01-01', 20000);
-    insert into indept
-        ( indept, due_date, minimum_pay)
-    values
-        ( 420000, '2022-01-01', 20000);
-
     -- user
     insert into account
         ( username, password, status, role_id, person_id)
@@ -410,20 +420,19 @@ insert into role
         ( 'user2', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 'active', 3, 2);
 
     -- Checkout
-    -- alter table checkout alter column payment_history_id drop not null;
-    -- alter table checkout add column quantity int;
-    insert into checkout
-        ( account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
-    values
-        ( 4, 2, 4, '2021-12-25', false, null, 1);
-    insert into checkout
-        ( account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
-    values
-        ( 4, 2, 5, '2021-12-25', false, null, 1);
-    insert into checkout
-        ( account_id, package_id, item_id, checkout_date, state, payment_history_id, quantity)
-    values
-        ( 4, 2, 6, '2021-12-25', false, null, 1);
+    insert into checkout (account_id, package_id, checkout_date)
+    values (4, 2, '2021-12-25');
+
+    insert into checkout_item ( checkout_id, item_id, user_quantity)
+    values (1,4,1 );
+    insert into checkout_item ( checkout_id, item_id, user_quantity)
+    values (1,5,1 );
+    insert into checkout_item ( checkout_id, item_id, user_quantity)
+    values (1,6,1 );
+
+-- Indept
+    insert into public.indept ( indept, due_date, account_id, minimum_pay, state)
+values (420000, '2023-01-01', 4, 50000, false);
 
     -- Account payment
     insert into account_payment
@@ -438,59 +447,23 @@ insert into role
 Alter TABLE Person ALTER COLUMN related_person_id DROP not NULL;
 
 -- Tạo ph cho user2
-insert into public.payment_history (account_id, payment_on)
-values (4, '2022-01-10');
-
--- Thanh toán từng sản phẩm
-update public.checkout
-set state = true, payment_history_id = 1
-where checkout_id = 1;
-
-update public.checkout
-set state = true, payment_history_id = 1
-where checkout_id = 2;
-
-update public.checkout
-set state = true, payment_history_id = 1
-where checkout_id = 3;
-
--- Cập nhật số tiền thanh toán
-update public.payment_history
-set total_money = (select sum(item.price) from checkout, item where checkout.item_id = item.item_id and (checkout_id=1
-                                                                 or checkout_id=2 or checkout_id=3))
-where payment_history_id = 1;
-
-
-
+insert into payment_history ( account_id, payment_on, checkout_id, total_money)
+values (4, '2022-01-10', 1, 420000);
 -- Trừ nợ
--- update public.indept
--- set indept = 0
--- where indept_id = (select indebt_id from account where account_id = 4);
-
-insert into public.indept ( indept, due_date, account_id, minimum_pay)
-values (0, '2022-12-31', 4, 50000);
+insert into public.indept ( indept, due_date, account_id, minimum_pay, state)
+values (0, '2023-01-01', 4, 50000, true);
 
 -- User1 mua đồ
-insert into public.checkout ( account_id, package_id, item_id, checkout_date, state, payment_history_id,
-                             quantity)
-values (3, 1, 1, '2022-01-10', false, null, 1);
+    insert into checkout (account_id, package_id, checkout_date)
+        values (3, 1, '2022-01-25');
 
-insert into public.checkout ( account_id, package_id, item_id, checkout_date, state, payment_history_id,
-                             quantity)
-values (3, 1, 2, '2022-01-10', false, null, 1);
-
-insert into public.checkout ( account_id, package_id, item_id, checkout_date, state, payment_history_id,
-                             quantity)
-values (3, 1, 3, '2022-01-10', false, null, 1);
+    insert into checkout_item ( checkout_id, item_id, user_quantity)
+        values (2,1,1 );
+    insert into checkout_item ( checkout_id, item_id, user_quantity)
+        values (2,2,1 );
+    insert into checkout_item ( checkout_id, item_id, user_quantity)
+        values (2,3,1 );
 
 -- Cập nhật số nợ
--- update public.indept
--- set indept = (select sum(item.price) from checkout, item where checkout.item_id = item.item_id and (checkout_id=4
---                                                                  or checkout_id=5 or checkout_id=6))
--- where indept_id = (select indebt_id from account where account_id = 3);
-
-insert into public.indept ( indept, due_date, account_id, minimum_pay)
-values ((select sum(item.price) from checkout, item where checkout.item_id = item.item_id and (checkout_id=4
-                                                                 or checkout_id=5 or checkout_id=6)), '2022-12-31', 3, 50000);
-
-alter table treatment alter column manager_id drop not null;
+insert into public.indept ( indept, due_date, account_id, minimum_pay, state)
+values (50000, '2023-01-01', 3, 50000, false);
