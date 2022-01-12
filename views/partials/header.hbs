@@ -3,21 +3,27 @@
 
   <ul>
     {{#if account}}
-    {{!-- <li>Welcome, {{account.username}}</li> --}}
-    {{!-- <li><a href="/auth/logout">Log Out</a></li> --}}
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-          aria-expanded="false">Welcome, {{account.username}}</a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Do Nothing</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/auth/logout">Log Out</a>
-        </div>
-      </li>
-    </ul>
+      {{!-- <li>Welcome, {{account.username}}</li> --}}
+      {{! <li><a href="/auth/logout">Log Out</a></li> }}
+      <ul class="navbar-nav ml-auto" style="list-style:none">
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDropdown"
+            role="button"
+            data-toggle="dropdown"
+            aria-expanded="false"
+          >Welcome, {{account.username}}</a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="#">Do Nothing</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/auth/logout">Log Out</a>
+          </div>
+        </li>
+      </ul>
     {{else}}
-    <li><a href="/auth/login">Log In</a></li>
+      <li><a href="/auth/login">Log In</a></li>
     {{/if}}
   </ul>
 </div>

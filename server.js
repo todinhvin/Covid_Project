@@ -1,5 +1,5 @@
 const express = require("express");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 const routes = require("./routes/index");
 const app = express();
 const port = 3000;
@@ -14,12 +14,9 @@ require("./middlewares/session")(app);
 app.use(express.static(`${__dirname}/public`));
 
 app.get("/", (req, res) => {
-    res.render("home");
-});
-app.get("/home", (req, res) => {
-    res.render("home");
+  res.redirect("/user");
 });
 
 app.listen(port, () => {
-    console.log(`Listen in port ${port}`);
+  console.log(`Listen in port ${port}`);
 });
