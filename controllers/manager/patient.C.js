@@ -19,12 +19,15 @@ const {
 router.get("/", async (req, res) => {
   const { page = 1, filter } = req.query;
   const { totalPage, patients } = await getPatients({ page, filter });
-
+  const { create, update, remove } = req.query;
   res.render("manager/patient/patient", {
     patients: patients,
     totalPage,
     page,
     filter,
+    create,
+    update,
+    remove,
     url: "/manager/patient",
   });
 });
