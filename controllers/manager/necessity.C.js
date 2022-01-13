@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { getNecessities, addNewNecs, getNecsById, updateNecs, delItemByItemId } = require("../../models/manager/necessity.M")
-const { delRowCheckOutByItemId } = require("../../models/manager/checkout.M");
-const { delRowPackItemByItemId } = require("../../models/manager/packageItem.M");
+
 
 // [GET]  /manager/package
 
@@ -93,8 +92,8 @@ router.get("/:id/delete", async(req, res) => {
     const { id } = req.params;
 
     // console.log(id);
-    await delRowPackItemByItemId(id);
-    await delRowCheckOutByItemId(id);
+    // await delRowPackItemByItemId(id);
+    // await delRowCheckOutByItemId(id);
     const data = await delItemByItemId(id);
     // console.log(data);
     res.redirect('/manager/package');

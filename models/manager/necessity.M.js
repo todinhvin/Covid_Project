@@ -11,7 +11,7 @@ const getTotalNec = async() => {
 exports.getNecessities = async({ page = 1, per_page = 6, filter }) => {
         const offset = (page - 1) * per_page;
         const { rows } = await db.query(
-                `SELECT * FROM item 
+                `SELECT * FROM item  WHERE "state" ='true'
     ${filter ? `ORDER BY ${filter} ASC` : ""}
     LIMIT $1 OFFSET $2`,
     [per_page, offset]
@@ -41,8 +41,8 @@ exports.addNewNecs = async (
   const { rows } = await db.query(
     `
         INSERT INTO public.item
-        ("name","image","price","unit","created_on","manager_id")
-        VALUES('${name}','${image}','${price}','${unit}','${created_on}','${manager_id}')
+        ("name","image","price","unit","created_on","manager_id","state")
+        VALUES('${name}','${image}','${price}','${unit}','${created_on}','${manager_id}','true')
         Returning *;`
   );
 
@@ -83,7 +83,8 @@ exports.delItemByItemId = async(idItem) => {
 
 
   const { rows } = await db.query(
-      `   DELETE FROM public.item
+      `   UPDATE public.item
+          SET "state" ='false'
           WHERE  "item_id" ='${idItem}' 
           Returning *;`
   )
