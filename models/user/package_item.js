@@ -1,8 +1,8 @@
 const db = require("../db");
 
-const tableName = 'public.indept';
+const tableName = 'public.package_item';
 
-exports.getIndept = async(fieldName, value) => {
+exports.getPackageItem = async(fieldName, value) => {
     const { rows } = await db.query(
         `SELECT * FROM ${tableName} WHERE "${fieldName}" = '${value}'`
     );
