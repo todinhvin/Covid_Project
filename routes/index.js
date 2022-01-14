@@ -10,6 +10,7 @@ const router = express.Router();
 router.get('*', getUser);
 
 router.get("/", checkAccess);
+
 router.use("/auth", authRoute);
 
 router.use("/manager", requireAuth, checkManager, managerRoute);
