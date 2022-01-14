@@ -1,6 +1,4 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
-const { getAccount } = require("../models/user/account");
 const authRoute = require("./auth");
 const managerRoute = require("./manager");
 const userRoute = require("./user");
