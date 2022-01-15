@@ -78,6 +78,21 @@ exports.updateNecs = async (id,name,image,price,unit,created_on,manager_id) => {
   return rows;
 }
 
+exports.getNecsByPackId = async (idPackage) =>{
+
+  const {rows} = await db.query(
+    `
+    select * 
+    from package_item PI 
+    join item IM ON PI.item_id = IM.item_id AND IM.state ='true'
+    where PI.package_id ='${idPackage}'
+    ORDER BY PI.item_id ASC
+    `
+  )
+
+  return rows;
+}
+
 
 exports.delItemByItemId = async(idItem) => {
 
