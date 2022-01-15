@@ -312,13 +312,13 @@ insert into role
         ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
         manager_id)
     values
-        ( 'Nguyen van customer', '0011223344', '2000-1-1', 1, -1, 1, 'f0', 2);
+        ( 'Nguyen van customer', '0011223344', '2000-1-1', 1, -1, 1, 'F0', 2);
 
     insert into person
         ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
         manager_id)
     values
-        ( 'Pham Thi customer', '999993344', '2001-1-1', 1, 1, 1, 'f1', 2);
+        ( 'Pham Thi customer', '999993344', '2001-1-1', 1, 1, 1, 'F1', 2);
 
     -- Treatment history
     insert into treatment_history
@@ -338,11 +338,11 @@ insert into role
     insert into status_history
         ( person_id, status, "time", manager_id)
     values
-        ( 1, 'f0', '2021-01-01', 2);
+        ( 1, 'F0', '2021-01-01', 2);
     insert into status_history
         ( person_id, status, "time", manager_id)
     values
-        ( 2, 'f1', '2021-12-01', 2);
+        ( 2, 'F1', '2021-12-01', 2);
 
     -- Item
     insert into item

@@ -28,7 +28,7 @@ exports.analysisPackages = async ({ day }) => {
   const items = await getAllItems();
   for (let i = 0; i < items.length; i++) {
     const { rows } = await db.query(
-      "select count(*) from checkout where  abs(now() :: date - checkout_date :: date)<=$1 and item_id=$2",
+      'select count(*) from "checkout" as c join "checkout_item" as c_item on c.checkout_id =c_item.checkout_id where  abs(now() :: date - c.checkout_date :: date)<=$1 and c_item.item_id=$2',
       [day, items[i].item_id]
     );
     Object.assign(items[i], { count: rows[0].count });
@@ -46,7 +46,7 @@ exports.analysisPayment = async ({ day }) => {
 
 const getTotalUserInDebt = async (day) => {
   const { rows } = await db.query(
-    "select count(*) from (select distinct account_id from indept where status is null and abs(now() :: date - due_date :: date)<=$1) as A",
+    "select count(*) from (select distinct account_id from indept where state=false and abs(now() :: date - due_date :: date)<=$1) as A",
     [day]
   );
   return rows[0].count;
