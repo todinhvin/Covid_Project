@@ -13,6 +13,7 @@ const { getTreatment } = require("../../models/user/treatment");
 const { getAllPackage, getPackageById, getPackageDetail } = require('../../models/user/buy')
 
 const { convertDate } = require("../../helper");
+const { json } = require("express/lib/response");
 
 //[GET] /user/profile
 router.get("/profile", async(req, res) => {
@@ -149,5 +150,12 @@ router.get('/buy/:id/detail', async(req, res) => {
   });
 })
 
+
+//[POST] /buy
+router.post('/buy/:id/detail', async(req, res) => {
+    console.log(req.body);
+  
+    res.redirect('back');
+  })
 
 module.exports = router;

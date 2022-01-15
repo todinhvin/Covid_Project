@@ -1,7 +1,7 @@
 const db = require('../db');
 
 exports.getTotalPackage = async(search) => {
-    const total = await db.query(`select count(*) from package;
+    const total = await db.query(`select count(*) from package
     ${search ? `where name like '${search}%'` : ""}`);
     return total.rows[0].count;
 }
