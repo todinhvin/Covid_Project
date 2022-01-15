@@ -6,12 +6,12 @@
             <tr>
                 {{!-- <th scope="col">#</th> --}}
                 <th scope="col">Package</th>
-                <th scope="col">Item</th>
                 <th scope="col">Checkout Date</th>
                 <th scope="col">State</th>
                 {{!-- <th scope="col">Payment History</th> --}}
-                <th scope="col">Quantity</th>
+                {{!-- <th scope="col">Item</th>
                 <th scope="col">Unit</th>
+                <th scope="col">Quantity</th> --}}
             </tr>
         </thead>
         <tbody>
@@ -19,7 +19,6 @@
             <tr>
                 {{!-- <th scope="row">{{this.checkout_id}}</th> --}}
                 <td>{{this.package_name}}</td>
-                <td>{{this.item_name}}</td>
                 <td>{{this.checkout_date}}</td>
                 {{#if this.state}}
                 <td>Đã thanh toán</td>
@@ -27,8 +26,9 @@
                 <td>Chưa thanh toán</td>
                 {{/if}}
                 {{!-- <td>{{this.payment_history_id}}</td> --}}
-                <td>{{this.quantity}}</td>
+                {{!-- <td>{{this.item_name}}</td>
                 <td>{{this.item_unit}}</td>
+                <td>{{this.item_quantity}}</td> --}}
             </tr>
             {{/each}}
         </tbody>

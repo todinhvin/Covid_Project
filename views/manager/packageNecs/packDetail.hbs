@@ -1,0 +1,50 @@
+<div class="container">
+
+  <div style=" display: flex;
+            align-items: center;
+            justify-content: space-between;">
+    <!-- Thêm người bệnh -->
+ <a
+    href="/manager/packages/create"
+    class="navbar-item"
+    style="display: block; width: 300px; margin: 20px 0"
+  >THÊM NHU YẾU PHẨM VÀO GÓI</a>
+
+  </div>
+  
+  <!-- Table -->
+  <table class="table table-striped" style="background-color: #ffffff">
+    <thead>
+      <tr style="text-align: center">
+        <th scope="col">ID</th>
+        <th scope="col">Tên nhu yếu phẩm</th>
+        <th scope="col">Số lượng</th>
+        <th scope="col">Giới hạn tối đa</th>
+        <th scope="col">Điều chỉnh</th>
+      </tr>
+    </thead>
+    <tbody>
+     {{#each items}}
+        <tr style="text-align: center">
+          <th scope="row">{{item_id}}</th>
+          <td>{{name}}</td>
+          <td>{{quantity}}</td>
+          <td>{{item_limit}}</td>
+          <td class="victim-btns">
+            <a href="/manager/package/{{item_id}}/detail" class="btn btn-primary">Chi tiết</a>
+            <form action="/manager/packages/{{item_id}}/delete-item">
+            <button  class="btn btn-danger mT8">Xóa</button>
+             <input style ="display:none" value ="{{package_id}}"name="idPackage"/>
+            </form>
+            
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+   
+</div>
+
+
+
+

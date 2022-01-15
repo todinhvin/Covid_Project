@@ -10,11 +10,14 @@ const {
   checkUser,
   checkManager,
   checkAdmin,
+  checkAccess,
 } = require('../middlewares/authMiddleware');
 
 const router = express.Router();
 
 router.get('*', getUser);
+
+router.get('/', checkAccess);
 
 router.use('/auth', authRoute);
 

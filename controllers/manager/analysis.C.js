@@ -21,8 +21,8 @@ router.get("/", async (req, res) => {
     day = 365;
   }
   const totalF0 = await getTotalPatientsByDay({ day, status: "F0" });
-  const totalF1 = await getTotalPatientsByDay({ day, status: "F0" });
-  const totalF2 = await getTotalPatientsByDay({ day, status: "F0" });
+  const totalF1 = await getTotalPatientsByDay({ day, status: "F1" });
+  const totalF2 = await getTotalPatientsByDay({ day, status: "F2" });
   const totalKB = await getTotalPatientsByDay({ day, status: "KB" });
 
   const totalChangeF21 = await getTotalStatusChangeByDay({

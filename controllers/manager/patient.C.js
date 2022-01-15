@@ -19,12 +19,15 @@ const {
 router.get('/', async (req, res) => {
   const { page = 1, filter } = req.query;
   const { totalPage, patients } = await getPatients({ page, filter });
-
+  const { create, update, remove } = req.query;
   res.render('manager/patient/patient', {
     patients: patients,
     totalPage,
     page,
     filter,
+    create,
+    update,
+    remove,
     url: '/manager/patient',
   });
 });
@@ -121,15 +124,16 @@ router.post('/:id/update', async (req, res) => {
     related_person_cccd,
   } = req.body;
 
-  const patientCheck = await getPatientByCCCD(cccd);
-  if (patientCheck) {
-    return res.redirect('/manager/patient?update=error');
-  }
+  // const patientCheck = await getPatientByCCCD(cccd);
+  // if (patientCheck) {
+  //   return res.redirect("/manager/patient?update=error");
+  // }
 
   let relatedPerson;
   if (related_person_cccd) {
     relatedPerson = await getPatientByCCCD(related_person_cccd);
   }
+  console.log(123);
 
   const data = await updatePatient({
     person_id: id,

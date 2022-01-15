@@ -5,10 +5,10 @@
             justify-content: space-between;">
     <!-- Thêm người bệnh -->
  <a
-    href="/manager/package/create"
+    href="/manager/packages/create"
     class="navbar-item"
-    style="display: block; width: 200px; margin: 20px 0"
-  >THÊM NHU YẾU PHẨM</a>
+    style="display: block; width: 300px; margin: 20px 0"
+  >THÊM GÓI NHU YẾU PHẨM</a>
 
   </div>
   <div
@@ -26,14 +26,13 @@
       <form action="{{url}}" method="get" class="form-inline md-form" style=" display: flex;align-items: center;justify-content: space-around;flex:2">
          <select class="custom-select" name="filter" style="width: 200px;">
                 {{#if filter}}
-               <option {{#compareString filter "item_id"}}selected{{/compareString}} value="item_id">ID</option>
-              <option {{#compareString filter "name"}}selected{{/compareString}} value="name">Tên</option>
-            <option {{#compareString filter "price"}}selected{{/compareString}} value="price">Giá tiền</option>
-            {{else}}
-               <option value="item_id">ID</option>
+                <option {{#compareString filter "package_id"}}selected{{/compareString}} value="package_id">ID</option>
                 <option {{#compareString filter "name"}}selected{{/compareString}} value="name">Tên</option>
-              <option {{#compareString filter "price"}}selected{{/compareString}} value="price">Giá tiền</option>
-            {{/if}}
+
+              {{else}}
+               <option value="package_id">ID</option>
+                <option {{#compareString filter "name"}}selected{{/compareString}} value="name">Tên</option>
+              {{/if}}
         </select>
         <button class="btn" style="background: #3fa4e2" type="submit">
           Sắp xếp
@@ -42,7 +41,7 @@
       
     </div>
     <div class="victim-search">
-      <form method="get" action="/manager/package/search" class="form-inline md-form">
+      <form method="get" action="/manager/packages/search" class="form-inline md-form">
         <input
           class="form-control mr-sm-2"
           type="text"
@@ -62,23 +61,23 @@
     <thead>
       <tr style="text-align: center">
         <th scope="col">ID</th>
-        <th scope="col">Tên nhu yếu phẩm</th>
-        <th scope="col">Giá tiền</th>
-        <th scope="col">Đơn vị</th>
+        <th scope="col">Tên gói nhu yếu phẩm</th>
+        <th scope="col">Số lượng loại sản phẩm</th>
+        <th scope="col">Thời gian tới hạn</th>
         <th scope="col">Điều chỉnh</th>
       </tr>
     </thead>
     <tbody>
-      {{#each items}}
+      {{#each packages}}
         <tr style="text-align: center">
-          <th scope="row">{{item_id}}</th>
+          <th scope="row">{{package_id}}</th>
           <td>{{name}}</td>
-          <td>{{price}}</td>
-          <td>{{unit}}</td>
+           <td>{{amount}}</td>
+          <td>{{due_date}}</td>
           <td class="victim-btns">
-            <a href="/manager/package/{{item_id}}/detail" class="btn btn-primary">Chi tiết</a>
-            <a href="/manager/package/{{item_id}}/update" class="btn btn-success mT8">Cập nhật</a>
-            <a href="/manager/package/{{item_id}}/delete" class="btn btn-danger mT8">Xóa</a>
+            <a href="/manager/packages/{{package_id}}/detail" class="btn btn-primary">Chi tiết</a>
+            <a href="/manager/packages/{{package_id}}/update" class="btn btn-success mT8">Cập nhật</a>
+            <a href="/manager/packages/{{package_id}}/delete" class="btn btn-danger mT8">Xóa</a>
           </td>
         </tr>
       {{/each}}
@@ -90,7 +89,7 @@
       {{#forN totalPage}}
         {{#compareInt this ../page}}
           <li class="page-item active">
-            <a class="page-link" href="/package?page={{this}}">{{this}}</a>
+            <a class="page-link" href="/packagess?page={{this}}">{{this}}</a>
           </li>
         {{else}}
           <li class="page-item"><a
