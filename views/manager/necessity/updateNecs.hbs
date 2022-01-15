@@ -1,0 +1,61 @@
+<div class="container">
+  <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
+    Cập nhật thông tin của package
+  </h2>
+  <form
+    class="form-create-victim row col-8 justify-content-center"
+    action="/manager/package/{{item_id}}/update"
+    method="POST"
+  >
+    <div class="col">
+      <div class="">
+        <label class="flabel mb-1" for="name">Tên nhu yếu phẩm</label><input
+          class="form-control"
+          type="text"
+          name="name"
+          required="required"
+          placeholder="Nhập tên ở đây"
+          value = {{name}}
+        />
+      </div>
+      <div class="">
+        <label class="flabel mb-1" for="img">Hình ảnh</label><input
+          class="form-control"
+          type="text"
+          name="image"
+          {{!-- required="required" --}}
+          placeholder="Hãy lưu trữ hình ảnh lên cloud và đặt link ảnh tới ở đây"
+
+        />
+      </div>
+      <div class="form-div">
+        <label class="flabel mb-1" for="price">Giá tiền</label><input
+          class="form-control"
+          type="text"
+          name="price"
+          required="required"
+          placeholder="Nhập giá tiền ở đây đơn vị VND"
+          value = {{price}}
+        />
+      </div>
+      <div class="form-div">
+        <label class="flabel mb-1" for="unit">Đơn vị</label><select
+          class="form-select"
+          name="unit"
+        >
+          <option value="Trai">Trái</option>
+          <option value="Kg">Kg</option>
+          <option value="Tan">Tấn</option>
+          <option value="Ta">Tá</option>
+          value ={{unit}}
+        </select>
+      </div>
+    <div class="d-flex justify-content-around" style="margin-top: 20px">
+    <button class="btn btn-tung" type="submit">Lưu</button><a
+        class="btn btn-tung"
+        href="/manager/package"
+    >Hủy</a>
+    </div>
+    </div>
+  </form>
+</div>

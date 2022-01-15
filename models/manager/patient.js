@@ -186,7 +186,15 @@ exports.createPatient = async ({
   return rows[0];
 };
 
-exports.updatePatient = async ({
+const getPatientsRelated = async (person_id) => {
+  const { rows } = await db.query(
+    "select * from person where related_person_id=$1 and status!=$2",
+    [person_id, "KB"]
+  );
+  return rows;
+};
+
+const updatePatient = async ({
   person_id,
   full_name,
   cccd,
@@ -197,30 +205,61 @@ exports.updatePatient = async ({
   status,
   manager_id,
 }) => {
-  const oldPatient = await getPatientById(person_id);
-
-  const { rows } = await db.query(
-    'UPDATE public."person" SET "full_name"=$1, "cccd"=$2, "birthday"=$3, "address_id"=$4, "related_person_id"=$5, "treatment_id"=$6, "status"=$7, "manager_id"=$8 WHERE "person_id"=$9 RETURNING *;',
-    [
-      full_name,
-      cccd,
-      birthday,
-      address_id,
-      related_person_id,
-      treatment_id,
-      status,
-      manager_id,
-      person_id,
-    ]
-  );
-  if (status != oldPatient.status) {
-    addStatusPerson({ person_id, status, manager_id });
+  try {
+    const oldPatient = await getPatientById(person_id);
+    if (oldPatient.status === "F1" && status === "F0") {
+      const patientsRelated = await getPatientsRelated(person_id);
+      for (let i = 0; i < patientsRelated.length; i++) {
+        let {
+          person_id,
+          full_name,
+          cccd,
+          birthday,
+          address_id,
+          related_person_id,
+          treatment_id,
+          status,
+        } = patientsRelated[i];
+        updatePatient({
+          person_id,
+          full_name,
+          cccd,
+          birthday,
+          address_id,
+          related_person_id,
+          treatment_id,
+          status: "F1",
+          manager_id,
+        });
+      }
+    }
+    const { rows } = await db.query(
+      'UPDATE public."person" SET "full_name"=$1, "cccd"=$2, "birthday"=$3, "address_id"=$4, "related_person_id"=$5, "treatment_id"=$6, "status"=$7, "manager_id"=$8 WHERE "person_id"=$9 RETURNING *;',
+      [
+        full_name,
+        cccd,
+        birthday,
+        address_id,
+        related_person_id,
+        treatment_id,
+        status,
+        manager_id,
+        person_id,
+      ]
+    );
+    if (status != oldPatient.status) {
+      addStatusPerson({ person_id, status, manager_id });
+    }
+    if (treatment_id != oldPatient.treatment_id) {
+      addTreatmentPerson({ person_id, treatment_id, manager_id });
+    }
+    return rows[0];
+  } catch (err) {
+    console.log(err);
   }
-  if (treatment_id != oldPatient.treatment_id) {
-    addTreatmentPerson({ person_id, treatment_id, manager_id });
-  }
-  return rows[0];
 };
+
+exports.updatePatient = updatePatient;
 
 exports.removePatient = async ({ person_id, manager_id }) => {
   await db.query(

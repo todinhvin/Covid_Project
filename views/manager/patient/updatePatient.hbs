@@ -1,6 +1,6 @@
 <div class="container">
   <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
-    Thêm người liên quan Covid
+    Cập nhật thông tin người liên quan Covid
   </h2>
   <form class="form-create-victim row" action="/manager/patient/{{patient.person_id}}/update" method="POST">
     <div class="col col-6">
@@ -17,8 +17,7 @@
         <label class="flabel mb-1" for="cmt">Số CMT/CCCD</label><input
           class="form-control"
           type="text"
-          name="person_id"
-          required="required"
+          name="cccd"
           placeholder="Số CMT/CCCD phải có từ 9-12 chữ số"
           value="{{patient.cccd}}"
         />
