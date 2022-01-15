@@ -13,10 +13,6 @@ require("./middlewares/session")(app);
 // Public thư mục ra ngoài
 app.use(express.static(`${__dirname}/public`));
 
-app.get("/", (req, res) => {
-  res.redirect("/user");
-});
-
 app.listen(port, () => {
-  console.log(`Listen in port ${port}`);
+    console.log(`Listen in port ${port}`);
 });
