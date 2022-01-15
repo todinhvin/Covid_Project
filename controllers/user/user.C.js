@@ -1,11 +1,12 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const router = express.Router();
 
 const { allUser, getOneUser } = require("../../models/user/user");
 const { getStatusHistory } = require("../../models/user/statusHistory");
 const { getTreatmentHistory } = require("../../models/user/treatmentHistory");
-const { getAccount } = require("../../models/user/account");
+const { getAccount, changeAccount } = require("../../models/user/account");
 const { getCheckout } = require("../../models/user/checkout");
 const { getIndept } = require("../../models/user/indept");
 const { getPaymentHistory } = require("../../models/user/paymentHistory");
@@ -116,6 +117,60 @@ router.get("/paymentNotice/:id", async(req, res) => {
         indepts: indepts,
     });
 });
+
+//[GET] /user/changePassword/:id
+router.get("/changePassword/:id", async(req, res) => {
+    const account = await getAccount("person_id", req.params.id);
+    res.render("user/changePassword", {
+        account_id: account.account_id,
+    });
+});
+
+const handleErrors = (e) => {
+    console.log(e.message, e.code);
+    let err = { password: "", new_password: "", confirm_password: "" };
+
+    if (e.message === "Incorrect password") {
+        err.password = "Incorrect password";
+        return err;
+    }
+
+    if (e.message === "Incorrect confirm password") {
+        err.confirm_password = "Incorrect confirm password";
+        return err;
+    }
+
+    return err;
+};
+
+//[PUT] /user/changePassword/:id
+router.put("/changePassword/:id", async(req, res) => {
+    try {
+        const account = await getAccount("person_id", req.params.id);
+        const { password, new_password, confirm_password } = req.body;
+        //Kiểm tra password
+        const auth = await bcrypt.compare(password, account.password);
+        if (!auth) {
+            throw Error("Incorrect password");
+        }
+        //Kiểm tra new password
+        if (new_password != confirm_password) {
+            throw Error("Incorrect confirm password");
+        }
+
+        //Cập nhật password to db
+        const saltRounds = 10;
+        const passwordHashed = await bcrypt.hash(new_password, saltRounds);
+        const after_change = await changeAccount('account_id', account.account_id, 'password', passwordHashed);
+
+        //Đăng xuất user, yêu cầu đăng nhập lại sau khi đổi password
+        res.cookie("jwt", "", { maxAge: 1 });
+        res.status(200).json({ account: account.role_id });
+    } catch (e) {
+        const err = handleErrors(e);
+        res.status(400).json(err);
+    }
+})
 
 //[GET] /user
 router.get("/", (req, res) => {
