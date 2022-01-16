@@ -1,0 +1,183 @@
+<div class="container container-details">
+  <div style="text-align: center; margin-bottom: 20px;">
+    <h2><b>{{name}}</b></h2>
+  </div>
+  <h6>*Lưu ý: Số lượng sản phẩm người dùng nhập sẽ tự động điều chỉnh tùy theo giới hạn của sản phẩm trong gói và đơn vị của sản phẩm đó</h6>
+  <!--Begin pre Form test-->
+  <form name="buyForm" action="/user/buy/{{Id}}/detail" method="post">
+  <table id="itable" class="table table-striped" style="background-color: white;">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Tên sản phẩm</th>
+        <th scope="col">Hình ảnh</th>
+        <th scope="col">Giá</th>
+        <th scope="col">Đơn vị</th>
+        <th scope="col">Số lượng</th>
+        <th scope="col">Giới hạn</th>
+      </tr>
+    </thead>
+    
+      <tbody>
+        {{#each Items}}
+        <tr>
+          <th scope="row">{{this.item_id}}</th>
+          <td>{{this.name}}</td>
+          <td></td>
+          <td>{{this.price}}</td>
+          <td>{{this.unit}}</td>
+          <td>
+            <input type="number" {{#compareString this.unit 'kg' }} step="0.1" {{/compareString}}
+              id="{{this.item_id}}_quantity" name="{{this.item_id}}" class="form-control ql" min="0"
+              max="{{this.item_limit}}" value={{this.quantity}}>
+              <!--onkeyup="this.value=this.value.replace(/[^\d]/,'')"> onkeydown="return false;">-->
+          </td>
+          <td>{{this.item_limit}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    
+    <tfoot>
+      <tr>
+        <td colspan="2">Tổng giá tiền:</td>
+        <td colspan="3" id="pkprice">
+          {{price}}
+        </td>
+        <td>
+          
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#buyModal">
+              Mua
+            </button>
+
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+<!--End pre Form test-->  
+</form>
+</div>
+</div>
+
+<!-- Confirm buy modal -->
+<div class="modal fade" id="buyModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="buyModalHead" class="modal-title">Mua hàng</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="buyModalMsg" class="modal-body">
+        Bạn có chắc chắn muốn mua gói nhu yêu phẩm với số lượng sản phẩm hiện tại?
+      </div>
+      <div class="modal-footer">
+        <button id="btnBuy" type="button" class="btn btn-success">Mua</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Error modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 id="errorModalHeader" class="modal-title" style="font-size: 20px;">Kết quả mua</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="errorModalMsg" class="modal-body">
+        {{result.msg}}
+      </div>
+      <div class="modal-footer">
+        <form name="nextForm" action="/user/buy/{{Id}}/detail" method="get">
+            <button id="errorModalOk" type="submit" class="btn btn-success" style="font-size: 15px">
+              Ok
+            </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script
+  src="https://code.jquery.com/jquery-3.6.0.min.js"
+  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+  crossorigin="anonymous"></script>
+
+<script>
+  $('body').on('change', '.ql', function() {
+    let n = {{countItems}};
+    let newprice = 0;
+
+    // Từ step xác định số lượng là số nguyên hay số thực
+    if (!this.step) {
+      this.step = 1;
+    }
+    // Nếu người dùng ddể số lượng trống
+    if (this.value === '') {
+      this.value = 0 + parseFloat(this.step);
+    }
+    // Nếu người dùng nhập số thực vào những sản phẩm có step = 1
+    if ((this.step == 1) && (this.value != parseInt(this.value))) {
+      this.value = parseInt(this.value)
+    }
+    
+    // Cập nhật số lượng tối thiểu/tối đa nếu người dùng nhập số lượng quá giới hạn
+    let crrValue = parseFloat(this.value);
+    let crrMin = parseFloat(this.min);
+    let crrMax = parseFloat(this.max);
+
+    if (crrValue > crrMax) {
+      this.value = parseFloat(crrMax);
+      crrValue = parseFloat(this.value);
+    }
+    else if (crrValue <= crrMin) {
+      this.value = 0 + parseFloat(this.step);
+      crrValue = parseFloat(this.value);
+    }
+
+    // Cập nhật tổng tiền gói
+    for (let i = 0; i < n; i++) {
+      let irow = document.getElementById("itable").rows[i+1];
+
+      let iid = irow.cells.item(0).innerHTML;
+      let iprice = irow.cells.item(3).innerHTML;
+      let iquantity = document.getElementById(iid + "_quantity").value;
+
+      newprice += iprice*iquantity;
+    }
+
+    $('#pkprice').text(newprice);
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Thông báo kết quả mua
+    {{#if result}}
+    $(document).ready(function() {
+      $('#errorModal').modal('toggle');
+      let resState = {{result.state}};
+      if (resState == 0) {
+        $('#errorModalHeader').text("Lỗi mua hàng");
+        document.getElementById("errorModalOk").setAttribute("class", "btn btn-danger");
+      }
+      else if (resState == 1) {
+        $('#errorModalHeader').text("Mua hàng thành công");
+        document.getElementById("errorModalOk").setAttribute("class", "btn btn-success");
+      }
+    });
+    {{/if}}
+
+    // Phần xác nhận mua
+    var btnBuy = document.getElementById("btnBuy");
+    var buyForm = document.forms['buyForm'];
+
+    btnBuy.onclick = function() {
+      buyForm.submit()
+    }
+  });
+</script>
