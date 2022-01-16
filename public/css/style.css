@@ -32,11 +32,7 @@
       rgba(115, 116, 128, 0.7),
       rgba(115, 116, 128, 0.7)
     ),
-<<<<<<< HEAD
     url('../img/background.jpg');
-=======
-    url("../img/background.jpg");
->>>>>>> 1734774ab2d9393cf7bd24e8be9e6f071b6c4849
   background-size: 100%;
   height: 100vh;
   overflow: auto;
@@ -207,11 +203,7 @@
 }
 
 .pagination {
-<<<<<<< HEAD
   font-family: 'Merriweather', serif;
-=======
-  font-family: "Merriweather", serif;
->>>>>>> 1734774ab2d9393cf7bd24e8be9e6f071b6c4849
   display: inline-flex;
 }
 
@@ -249,15 +241,7 @@
 }
 
 .pagination li a.page-link:before {
-<<<<<<< HEAD
-  content: '';
-=======
-  content: "";
->>>>>>> 1734774ab2d9393cf7bd24e8be9e6f071b6c4849
-  background-color: #ff0000;
-  height: 12px;
   width: 12px;
-  border-radius: 50%;
   transform: translateX(-50%);
   position: absolute;
   left: 50%;
@@ -314,11 +298,7 @@
   line-height: 1.5;
   color: #212529;
   background-color: #fff;
-<<<<<<< HEAD
   background-image: url('../img/icon-down.svg');
-=======
-  background-image: url("../img/icon-down.svg");
->>>>>>> 1734774ab2d9393cf7bd24e8be9e6f071b6c4849
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 16px 12px;
@@ -353,7 +333,6 @@
   box-shadow: 1px 4px 5px rgba(0, 0, 0, 0.03);
   padding: 40px;
 }
-<<<<<<< HEAD
 
 /* Admin treatment */
 .box.box-treatment {
@@ -367,5 +346,3 @@
   grid-gap: 40px;
   font-size: 20px;
 }
-=======
->>>>>>> 1734774ab2d9393cf7bd24e8be9e6f071b6c4849
