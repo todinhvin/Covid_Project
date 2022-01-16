@@ -1,0 +1,114 @@
+<div class="admin-treatment">
+    <a href="/admin/treatment" class="box box-treatment" data-bs-toggle="modal" data-bs-target="#addManager">
+        <h2 style="font-weight: 900; font-size: 25px">Add manager</h2>
+        <span style="font-size: 35px"><i style="margin-left: 8px" class="fas fa-plus-circle"></i></span>
+    </a>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addManager" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Manager</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="/admin/manager/create" method="post">
+        <div class="modal-body">
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="text" class="form-control" id="password" name="password">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+        </form>
+    </div>
+  </div>
+</div>
+<div class="container">
+{{!-- <section>
+        <h2>Create new manager</h2>
+        <div class="card">
+            <form class="row g-3" method="post" action="/admin/manager/create">
+                <div class="col-auto">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                </div>
+                <div class="col-auto">
+                    <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3">Create new manager</button>
+                </div>
+            </form>
+        </div>
+</section> --}}
+<section>
+    <h2>Manager's account management</h2>
+    <table class="table table-striped" style="background-color: #ffffff">
+    <thead>
+      <tr style="text-align: left">
+        <th scope="col">ID</th>
+        <th scope="col">Username</th>
+        <th scope="col">Active status</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {{#each managerList}}
+        <tr>
+            <td scope="row">{{this.account_id}}</td>
+            <td>{{this.username}}</td>
+            <td>
+                {{#if this.isActive}}
+                 <span class="badge bg-success">Active</span>
+                {{else}}
+                <span class="badge bg-warning text-dark">Inactive</span>
+                {{/if}}
+            </td>
+            <td>
+                <a href="/admin/manager/history/treatment/{{this.account_id}}" class="btn btn-primary">Treatment history</a>
+                <a href="/admin/manager/history/status/{{this.account_id}}" class="btn btn-primary">Status history</a>
+                {{#if this.isActive}}
+                <form action="/admin/manager/disable/" method="post">
+                    <input type="hidden" name="account_id" value={{this.account_id}}>
+                    <button type="submit" class="btn btn-danger">Disable</button>
+                </form>
+                {{else}}
+                <form action="/admin/manager/enable/" method="post">
+                    <input type="hidden" name="account_id" value={{this.account_id}}>
+                    <button type="submit" class="btn btn-success">Enable</button>
+                </form>
+                {{/if}}
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+    </table>
+    <nav class="pagination-outer" aria-label="Page navigation">
+            <ul class="pagination">
+
+                <li class="page-item {{#if hasPrevious}} {{else}} disabled {{/if}}">
+                    <a class="page-link" href="/admin/manager?pageIndex={{this.previous}}">Previous</a>
+                </li>
+                {{#each indexList}}
+                <li class="page-item {{#if this.isCurrent}} active {{/if}}">
+                    <a class="page-link" href="/admin/manager?pageIndex={{this.index}}">
+                        {{this.index}}
+                    </a>
+                </li>
+                {{/each}}
+
+                <li class="page-item {{#if hasNext}} {{else}} disabled {{/if}}">
+                    <a class="page-link" href="/admin/manager?pageIndex={{this.next}}">Next</a>
+                </li>
+            </ul>
+        </nav>
+</section>
+</div>

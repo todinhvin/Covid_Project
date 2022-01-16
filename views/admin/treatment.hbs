@@ -1,0 +1,163 @@
+<div class="admin-treatment">
+    <a href="/admin/treatment" class="box box-treatment" data-bs-toggle="modal" data-bs-target="#addTreatmentModal">
+        <h2 style="font-weight: 900; font-size: 25px">Thêm nơi điều trị</h2>
+        <span style="font-size: 35px"><i style="margin-left: 8px" class="fas fa-plus-circle"></i></span>
+        <p>Danh sách nơi điều trị</p>
+    </a>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addTreatmentModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add treatment place</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <form action="/admin/treatment/" method="post">
+        <div class="modal-body">
+            <div class="mb-3">
+                <label for="treatmentName" class="form-label">Treatment place's name:</label>
+                <input type="text" class="form-control" id="treatmentName" name="treatmentName">
+            </div>
+            <div class="mb-3">
+                <label for="capacity" class="form-label">Capacity</label>
+                <input type="number" class="form-control" id="capacity" name="capacity">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+        </form>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+    <h1><span class="badge bg-secondary">Treatment places</span></h1>
+    <section>
+    <table class="table table-striped" style="background-color: #ffffff">
+    <thead>
+      <tr style="text-align: left">
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Capacity</th>
+        <th scope="col">Current Capacity</th>
+        <th scope="col">Manager</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        {{#each treatmentList}}
+        <tr>
+            <td scope="row">{{treatment_id}}</td>
+            <td>{{name}}</td>
+            <td>{{capacity}}</td>
+            <td>{{current_capacity}}</td>
+            <td>{{manager}}</td>
+            <td>
+                {{!-- Modal Button 1 --}}
+                <a href="/admin/manager/history/treatment/{{account_id}}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateCapacity{{treatment_id}}">Update capacity</a>
+                {{!-- Modal 1 --}}
+                <!-- Modal -->
+                <div class="modal fade" id="updateCapacity{{treatment_id}}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update treatment's capacity</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                        <form action="/admin/treatment/updateCapacity" method="post">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="treatmentId" name="treatmentId" value="{{treatment_id}}" hidden>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newCapacity" class="form-label">New capacity</label>
+                                <input type="number" class="form-control" id="newCapacity" name="newCapacity">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                </div>
+                {{!-- Modal Button 2 --}}
+                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateManager{{treatment_id}}">Update manager</a>
+                <!-- Modal 2 -->
+                <div class="modal fade modal-manager" id="updateManager{{treatment_id}}" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Update treatment's capacity</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                        <form action="/admin/treatment/updateManager" method="post">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <input type="text" class="form-control" id="treatmentId" name="treatmentId" value="{{this.treatment_id}}" hidden>
+                            </div>
+                            <div class="mb-3">
+                                <label for="searchUsername" class="form-label">Search manager by username</label>
+                                <input type="text" class="form-control" id="searchUsername">
+                            </div>
+                            <div class="search-result">
+                            <div class="mb-3" >
+                                <label for="foundUsername" class="form-label">Username</label>
+                                <div id="usernameResult">
+                                    <fieldset disabled>
+                                <input type="text" class="form-control" id="foundUsername" name="username">
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="mb-3" >
+                                <label for="id" class="form-label">Manager Id</label>
+                                <div id="idResult">
+                                    <fieldset disabled>
+                                <input type="text" class="form-control" id="id" name="managerId">
+                                </fieldset>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+                </div>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+    </table>
+    <nav class="pagination-outer" aria-label="Page navigation">
+            <ul class="pagination">
+
+                <li class="page-item {{#if hasPrevious}} {{else}} disabled {{/if}}">
+                    <a class="page-link" href="/admin/treatment?pageIndex={{this.previous}}">Previous</a>
+                </li>
+                {{#each indexList}}
+                <li class="page-item {{#if this.isCurrent}} active {{/if}}">
+                    <a class="page-link" href="/admin/treatment?pageIndex={{this.index}}">
+                        {{this.index}}
+                    </a>
+                </li>
+                {{/each}}
+
+                <li class="page-item {{#if hasNext}} {{else}} disabled {{/if}}">
+                    <a class="page-link" href="/admin/treatment?pageIndex={{this.next}}">Next</a>
+                </li>
+            </ul>
+        </nav>
+</section>
+</div>
+</div>
+
+<script src="../../../js/admin/script.js"></script>

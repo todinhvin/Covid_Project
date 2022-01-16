@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="../../../../../css/style.css" />
+<div class="container">
+    <h6>Treatment history</h6>
+                        {{#if hasTreatmentHistory}}
+                        <table class="table table-striped table-hover" id="treatment-table" style="background-color: #ffffff">
+                            <thead>
+                                <tr>
+                                    {{!-- <th scope="col">#</th> --}}
+                                    <th scope="col">Treatment ID</th>
+                                    <th scope="col">Treatment name</th>
+                                    <th scope="col">Person ID</th>
+                                    <th scope="col">Person name</th>
+                                    <th scope="col">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each treatment_history}}
+                                <tr>
+                                    {{!-- <th scope="row">{{treatment_history_id}}</th> --}}
+                                    <td>{{treatment_id}}</td>
+                                    <td>{{name}}</td>
+                                    <td>{{person_id}}</td>
+                                    <td>{{full_name}}</td>
+                                    <td>{{time}}</td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        {{else}}
+                        (blank)
+                        {{/if}}
+</div>

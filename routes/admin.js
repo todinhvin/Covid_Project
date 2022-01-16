@@ -1,10 +1,11 @@
-const express = require("express");
+const express = require('express');
 
 const router = express.Router();
-router.use("/", function (req, res, next) {
-  req.app.locals.layout = "admin";
+router.use('/', function (req, res, next) {
+  req.app.locals.layout = 'admin';
   next();
 });
-router.use("/patient", require("../controllers/manager/patient.C"));
+
+router.use('/', require('../controllers/admin/index'));
 
 module.exports = router;
