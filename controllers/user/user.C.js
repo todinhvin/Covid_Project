@@ -7,7 +7,7 @@ const { allUser, getOneUser } = require("../../models/user/user");
 const { getStatusHistory } = require("../../models/user/statusHistory");
 const { getTreatmentHistory } = require("../../models/user/treatmentHistory");
 const { getAccount, changeAccount } = require("../../models/user/account");
-const { getCheckout } = require("../../models/user/checkout");
+const { getCheckout, createCheckout } = require("../../models/user/checkout");
 const { getIndept } = require("../../models/user/indept");
 const { getPaymentHistory } = require("../../models/user/paymentHistory");
 const { getAddress } = require("../../models/user/address");
@@ -219,6 +219,7 @@ router.get('/buy/:id/detail', async(req, res) => {
   res.render('user/buy/buyDetail', {
       name: pd.name,
       price: pd.price,
+      Id: tempid,
       Items: its,
       countItems: count,
   });
@@ -227,9 +228,56 @@ router.get('/buy/:id/detail', async(req, res) => {
 
 //[POST] /buy
 router.post('/buy/:id/detail', async(req, res) => {
-    console.log(req.body);
-  
-    res.redirect('back');
+    // Lấy account id
+    const token = req.cookies.jwt;
+    let account;
+    await jwt.verify(token, "secret", async(err, decodedToken) => {
+        account = await getAccount("account_id", decodedToken.id);
+    });
+    let uid = account.account_id;
+
+    // Lấy package id
+    let pid = req.params.id;
+    
+    // Đọc dữ liệu từ form
+    uqObject = req.body;
+    uqArray = Object.entries(uqObject);
+    inputTest = []
+    for (let [tid, tq] of uqArray) {
+        inputTemp = {
+            item_id: tid,
+            uquantity: tq,
+        }
+
+        inputTest.push(inputTemp)
+    }
+
+    // Lấy package detail để thay thế số lượng người dùng nhập vào
+    //và thuận tiện cho việc tạo checkout
+    let its = await getPackageDetail(pid);
+    for (let i = 0; i < its.length; i++) {
+        its[i].quantity = inputTest[i].uquantity;
+    }
+
+    // Tạo checkout
+    let createRes = await createCheckout(uid, pid, its);
+
+    // Lấy lại thông tin trang detail để render
+    let pd = await getPackageById(pid);
+    let tempPrice = 0;
+    for (let it of its) {
+        tempPrice += it.quantity * it.price;
+    }
+    let count = its.length;
+
+    res.render('user/buy/buyDetail', {
+        name: pd.name,
+        price: tempPrice,
+        Id: pid,
+        Items: its,
+        countItems: count,
+        result: createRes,
+    });
   })
 
 module.exports = router;
