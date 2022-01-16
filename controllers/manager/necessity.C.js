@@ -129,11 +129,11 @@ router.get("/:id/detail", async(req, res) => {
     // console.log(id);
     const necessity = await getNecsById(id);
     console.log(necessity[0].image)
-    first = necessity[0].image[1];
+
 
     res.render("manager/necessity/detailNecs.hbs", {
         title: `${necessity[0].name} - Chi tiết`,
-        first: necessity[0].image[0],
+
         images: necessity[0].image,
     });
 });
