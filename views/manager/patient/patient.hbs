@@ -61,23 +61,12 @@
       </form>
     </div>
   </div>
-  <div style="margin:16px auto; text-align:center">
-    {{#compareString create "success"}}
-          <h2 style="color:green">Tạo mới người bệnh thành công</h2>
-        {{/compareString}}
-          {{#compareString create "error"}}
-          <h2 style="color:red">Tạo mới người bệnh thất bại</h2>
-        {{/compareString}}
-        {{#compareString update "success"}}
-          <h2 style="color:green">Cập nhật thông tin thành công</h2>
-        {{/compareString}}
-          {{#compareString update "error"}}
-          <h2 style="color:red">Cập nhật thông tin thất bại</h2>
-        {{/compareString}}
-        {{#compareString remove "success"}}
-          <h2 style="color:green">Chuyển người bệnh sang trạng thái khỏi bệnh thành công</h2>
-        {{/compareString}}
+
+  
+  <div id="toast">
+
   </div>
+
 
   <!-- Table -->
   <table class="table table-striped" style="background-color: #ffffff">
@@ -110,6 +99,8 @@
           </td>
         </tr>
       {{/each}}
+
+      
     </tbody>
   </table>
   <!-- Pagination -->
@@ -132,3 +123,43 @@
     </ul>
   </nav>
 </div>
+
+{{#compareString create "success"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showSuccessToast("Tạo mới người bệnh thành công")
+    }
+</script>
+{{/compareString}}
+
+{{#compareString create "error"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Tạo mới người bệnh thất bại")
+    }
+  </script>
+{{/compareString}}
+
+{{#compareString update "success"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showSuccessToast("Cập nhật thông tin thành công")
+    }
+</script>
+{{/compareString}}
+
+{{#compareString update "error"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Cập nhật thông tin thất bại")
+    }
+  </script>
+{{/compareString}}
+
+{{#compareString remove "success"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showSuccessToast("Chuyển người bệnh sang trạng thái khỏi bệnh thành công")
+    }
+</script>
+{{/compareString}}
