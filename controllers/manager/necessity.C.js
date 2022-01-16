@@ -6,6 +6,7 @@ const {
     getNecsById,
     updateNecs,
     delItemByItemId,
+    getNecsByName,
 } = require("../../models/manager/necessity.M");
 
 const upload = require("../../middlewares/uploadFile");
@@ -15,18 +16,23 @@ const upload = require("../../middlewares/uploadFile");
 // [GET]  /manager/package
 
 router.get("/", async(req, res) => {
-    const { page = 1, filter } = req.query;
+    console.log(req.query);
+    const { page = 1, filter, update, create, del } = req.query;
     const { totalPage, items } = await getNecessities({ page, filter });
     res.render("manager/necessity/necessity", {
         title: "Nhu yếu phẩm",
         items: items,
         totalPage: totalPage,
         filter,
+        update,
+        create,
+        del,
     });
 });
 
 // [GET] /manager/package/create
 router.get("/create", async(req, res) => {
+    const { status } = req.query;
     const a = new Date();
     const year = a.getFullYear();
     const month = a.getMonth();
@@ -34,6 +40,7 @@ router.get("/create", async(req, res) => {
     console.log(`${date}/${month + 1}/${year}`);
     res.render("manager/necessity/createNewNecs", {
         title: "Thêm nhu yếu phẩm mới",
+        status,
     });
 });
 
@@ -46,6 +53,13 @@ router.post("/create", upload.array("images"), async(req, res) => {
     const { name, price, unit } = req.body;
     // console.log(images)
 
+    const isExistName = await getNecsByName(name);
+
+
+    if (isExistName.length != 0) {
+        return res.redirect(`/manager/package/create?status=001`);
+    }
+
     // Lấy tạm manage_id
     const manager_id = 2;
     const a = new Date();
@@ -53,7 +67,7 @@ router.post("/create", upload.array("images"), async(req, res) => {
     const month = a.getMonth();
     const date = a.getDate();
     const created_on = `${year}-${month + 1}-${date}`;
-    const pathImg = {};
+
 
     const newItem = await addNewNecs(
         name,
@@ -63,14 +77,17 @@ router.post("/create", upload.array("images"), async(req, res) => {
         created_on,
         manager_id
     );
-    console.log("new data : ", newItem[0].image[0]);
-    res.redirect("/manager/package");
+
+    if (newItem) {
+        res.redirect("/manager/package/?create=success");
+    } else { res.redirect("/manager/package/?create=failed") }
 });
 
 // [GET] /manager/package/:id/update
 
 router.get("/:id/update", async(req, res) => {
     const idPackage = req.params.id;
+    const { status } = req.query;
     const data = await getNecsById(idPackage);
 
     console.log(data[0]);
@@ -81,6 +98,7 @@ router.get("/:id/update", async(req, res) => {
         unit: data[0].unit,
         item_id: data[0].item_id,
         images: data[0].image,
+        status,
     });
 });
 
@@ -90,7 +108,15 @@ router.post("/:id/update", async(req, res) => {
     // Lấy tạm manage_id
     const manager_id = 2;
     const { id } = req.params;
+
     const { name, image, price, unit } = req.body;
+
+    const isExistName = await getNecsByName(name);
+
+    if (isExistName.length != 0) {
+        return res.redirect(`/manager/package/${id}/update?status=001`);
+    }
+
     const now = new Date();
     const year = now.getFullYear();
     const month = now.getMonth();
@@ -100,14 +126,20 @@ router.post("/:id/update", async(req, res) => {
     // console.log(id);
     const newItem = await updateNecs(
         id,
-        name, `{w3schools.com/jsref/jsref_parseint.asp}`,
+        name,
         price,
         unit,
         created_on,
         manager_id
     );
     // console.log(newItem);
-    res.redirect("/manager/package?filter=item_id");
+
+    if (newItem) {
+        res.redirect("/manager/package/?update=success&filter=item_id");
+    } else {
+        res.redirect("/manager/package/?update=failed");
+    }
+
 });
 
 
@@ -119,8 +151,10 @@ router.get("/:id/delete", async(req, res) => {
     // await delRowPackItemByItemId(id);
     // await delRowCheckOutByItemId(id);
     const data = await delItemByItemId(id);
-    // console.log(data);
-    res.redirect("/manager/package");
+
+    if (data) {
+        res.redirect("/manager/package/?del=success&filter=item_id");
+    } else { res.redirect("/manager/package/?del=failed&filter=item_id") }
 });
 
 router.get("/:id/detail", async(req, res) => {

@@ -2,6 +2,9 @@
   <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
     Hãy nhập thông tin gói nhu yêu phẩm mới 
   </h2>
+  <div id="toast">
+
+  </div>
   <form
     class="form-create-victim row col-8 justify-content-center"
     action="/manager/packages/{{id}}/update-packs"
@@ -45,5 +48,12 @@
 
 
 
+{{#compareString status "001"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Tên gói nhu yếu phẩm đã tồn tại")
+    }
+  </script>
+{{/compareString}}
 
 

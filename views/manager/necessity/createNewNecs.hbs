@@ -1,7 +1,12 @@
 <div class="container">
-  <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
+  <h2 style="color: #fff; margin-top: 20px; margin-right: auto;text-align:center">
     Hãy nhập thông tin nhu yêu phẩm mới
   </h2>
+  
+   <div id="toast">
+
+  </div>
+
   <form
     class="form-create-victim row col-8 justify-content-center"
     action="/manager/package/create"
@@ -60,3 +65,11 @@
 
   </form>
 </div>
+
+{{#compareString status "001"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Tên của nhu yếu phẩm đã tồn tại")
+    }
+  </script>
+{{/compareString}}

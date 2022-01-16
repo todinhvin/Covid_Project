@@ -62,7 +62,21 @@ exports.getNecsById = async (id) =>{
     `
     SELECT * 
     FROM public.item
-    WHERE "item_id" = '${id}' 
+    WHERE "item_id" = '${id}' and "state" ='true' 
+    `
+  )
+  return rows;
+}
+
+// tìm dữ liệu package bằng id
+
+exports.getNecsByName = async (name) =>{
+
+  const {rows} = await db.query(
+    `
+    SELECT * 
+    FROM public.item
+    WHERE "name" = '${name}' 
     `
   )
   return rows;
@@ -70,12 +84,12 @@ exports.getNecsById = async (id) =>{
 
 
 // Update một sản phẩm mới
-exports.updateNecs = async (id,name,image,price,unit,created_on,manager_id) => {
+exports.updateNecs = async (id,name,price,unit,created_on,manager_id) => {
   
   const { rows } = await db.query(
     `
         UPDATE public.item
-        SET "name" = '${name}', "image" = '${image}',"price" = '${price}',"unit" = '${unit}',"created_on" = '${created_on}',
+        SET "name" = '${name}',"price" = '${price}',"unit" = '${unit}',"created_on" = '${created_on}',
         "manager_id" = '${manager_id}'
         WHERE  "item_id" ='${id}' 
         Returning *;`

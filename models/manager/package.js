@@ -15,9 +15,9 @@ const getTotalPackage = async() => {
     return rows[0].count;
 }
 
-exports.getPackageByIdPack = async(idItem) => {
+exports.getPackageByIdPack = async(idPack) => {
     const { rows } = await db.query(`SELECT * FROM public."package" WHERE "state"= 'true'
-    AND "package_id" = '${idItem}'
+    AND "package_id" = '${idPack}'
     `);
 
     return rows;
@@ -27,9 +27,9 @@ exports.getPackages = async({ page = 1, per_page = 6, filter }) => {
         const offset = (page - 1) * per_page;
         const { rows } = await db.query(
                 `SELECT PK.package_id,PK.name, date(due_date),count(*) as amount
-                FROM public.package_item IM 
-                JOIN public."package" PK ON IM.package_id = PK.package_id 
-                WHERE PK.state ='true'
+                FROM public.package_item IM
+                JOIN public."package" PK ON IM.package_id = PK.package_id, public.item IT
+                WHERE IT.state ='true' and IT.item_id = IM.item_id and PK.state ='true'
                 GROUP BY PK.package_id ,PK.name,PK.due_date
                 ${filter ? `ORDER BY ${filter} ASC` : ""}
                 LIMIT $1 OFFSET $2 
@@ -87,4 +87,13 @@ exports.delItemByPackId = async(idPack) => {
           Returning *;`
   )
   return rows;
+}
+
+exports.getPackByName = async(idPack,name) => {
+
+  const { rows } = await db.query(`SELECT * FROM public."package" 
+    WHERE  "name" = '${name}' and "package_id" = '${idPack}' and "state"= 'true'
+    `);
+
+    return rows;
 }

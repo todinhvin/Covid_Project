@@ -55,7 +55,9 @@
       </form>
     </div>
   </div>
+ <div id="toast">
 
+  </div>
   <!-- Table -->
   <table class="table table-striped" style="background-color: #ffffff">
     <thead>
@@ -102,8 +104,54 @@
 
     </ul>
   </nav>
-  
-
 </div>
 
+{{#compareString create "success"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showSuccessToast("Tạo thành công nhu yếu phẩm")
+    }
+</script>
+{{/compareString}}
+
+{{#compareString create "failed"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Tạo thất bại nhu yếu phẩm")
+    }
+  </script>
+{{/compareString}}
+
+{{#compareString update "success"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showSuccessToast("Cập nhật thông tin thành công")
+    }
+</script>
+{{/compareString}}
+
+{{#compareString update "failed"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Cập nhật thông tin thất bại")
+    }
+  </script>
+{{/compareString}}
+
+
+{{#compareString del "success"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showSuccessToast("Xóa nhu yếu phẩm thành công")
+    }
+</script>
+{{/compareString}}
+
+{{#compareString del "failed"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Xóa nhu yếu phẩm thất bại")
+    }
+  </script>
+{{/compareString}}
 
