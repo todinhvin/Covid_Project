@@ -91,7 +91,7 @@ router.post("/create", async (req, res) => {
     treatment_id,
     status,
     manager_id: req.account_id,
-    related_person_id: related_person_cccd ? relatedPerson.person_id : -1,
+    related_person_id: relatedPerson ? relatedPerson.person_id : -1,
   });
   if (data) {
     return res.redirect("/manager/patient?create=success");
