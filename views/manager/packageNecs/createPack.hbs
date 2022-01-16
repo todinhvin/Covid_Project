@@ -1,0 +1,97 @@
+<div class="container">
+  <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
+    Hãy nhập thông tin gói nhu yêu phẩm mới 
+  </h2>
+  <form
+    class="form-create-victim row col-8 justify-content-center"
+    action="/manager/packages/create"
+    method="POST"
+    name ="create"
+  >
+    <div class="col-12">
+      <div class="">
+        <label class="flabel mb-1" for="name">Tên gói nhu yếu phẩm</label><input
+          class="form-control"
+          type="text"
+          name="name"
+          required="required"
+           placeholder="Nhập tên ở đây"
+        />
+      </div>
+
+      <div class="form-div">
+        <label class="flabel mb-1 datepicker" for="price">Ngày đến hạn</label><input
+          class="form-control"
+          type="date"
+          name="due_date"
+          required="required"
+          id="datepicker"
+        />
+      </div>
+
+    </div>
+    
+    
+    <div class="col-4">
+            <label class="flabel mb-1" for="unit">Nyp 1</label><select
+            class="form-select"
+            name="first"
+            style ="outline:none"
+            >
+            {{#each items}}
+            <option value="{{item_id}}">{{name}}</option>
+            {{/each}}
+            </select>
+    </div>
+    <div class="col-4">
+            <label class="flabel mb-1" for="unit">Số lượng</label>
+           <input class="form-amount amount01" type="number" name="amount01"value ="1"></input>
+    </div>
+    
+    <div class="col-4">
+            <label class="flabel mb-1" for="unit">Giới hạn</label>
+           <input class="form-amount amount01" type="number" name="limit01"value ="3"></input>
+    </div>
+    
+    <div class="col-4">
+            <label class="flabel mb-1" for="unit">Nyp 2</label><select
+            class="form-select"
+            name="second"
+            style ="outline:none"
+            >
+            {{#each items}}
+            <option value="{{item_id}}">{{name}}</option>
+            {{/each}}
+            </select>
+    </div>
+    <div class="col-4">
+            <label class="flabel mb-1" for="unit">Số lượng</label>
+           <input class="form-amount amount01" type="number" name="amount02"value ="1"></input>
+    </div>
+    <div class="col-4">
+            <label class="flabel mb-1" for="unit">Số lượng</label>
+            <input class="form-amount amount02" type="number" name="limit02" value ="2"></input>
+    </div>
+
+    <div class="col">
+        <div class="d-flex justify-content-around" style="margin-top: 20px">
+        <button class="btn btn-tung" type="submit">Lưu</button><a
+            class="btn btn-tung"
+            href="/manager/packages"
+        >Hủy</a>
+        </div>
+    </div>
+  
+  </form>
+  
+</div>
+
+<script type="text/javascript">
+  $( ".datepicker" ).datepicker({
+    format: 'yyyy-mm-dd'
+  });
+</script>
+
+
+
+

@@ -73,10 +73,10 @@
           <th scope="row">{{package_id}}</th>
           <td>{{name}}</td>
            <td>{{amount}}</td>
-          <td>{{due_date}}</td>
+          <td>{{formatTime date}}</td>
           <td class="victim-btns">
             <a href="/manager/packages/{{package_id}}/detail" class="btn btn-primary">Chi tiết</a>
-            <a href="/manager/packages/{{package_id}}/update" class="btn btn-success mT8">Cập nhật</a>
+            <a href="/manager/packages/{{package_id}}/update-packs" class="btn btn-success mT8">Cập nhật</a>
             <a href="/manager/packages/{{package_id}}/delete" class="btn btn-danger mT8">Xóa</a>
           </td>
         </tr>
@@ -103,8 +103,7 @@
     </ul>
   </nav>
   
+
 </div>
-
-
 
 

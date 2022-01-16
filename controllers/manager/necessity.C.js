@@ -41,7 +41,7 @@ router.post("/create", async(req, res) => {
     const year = a.getFullYear()
     const month = a.getMonth()
     const date = a.getDate()
-    const created_on = `${date}/${month+1}/${year}`;
+    const created_on = `${year}-${month+1}-${date}`;
     const newItem = await addNewNecs(name, `{w3schools.com/jsref/jsref_parseint.asp}`, price, unit, created_on, manager_id);
     console.log("new data : ", newItem);
 
@@ -79,9 +79,9 @@ router.post("/:id/update", async(req, res) => {
     const month = a.getMonth();
     const date = a.getDate();
 
-    const created_on = `${date}/${month+1}/${year}`;
+    const created_on = `${year}-${month+1}-${date}`;
     // console.log(id);
-    const newItem = await updateNecs(id, name, { image }, price, unit, created_on, manager_id);
+    const newItem = await updateNecs(id, name, `{w3schools.com/jsref/jsref_parseint.asp}`, price, unit, created_on, manager_id);
     // console.log(newItem);
     res.redirect('/manager/package');
 });

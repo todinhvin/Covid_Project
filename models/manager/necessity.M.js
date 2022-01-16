@@ -2,11 +2,16 @@ const db = require("../db");
 
 // đếm tổng số lượng nhu yếu phẩm
 const getTotalNec = async() => {
-    const { rows } = await db.query(`SELECT count(*) FROM item `);
+    const { rows } = await db.query(`SELECT count(*) FROM item where "state" ='true'`);
 
     return rows[0].count;
 };
 
+exports.getAllItems = async() => {
+    const { rows } = await db.query(`SELECT * FROM item where "state" ='true'`);
+
+    return rows;
+};
 // lấy thông tin nhu yếu phẩm và hiển thị với số myp 1 page là 6
 exports.getNecessities = async({ page = 1, per_page = 6, filter }) => {
         const offset = (page - 1) * per_page;

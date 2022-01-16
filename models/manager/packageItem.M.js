@@ -48,3 +48,16 @@ exports.delItemInPack = async(idPakage, idItem) => {
 
     return rows;
 }
+
+
+exports.addItemInPack = async(idPack, idItem, quantity, limit) => {
+
+    const { rows } = await db.query(
+        `INSERT INTO  ${tableName}
+        ("package_id","item_id","quantity","item_limit")
+        Values('${idPack}','${idItem}','${quantity}','${limit}')
+        Returning* `
+    )
+
+    return rows;
+}
