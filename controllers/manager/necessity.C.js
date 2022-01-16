@@ -10,6 +10,8 @@ const {
 
 const upload = require("../../middlewares/uploadFile");
 
+
+
 // [GET]  /manager/package
 
 router.get("/", async(req, res) => {
@@ -37,10 +39,12 @@ router.get("/create", async(req, res) => {
 
 // [POST] /manager/package/create
 router.post("/create", upload.array("images"), async(req, res) => {
-    // Xử lý luư hình ảnh
-    const images = req.files ? .map((file) => file.filename);
 
+    // Xử lý lưu hình ảnh
+    var images = req.files.map((file) => file.filename);
+    console.log("hình ảnh:", images);
     const { name, price, unit } = req.body;
+    // console.log(images)
 
     // Lấy tạm manage_id
     const manager_id = 2;
@@ -48,17 +52,18 @@ router.post("/create", upload.array("images"), async(req, res) => {
     const year = a.getFullYear();
     const month = a.getMonth();
     const date = a.getDate();
-    const created_on = `${date}/${month + 1}/${year}`;
+    const created_on = `${year}-${month + 1}-${date}`;
+    const pathImg = {};
+
     const newItem = await addNewNecs(
         name,
-        `{w3schools.com/jsref/jsref_parseint.asp}`,
+        `{${images}}`,
         price,
         unit,
         created_on,
         manager_id
     );
-    console.log("new data : ", newItem);
-
+    console.log("new data : ", newItem[0].image[0]);
     res.redirect("/manager/package");
 });
 
@@ -67,6 +72,7 @@ router.post("/create", upload.array("images"), async(req, res) => {
 router.get("/:id/update", async(req, res) => {
     const idPackage = req.params.id;
     const data = await getNecsById(idPackage);
+
     console.log(data[0]);
     res.render("manager/necessity/updateNecs.hbs", {
         title: "Cập nhật sản phẩm",
@@ -74,35 +80,37 @@ router.get("/:id/update", async(req, res) => {
         price: data[0].price,
         unit: data[0].unit,
         item_id: data[0].item_id,
+        images: data[0].image,
     });
 });
 
 // [POST] /manager/package/:id/update
-
 router.post("/:id/update", async(req, res) => {
     console.log(req.body);
     // Lấy tạm manage_id
     const manager_id = 2;
     const { id } = req.params;
     const { name, image, price, unit } = req.body;
-    const a = new Date();
-    const year = a.getFullYear();
-    const month = a.getMonth();
-    const date = a.getDate();
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const date = now.getDate();
 
-    const created_on = `${date}/${month + 1}/${year}`;
+    const created_on = `${year}-${month + 1}-${date}`;
     // console.log(id);
     const newItem = await updateNecs(
         id,
-        name, { image },
+        name, `{w3schools.com/jsref/jsref_parseint.asp}`,
         price,
         unit,
         created_on,
         manager_id
     );
     // console.log(newItem);
-    res.redirect("/manager/package");
+    res.redirect("/manager/package?filter=item_id");
 });
+
+
 
 router.get("/:id/delete", async(req, res) => {
     const { id } = req.params;
@@ -120,8 +128,13 @@ router.get("/:id/detail", async(req, res) => {
 
     // console.log(id);
     const necessity = await getNecsById(id);
+    console.log(necessity[0].image)
+    first = necessity[0].image[1];
+
     res.render("manager/necessity/detailNecs.hbs", {
         title: `${necessity[0].name} - Chi tiết`,
+        first: necessity[0].image[0],
+        images: necessity[0].image,
     });
 });
 
