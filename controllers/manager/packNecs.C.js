@@ -66,6 +66,7 @@ router.post('/create', async(req, res) => {
 
     console.log(req.body);
 
+
     const { name, due_date, first, amount01, limit01, second, amount02, limit02 } = req.body;
     const a = new Date();
     const year = a.getFullYear();
@@ -73,10 +74,14 @@ router.post('/create', async(req, res) => {
     const date = a.getDate();
     const created_on = `${year}-${month+1}-${date}`;
 
+    // console.log(name, due_date.split('-')[0], created_on);
+
+
     const yearDueDate = due_date.split('-')[0];
     const monthDueDate = due_date.split('-')[1];
     const dateDueDate = due_date.split('-')[2];
-
+    // console.log(yearDueDate, monthDueDate, dateDueDate);
+    // res.json({ status: "fail" }) 
     const dueDate = `${yearDueDate}-${monthDueDate}-${dateDueDate}`;
     console.log(dueDate)
 
