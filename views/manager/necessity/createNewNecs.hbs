@@ -1,10 +1,11 @@
 <div class="container">
   <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
-    Hãy nhập thông tin nhu yêu phẩm mới 
+    Hãy nhập thông tin nhu yêu phẩm mới
   </h2>
   <form
     class="form-create-victim row col-8 justify-content-center"
     action="/manager/package/create"
+    enctype="multipart/form-data"
     method="POST"
   >
     <div class="col">
@@ -14,15 +15,17 @@
           type="text"
           name="name"
           required="required"
-           placeholder="Nhập tên ở đây"
+          placeholder="Nhập tên ở đây"
         />
       </div>
       <div class="">
-        <label class="flabel mb-1" for="img">Hình ảnh</label><input
+        <label class="flabel mb-1" for="images">Hình ảnh</label><input
           class="form-control"
           type="file"
-          name="image"
-          {{!-- required="required" --}}
+          name="images"
+          multiple="multiple"
+          accept=".jpg,.png"
+          {{! required="required" }}
           placeholder="Hãy lưu trữ hình ảnh lên cloud và đặt link ảnh tới ở đây"
         />
       </div>
@@ -46,15 +49,13 @@
           <option value="Ta">Tá</option>
         </select>
       </div>
-    <div class="d-flex justify-content-around" style="margin-top: 20px">
-    <button class="btn btn-tung" type="submit">Lưu</button><a
-        class="btn btn-tung"
-        href="/manager/package"
-    >Hủy</a>
+      <div class="d-flex justify-content-around" style="margin-top: 20px">
+        <button class="btn btn-tung" type="submit">Lưu</button><a
+          class="btn btn-tung"
+          href="/manager/package"
+        >Hủy</a>
+      </div>
     </div>
-    </div>
- 
-    
-  
+
   </form>
 </div>
