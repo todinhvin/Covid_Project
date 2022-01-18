@@ -1,26 +1,148 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const { getAllAddresses } = require("../../models/manager/address");
-const { getAllTreatments } = require("../../models/manager/treatment");
+const { getAllAddresses } = require('../../models/manager/address');
+const { getAllTreatments } = require('../../models/manager/treatment');
 const {
+<<<<<<< HEAD
+    getPatients,
+    getDetailsPatientById,
+    getPatientsBySearch,
+    getPatientsKB,
+    updatePatient,
+    removePatient,
+} = require("../../models/manager/patient");
+const { convertDate } = require("../../helper");
+const {
+    createPatient,
+    getPatientByCCCD,
+    getPatientById,
+} = require("../../models/manager/patient");
+router.get("/", async(req, res) => {
+    const { page = 1, filter } = req.query;
+    const { totalPage, patients } = await getPatients({ page, filter });
+    const { create, update, remove } = req.query;
+    res.render("manager/patient/patient", {
+        patients: patients,
+        totalPage,
+        page,
+        filter,
+        create,
+        update,
+        remove,
+        url: "/manager/patient",
+    });
+});
+
+router.get("/KB", async(req, res) => {
+    const { page = 1, filter } = req.query;
+    const { totalPage, patients } = await getPatientsKB({ page, filter });
+    res.render("manager/patient/patient", {
+        patients: patients,
+        totalPage,
+        page,
+        filter,
+        url: "/manager/patient/KB",
+    });
+});
+
+router.get("/search", async(req, res) => {
+    const { page = 1, search } = req.query;
+    const { totalPage, patients } = await getPatientsBySearch({ page, search });
+    res.render("manager/patient/patient", {
+        patients: patients,
+        totalPage,
+        page,
+        search,
+        url: "/manager/patient/search",
+    });
+});
+
+router.get("/create", async(req, res) => {
+    const addresses = await getAllAddresses();
+    const treatments = await getAllTreatments();
+    res.render("manager/patient/createPatient", {
+        addresses,
+        treatments,
+    });
+});
+
+router.post("/create", async(req, res) => {
+    const {
+        full_name,
+        cccd,
+        birthday,
+        status,
+        address_id,
+        treatment_id,
+        related_person_cccd,
+    } = req.body;
+    const patientCheck = await getPatientByCCCD(cccd);
+    if (patientCheck) {
+        return res.redirect("/manager/patient?create=error");
+    }
+    let relatedPerson;
+    if (related_person_cccd) {
+        relatedPerson = await getPatientByCCCD(related_person_cccd);
+    }
+    const data = await createPatient({
+        full_name,
+        cccd,
+        birthday,
+        address_id,
+        treatment_id,
+        status,
+        manager_id: req.account_id,
+        related_person_id: relatedPerson ? relatedPerson.person_id : -1,
+    });
+    if (data) {
+        return res.redirect("/manager/patient?create=success");
+    } else {
+        return res.redirect("/manager/patient?create=error");
+    }
+});
+
+router.get("/:id/update", async(req, res) => {
+    const patient = await getPatientById(req.params.id);
+    const addresses = await getAllAddresses();
+    const treatments = await getAllTreatments();
+    patient.birthday = convertDate(patient.birthday);
+    res.render("manager/patient/updatePatient", {
+        addresses,
+        treatments,
+        patient,
+    });
+});
+
+router.post("/:id/update", async(req, res) => {
+    const { id } = req.params;
+    const {
+        full_name,
+        cccd,
+        birthday,
+        status,
+        address_id,
+        treatment_id,
+        related_person_cccd,
+    } = req.body;
+=======
   getPatients,
   getDetailsPatientById,
   getPatientsBySearch,
   getPatientsKB,
   updatePatient,
   removePatient,
-} = require("../../models/manager/patient");
-const { convertDate } = require("../../helper");
+} = require('../../models/manager/patient');
+const { convertDate } = require('../../helper');
 const {
   createPatient,
   getPatientByCCCD,
   getPatientById,
-} = require("../../models/manager/patient");
-router.get("/", async (req, res) => {
+} = require('../../models/manager/patient');
+router.get('/', async (req, res) => {
   const { page = 1, filter } = req.query;
   const { totalPage, patients } = await getPatients({ page, filter });
   const { create, update, remove } = req.query;
-  res.render("manager/patient/patient", {
+  res.render('manager/patient/patient', {
     patients: patients,
     totalPage,
     page,
@@ -28,44 +150,44 @@ router.get("/", async (req, res) => {
     create,
     update,
     remove,
-    url: "/manager/patient",
+    url: '/manager/patient',
   });
 });
 
-router.get("/KB", async (req, res) => {
+router.get('/KB', async (req, res) => {
   const { page = 1, filter } = req.query;
   const { totalPage, patients } = await getPatientsKB({ page, filter });
-  res.render("manager/patient/patient", {
+  res.render('manager/patient/patient', {
     patients: patients,
     totalPage,
     page,
     filter,
-    url: "/manager/patient/KB",
+    url: '/manager/patient/KB',
   });
 });
 
-router.get("/search", async (req, res) => {
+router.get('/search', async (req, res) => {
   const { page = 1, search } = req.query;
   const { totalPage, patients } = await getPatientsBySearch({ page, search });
-  res.render("manager/patient/patient", {
+  res.render('manager/patient/patient', {
     patients: patients,
     totalPage,
     page,
     search,
-    url: "/manager/patient/search",
+    url: '/manager/patient/search',
   });
 });
 
-router.get("/create", async (req, res) => {
+router.get('/create', async (req, res) => {
   const addresses = await getAllAddresses();
   const treatments = await getAllTreatments();
-  res.render("manager/patient/createPatient", {
+  res.render('manager/patient/createPatient', {
     addresses,
     treatments,
   });
 });
 
-router.post("/create", async (req, res) => {
+router.post('/create', async (req, res) => {
   const {
     full_name,
     cccd,
@@ -77,7 +199,7 @@ router.post("/create", async (req, res) => {
   } = req.body;
   const patientCheck = await getPatientByCCCD(cccd);
   if (patientCheck) {
-    return res.redirect("/manager/patient?create=error");
+    return res.redirect('/manager/patient?create=error');
   }
   let relatedPerson;
   if (related_person_cccd) {
@@ -94,25 +216,25 @@ router.post("/create", async (req, res) => {
     related_person_id: relatedPerson ? relatedPerson.person_id : -1,
   });
   if (data) {
-    return res.redirect("/manager/patient?create=success");
+    return res.redirect('/manager/patient?create=success');
   } else {
-    return res.redirect("/manager/patient?create=error");
+    return res.redirect('/manager/patient?create=error');
   }
 });
 
-router.get("/:id/update", async (req, res) => {
+router.get('/:id/update', async (req, res) => {
   const patient = await getPatientById(req.params.id);
   const addresses = await getAllAddresses();
   const treatments = await getAllTreatments();
   patient.birthday = convertDate(patient.birthday);
-  res.render("manager/patient/updatePatient", {
+  res.render('manager/patient/updatePatient', {
     addresses,
     treatments,
     patient,
   });
 });
 
-router.post("/:id/update", async (req, res) => {
+router.post('/:id/update', async (req, res) => {
   const { id } = req.params;
   const {
     full_name,
@@ -123,18 +245,54 @@ router.post("/:id/update", async (req, res) => {
     treatment_id,
     related_person_cccd,
   } = req.body;
+>>>>>>> 46549af08cb8aaa39b588e3aa5ee56b373bc6291
 
-  // const patientCheck = await getPatientByCCCD(cccd);
-  // if (patientCheck) {
-  //   return res.redirect("/manager/patient?update=error");
-  // }
+    // const patientCheck = await getPatientByCCCD(cccd);
+    // if (patientCheck) {
+    //   return res.redirect("/manager/patient?update=error");
+    // }
 
-  let relatedPerson;
-  if (related_person_cccd) {
-    relatedPerson = await getPatientByCCCD(related_person_cccd);
-  }
-  console.log(123);
+    let relatedPerson;
+    if (related_person_cccd) {
+        relatedPerson = await getPatientByCCCD(related_person_cccd);
+    }
+    console.log(123);
 
+<<<<<<< HEAD
+    const data = await updatePatient({
+        person_id: id,
+        full_name,
+        cccd,
+        birthday: new Date(birthday),
+        address_id,
+        treatment_id,
+        status,
+        manager_id: req.account_id,
+        related_person_id: related_person_cccd ? relatedPerson.person_id : -1,
+    });
+    if (data) {
+        return res.redirect("/manager/patient/?update=success");
+    } else {
+        return res.redirect("/manager/patient/?update=error");
+    }
+});
+
+router.get("/:id/delete", async(req, res) => {
+    const { id } = req.params;
+
+    removePatient({ person_id: id, manager_id: req.account_id });
+    return res.redirect("/manager/patient/?remove=success");
+});
+
+router.get("/:id", async(req, res) => {
+    const { id } = req.params;
+    const { patient, statusHis, treatmentHis } = await getDetailsPatientById(id);
+    res.render("manager/patient/detailPatient", {
+        patient,
+        statusHis,
+        treatmentHis,
+    });
+=======
   const data = await updatePatient({
     person_id: id,
     full_name,
@@ -147,27 +305,28 @@ router.post("/:id/update", async (req, res) => {
     related_person_id: related_person_cccd ? relatedPerson.person_id : -1,
   });
   if (data) {
-    return res.redirect("/manager/patient/?update=success");
+    return res.redirect('/manager/patient/?update=success');
   } else {
-    return res.redirect("/manager/patient/?update=error");
+    return res.redirect('/manager/patient/?update=error');
   }
 });
 
-router.get("/:id/delete", async (req, res) => {
+router.get('/:id/delete', async (req, res) => {
   const { id } = req.params;
 
   removePatient({ person_id: id, manager_id: req.account_id });
-  return res.redirect("/manager/patient/?remove=success");
+  return res.redirect('/manager/patient/?remove=success');
 });
 
-router.get("/:id", async (req, res) => {
+router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const { patient, statusHis, treatmentHis } = await getDetailsPatientById(id);
-  res.render("manager/patient/detailPatient", {
+  res.render('manager/patient/detailPatient', {
     patient,
     statusHis,
     treatmentHis,
   });
+>>>>>>> 46549af08cb8aaa39b588e3aa5ee56b373bc6291
 });
 
 module.exports = router;

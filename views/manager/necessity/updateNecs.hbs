@@ -1,7 +1,12 @@
 <div class="container">
-  <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
-    Cập nhật thông tin của package
+  <h2 style="color: #fff; margin-top: 20px; margin-right: auto;;text-align:center">
+    Cập nhật thông tin của nhu yếu phẩm
   </h2>
+
+   <div id="toast">
+
+  </div>
+
   <form
     class="form-create-victim row col-8 justify-content-center"
     action="/manager/package/{{item_id}}/update"
@@ -15,17 +20,7 @@
           name="name"
           required="required"
           placeholder="Nhập tên ở đây"
-          value = {{name}}
-        />
-      </div>
-      <div class="">
-        <label class="flabel mb-1" for="img">Hình ảnh</label><input
-          class="form-control"
-          type="text"
-          name="image"
-          {{!-- required="required" --}}
-          placeholder="Hãy lưu trữ hình ảnh lên cloud và đặt link ảnh tới ở đây"
-
+          value = "{{name}}"
         />
       </div>
       <div class="form-div">
@@ -59,3 +54,5 @@
     </div>
   </form>
 </div>
+
+

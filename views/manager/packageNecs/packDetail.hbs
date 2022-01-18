@@ -4,14 +4,22 @@
             align-items: center;
             justify-content: space-between;">
     <!-- Thêm người bệnh -->
+
  <a
-    href="/manager/packages/create"
+    href="/manager/packages/{{idPackage}}/addItem"
     class="navbar-item"
     style="display: block; width: 300px; margin: 20px 0"
   >THÊM NHU YẾU PHẨM VÀO GÓI</a>
+ <a
+    href="/manager/packages/{{idPackage}}/update-item"
+    class="navbar-item"
+    style="display: block; width: 300px; margin: 20px 0"
+  >CẬP NHẬT GÓI</a>
 
   </div>
-  
+   <div id="toast">
+
+  </div>
   <!-- Table -->
   <table class="table table-striped" style="background-color: #ffffff">
     <thead>
@@ -32,7 +40,9 @@
           <td>{{item_limit}}</td>
           <td class="victim-btns">
             <a href="/manager/package/{{item_id}}/detail" class="btn btn-primary">Chi tiết</a>
-            <form action="/manager/packages/{{item_id}}/delete-item">
+            
+
+            <form action="/manager/packages/{{item_id}}/delete-item" method='GET'>
             <button  class="btn btn-danger mT8">Xóa</button>
              <input style ="display:none" value ="{{package_id}}"name="idPackage"/>
             </form>
@@ -42,9 +52,51 @@
       {{/each}}
     </tbody>
   </table>
-   
+    <a
+    href="/manager/packages"
+    class="navbar-item"
+    style="display: block; width: 100px; margin: 20px 0"
+  >Trở về</a>
 </div>
 
 
+{{#compareString add "success"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showSuccessToast("Thêm nhu yếu phẩm thành công")
+    }
+  </script>
+{{/compareString}}
 
+{{#compareString add "failed"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Thêm nhu yếu phẩm thất bại")
+    }
+  </script>
+{{/compareString}}
+
+{{#compareString del "success"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showSuccessToast("Xóa thành công")
+    }
+  </script>
+{{/compareString}}
+
+{{#compareString del "001"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Phải có ít nhất 2 sản phẩm")
+    }
+  </script>
+{{/compareString}}
+
+{{#compareString del "failed"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Xóa thất bại")
+    }
+  </script>
+{{/compareString}}
 
