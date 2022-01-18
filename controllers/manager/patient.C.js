@@ -7,6 +7,7 @@ const {
   getDetailsPatientById,
   getPatientsBySearch,
   getPatientsKB,
+  getPatientsRelated,
   updatePatient,
   removePatient,
 } = require("../../models/manager/patient");
@@ -93,7 +94,9 @@ router.post("/create", async (req, res) => {
     manager_id: req.account_id,
     related_person_id: relatedPerson ? relatedPerson.person_id : -1,
   });
-  if (data) {
+  if (data && data.status === "full_capacity") {
+    return res.redirect("/manager/patient?create=error_full");
+  } else if (data) {
     return res.redirect("/manager/patient?create=success");
   } else {
     return res.redirect("/manager/patient?create=error");
@@ -124,11 +127,6 @@ router.post("/:id/update", async (req, res) => {
     related_person_cccd,
   } = req.body;
 
-  // const patientCheck = await getPatientByCCCD(cccd);
-  // if (patientCheck) {
-  //   return res.redirect("/manager/patient?update=error");
-  // }
-
   let relatedPerson;
   if (related_person_cccd) {
     relatedPerson = await getPatientByCCCD(related_person_cccd);
@@ -145,7 +143,9 @@ router.post("/:id/update", async (req, res) => {
     manager_id: req.account_id,
     related_person_id: relatedPerson ? relatedPerson.person_id : -1,
   });
-  if (data) {
+  if (data && data.status === "full_capacity") {
+    return res.redirect("/manager/patient?update=error_full");
+  } else if (data) {
     return res.redirect("/manager/patient/?update=success");
   } else {
     return res.redirect("/manager/patient/?update=error");
@@ -162,10 +162,12 @@ router.get("/:id/delete", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const { patient, statusHis, treatmentHis } = await getDetailsPatientById(id);
+  const relatedPersons = await getPatientsRelated(patient.person_id);
   res.render("manager/patient/detailPatient", {
     patient,
     statusHis,
     treatmentHis,
+    relatedPersons,
   });
 });
 

@@ -30,6 +30,21 @@
         {{/each}}
 
       </ul>
+
+      <h4>Danh sách người liên quan</h4>
+      <ul style="padding: 0 60px; font-size: 20px">
+        {{#each relatedPersons}}
+          <li>
+            <p>Họ tên: {{full_name}}</p>
+            <p>Birthday:
+              {{#checkExists birthday}}
+                {{formatBirthday birthday}}
+              {{/checkExists}}</p>
+            <p>CCCD: {{cccd}}</p>
+          </li>
+        {{/each}}
+
+      </ul>
     </div>
   </div>
 </div>

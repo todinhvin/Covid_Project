@@ -1,7 +1,11 @@
 const db = require("../db");
 
 const { getAddressByID } = require("./address");
-const { getTreatmentByID } = require("./treatment");
+const {
+  getTreatmentByID,
+  getCurrentPatientsContain,
+  getCapacityTreamentByID,
+} = require("./treatment");
 const { addStatusPerson, getStatusHPerson } = require("./status_history");
 const {
   addTreatmentPerson,
@@ -161,6 +165,14 @@ exports.createPatient = async ({
   status,
   manager_id,
 }) => {
+  const curentContain = await getCurrentPatientsContain(treatment_id);
+  const capacity = await getCapacityTreamentByID(treatment_id);
+  if (curentContain >= capacity) {
+    return {
+      status: "full_capacity",
+    };
+  }
+
   const { rows } = await db.query(
     'INSERT INTO public."person"("full_name","cccd","birthday","address_id","related_person_id","treatment_id","status","manager_id") VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *;',
     [
@@ -194,6 +206,7 @@ const getPatientsRelated = async (person_id) => {
   return rows;
 };
 
+exports.getPatientsRelated = getPatientsRelated;
 const updatePatient = async ({
   person_id,
   full_name,
@@ -207,6 +220,16 @@ const updatePatient = async ({
 }) => {
   try {
     const oldPatient = await getPatientById(person_id);
+    if (oldPatient.treatment_id != treatment_id) {
+      const curentContain = await getCurrentPatientsContain(treatment_id);
+      const capacity = await getCapacityTreamentByID(treatment_id);
+      if (curentContain >= capacity) {
+        return {
+          status: "full_capacity",
+        };
+      }
+    }
+
     if (oldPatient.status === "F1" && status === "F0") {
       const patientsRelated = await getPatientsRelated(person_id);
       for (let i = 0; i < patientsRelated.length; i++) {

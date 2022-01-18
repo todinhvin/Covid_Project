@@ -140,6 +140,14 @@
   </script>
 {{/compareString}}
 
+{{#compareString create "error_full"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Tạo mới người bệnh thất bại do vượt quá sức chứa")
+    }
+  </script>
+{{/compareString}}
+
 {{#compareString update "success"}}
   <script>
     window.onload = function showAnnouncement() {
@@ -152,6 +160,14 @@
   <script>
     window.onload = function showAnnouncement() {
       showErrorToast("Cập nhật thông tin thất bại")
+    }
+  </script>
+{{/compareString}}
+
+{{#compareString update "error_full"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Cập nhật thông tin thất bại do vượt quá sức chứa")
     }
   </script>
 {{/compareString}}
