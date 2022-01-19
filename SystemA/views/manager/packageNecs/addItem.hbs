@@ -1,0 +1,77 @@
+<div class="container">
+    <style type="text/css">
+
+    .form-amount {
+        width: 100%;
+        padding: 0.375rem 1rem 0.375rem 0.75rem;
+        font-size: 1.1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        border-radius: 5px;
+        border: none;
+    }
+  </style>
+
+  <h2 style="color: #fff; margin-top: 20px; margin-right: auto; text-align:center">
+    Hãy nhập thông tin gói nhu yêu phẩm mới 
+  </h2>
+   <div id="toast">
+
+  </div>
+  <form
+    class="form-create-victim row col-8 justify-content-center"
+    action="/manager/packages/{{idPackage}}/addItem"
+    method="POST"
+    name ="addItem"
+  >
+
+    <div class="col-12">
+            <label class="flabel mb-1" for="unit">Chọn nhu yếu phẩm</label><select
+            class="form-select"
+            name="first"
+            style ="outline:none"
+            >
+            {{#each items}}
+            <option value="{{item_id}}">{{name}}</option>
+            {{/each}}
+            </select>
+    </div>
+    <div class="col-6">
+            <label class="flabel mb-1" for="unit">Số lượng</label>
+           <input class="form-amount amount01" type="number" name="amount01"value ="1"></input>
+    </div>
+    
+    <div class="col-6">
+            <label class="flabel mb-1" for="unit">Giới hạn</label>
+           <input class="form-amount amount01" type="number" name="limit01"value ="3"></input>
+    </div>
+    
+    <div class="col-12">
+        <div class="d-flex justify-content-around" style="margin-top: 20px">
+        <button class="btn btn-tung" type="submit">Lưu</button><a
+            class="btn btn-tung"
+            href="/manager/packages/{{idPackage}}/detail"
+        >Hủy</a>
+        </div>
+    </div>
+  
+  </form>
+</div>
+{{#compareString status "001"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Nhu yếu phẩm đã tồn tại trong gói")
+    }
+  </script>
+{{/compareString}}
+{{#compareString status "002"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Số lượng hoặc giới hạn không phù hợp")
+    }
+  </script>
+{{/compareString}}
+
+
+
+

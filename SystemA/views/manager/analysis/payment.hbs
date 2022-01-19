@@ -1,0 +1,40 @@
+<div class="container" style="margin-bottom:40px;">
+
+  
+   <div class="victim-category" style="margin-bottom: 16px;">
+
+       <p>Thống kê theo thời gian:</p>
+      <form action="{{url}}" method="get" class="form-inline md-form" style=" display: flex;align-items: center;justify-content: space-around;flex:2">
+         <select class="custom-select" name="filter" style="width: 80%;">
+            <option >Lựa chọn</option>
+            <option {{#compareString filter "week"}}selected{{/compareString}} value="week">1 tuần</option>
+            <option {{#compareString filter "one_month"}}selected{{/compareString}} value="one_month">1 tháng</option>
+            <option {{#compareString filter "three_month"}}selected{{/compareString}} value="three_month">3 tháng</option>
+            <option {{#compareString filter "year"}}selected{{/compareString}} value="year">1 năm</option>
+        </select>
+        <button class="btn" style="background: #3fa4e2" type="submit">
+          Lựa chọn
+        </button>
+      </form>
+      
+    </div>
+    <div style="background:#FFFFFF;border-radius:8px;padding:40px;">
+      <canvas id="barChart"></canvas>
+      <input type="hidden" id="total_users" value="{{totalUsersInDebt}}">
+      <input type="hidden" id="total_debt" value="{{totalDebt}}">
+      <input type="hidden" id="total_paid" value="{{totalPaid}}">
+    </div>
+
+
+
+</div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+  <script src="../../../js/chart.js"></script>
+
+    <script>
+      const totalUsersInDebt =  document.getElementById('total_users').value
+      const totalDebt =  document.getElementById('total_debt').value
+      const totalPaid =  document.getElementById('total_paid').value
+      createBars( ["Tổng số nợ", "Tổng số người nợ", "Tổng số tiền đã trả"], [totalDebt,totalUsersInDebt, totalPaid],'barChart')
+ 
+    </script>

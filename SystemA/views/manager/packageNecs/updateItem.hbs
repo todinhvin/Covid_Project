@@ -1,0 +1,99 @@
+<div class="container">
+
+<style type="text/css">
+
+.form-amount {
+    width: 100%;
+    padding: 0.375rem 1rem 0.375rem 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    border-radius: 5px;
+    border: none;
+}
+</style>
+
+
+<div id="toast">
+
+  </div> 
+  <!-- Table -->
+  <table class="table table-striped" style="background-color: #ffffff; margin-top:50px;">
+    <thead>
+      <tr style="text-align: center">
+        <th scope="col">ID</th>
+        <th scope="col">Tên nhu yếu phẩm</th>
+        <th scope="col">Số lượng</th>
+        <th scope="col">Giới hạn tối đa</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    <form action="/manager/packages/{{idPackage}}/update-item" method="post">
+     {{#each items}}
+        <tr style="text-align: center">
+          <th scope="row">
+              
+            <input style="display: none" name="id" value="{{item_id}}"">{{item_id}}</th>
+          <td>{{name}}</td>
+          <td>
+              <input style="background-color:rgb(225, 248, 204)"
+              class = "form-amount amount01" type="number" name="amount01"value ="{{quantity}}"></input>
+          </td>
+          <td>
+            <input style="background-color:rgb(172, 224, 255)"
+             class="form-amount amount01" type="number" name="limit01"value ="{{item_limit}}"></input>
+          </td>
+        </tr>
+      {{/each}}
+   
+    </tbody>
+  </table>
+    <div class="col-12">
+        <div class="d-flex justify-content-around" style="margin-top: 20px">
+        <button class="btn btn-tung" type="submit">Lưu</button><a
+            class="btn btn-tung"
+            href="/manager/packages/{{idPackage}}/detail"
+        >Quay về</a>
+        </div>
+    </div>
+    </form>
+</div>
+
+
+{{#compareString update "success"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showSuccessToast("Cập nhật gói nhu yếu phẩm thành công")
+    }
+  </script>
+{{/compareString}}
+
+{{#compareString update "failed"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Cập nhật gói nhu yếu phẩm thất bại")
+    }
+  </script>
+{{/compareString}}
+
+
+
+
+
+
+{{#compareString status "002"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Giá trị không hợp lệ")
+    }
+  </script>
+{{/compareString}}
+
+{{#compareString status "003"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Giá trị số lượng không được lớn hơn giới hạn")
+    }
+  </script>
+{{/compareString}}
