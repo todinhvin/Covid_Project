@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { putMoneyAccount ,} = require("../../models/user/putMoney");
-const {changeStateAccount} = require('../../models/user/account')
+const {changeStateAccount, getAccount} = require('../../models/user/account')
 router.get("/", (req, res) => {
   const { putMoney } = req.query;
   res.render("user/putMoney.hbs", {
@@ -12,13 +12,16 @@ router.get("/", (req, res) => {
 router.post("/", async (req, res) => {
   const { balance_value } = req.body;
   await changeStateAccount(req.username,'lock');
-  const data = await putMoneyAccount(req.username, balance_value);
+  const adminAccount  = await getAccount('role','admin')
+  const userAccount  = await getAccount('username',req.username)
+  const data = await putMoneyAccount(req.username, +userAccount.account_balance + (+balance_value));
+  const data1 = await putMoneyAccount(adminAccount.username,+adminAccount.account_balance + (+balance_value));
   await changeStateAccount(req.username,'unlock');
-  if (data) {
-    return res.render("user/putMoney.hbs?putMoney=success");
+  if (data &&data1) {
+    return res.redirect("/user/put-money?putMoney=success");
 
   }
-    return res.render("user/putMoney.hbs?putMoney=error");
+    return res.redirect("/user/put-money?putMoney=error");
   
 
 });

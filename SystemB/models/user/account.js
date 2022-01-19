@@ -24,6 +24,13 @@ exports.changeStateAccount = async (username, state) => {
   );
 };
 
+exports.addAccount = async (username) => {
+  await db.query(
+    "INSERT INTO account(username) values($1) ",
+    [username]
+  );
+};
+
 exports.getStateAccount = async (username) => {
   const { rows } = await db.query(
     "select state from account where username=$1",
