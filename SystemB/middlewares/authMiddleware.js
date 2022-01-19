@@ -14,8 +14,12 @@ exports.getUser = (req, res, next) => {
       } else {
         //console.log(decodedToken);
         let account = await getAccount("username", decodedToken.id);
-        //console.log(account);
-        res.locals.account = account;
+        if (!account) {
+          res.locals.account = null;
+        } else {
+          res.locals.account = account;
+        }
+
         next();
       }
     });
@@ -35,6 +39,10 @@ exports.requireAuth = (req, res, next) => {
       } else {
         //console.log(decodedToken);
         let account = await getAccount("username", decodedToken.id);
+        if (!account) {
+          res.clearCookie("jwt_payment");
+          return res.redirect("/auth/login");
+        }
         req.role = account.role;
         req.username = account.username;
         next();

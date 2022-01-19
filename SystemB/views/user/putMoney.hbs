@@ -2,6 +2,9 @@
   <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
     Nạp tiền
   </h2>
+  <div id="toast">
+
+  </div>
   <form
     class="form-create-victim"
     action="/user/put-money"
@@ -29,7 +32,12 @@
 </div>
 {{#compareString putMoney "success"}}
   <script>
-    function showAnnouncement() { showSuccessToast("Nạp tiền thành công") }
-    window.onload = showAnnouncement
+    window.onload = ()=> { showSuccessToast("Nạp tiền thành công") }
+  </script>
+{{/compareString}}
+
+{{#compareString putMoney "error"}}
+  <script>
+    window.onload = ()=> { showSuccessToast("Nạp tiền thất bại") }
   </script>
 {{/compareString}}
