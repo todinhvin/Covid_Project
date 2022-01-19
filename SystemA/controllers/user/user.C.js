@@ -8,7 +8,7 @@ const { getStatusHistory } = require("../../models/user/statusHistory");
 const { getTreatmentHistory } = require("../../models/user/treatmentHistory");
 const { getAccount, changeAccount } = require("../../models/user/account");
 const { getCheckout, createCheckout } = require("../../models/user/checkout");
-const { getIndept } = require("../../models/user/indept");
+const { getIndept, getTotalIndebt } = require("../../models/user/indept");
 const { getPaymentHistory } = require("../../models/user/paymentHistory");
 const { getAddress } = require("../../models/user/address");
 const { getTreatment } = require("../../models/user/treatment");
@@ -65,7 +65,7 @@ router.get("/packageHistory/:id", async(req, res) => {
     const account = await getAccount("person_id", req.params.id);
     const checkouts = await getCheckout("account_id", account.account_id);
 
-    checkouts.forEach((checkout) => {
+    await checkouts.forEach((checkout) => {
         checkout.checkout_date = convertDate(checkout.checkout_date);
     });
 
@@ -79,14 +79,17 @@ router.get("/indept/:id", async(req, res) => {
     const account = await getAccount("person_id", req.params.id);
     const indepts = await getIndept("account_id", account.account_id);
 
+    let price = await getTotalIndebt("account_id", account.account_id);
+
     indepts.forEach(indept => {
         indept.due_date = convertDate(indept.due_date);
     })
 
-    console.log(indepts);
+    //console.log(indepts);
 
     res.render("user/indept", {
         indepts: indepts,
+        price: price,
     });
 });
 
@@ -279,5 +282,28 @@ router.post('/buy/:id/detail', async(req, res) => {
         result: createRes,
     });
   })
+
+//[GET] /user/indept
+router.get("/indept", async(req, res) => {
+    let account;
+    const token = req.cookies.jwt;
+    await jwt.verify(token, "secret", async(err, decodedToken) => {
+        //console.log(decodedToken);
+        account = await getAccount("account_id", decodedToken.id);
+    });
+    const indepts = await getIndept("account_id", account.account_id);
+    let price = await getTotalIndebt("account_id", account.account_id);
+    
+    indepts.forEach(indept => {
+        indept.due_date = convertDate(indept.due_date);
+    })
+
+    //console.log(indepts);
+
+    res.render("user/indept", {
+        indepts: indepts,
+        price: price,
+    });
+});
 
 module.exports = router;
