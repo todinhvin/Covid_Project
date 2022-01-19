@@ -27,3 +27,9 @@
     </div>
   </form>
 </div>
+{{#compareString putMoney "success"}}
+  <script>
+    function showAnnouncement() { showSuccessToast("Nạp tiền thành công") }
+    window.onload = showAnnouncement
+  </script>
+{{/compareString}}

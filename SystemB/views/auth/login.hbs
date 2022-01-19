@@ -1,70 +1,39 @@
 <form method="POST" action="/auth/login">
-    <div class="spacer"></div>
-    <h2>Log In</h2>
+  <div class="spacer"></div>
+  <h2>Log In</h2>
 
-    <div class="form-group">
-        <label for="username" class="form-label">UserName</label>
-        <input type="text" name="username" class="form-control" required />
-        <div class="username error"></div>
-    </div>
+  <div class="form-group">
+    <label for="username" class="form-label">UserName</label>
+    <input type="text" name="username" class="form-control" required />
+    <div class="username error"></div>
+  </div>
 
-    <div class="form-group">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" name="password" class="form-control" required />
-        <div class="password error"></div>
-    </div>
+  <div class="form-group">
+    <label for="password" class="form-label">Password</label>
+    <label for="password" class="form-label">Nếu là lần đầu, nhập mật khẩu để
+      thiết lập</label>
 
-    <button type="submit" class="form-submit">Log In</button>
+    <input type="password" name="password" class="form-control" required />
+    <div class="password error"></div>
+  </div>
+
+  <button type="submit" class="form-submit">Log In</button>
 </form>
 
 <script>
-    const form = document.querySelector('form');
-    const usernameError = document.querySelector('.username.error');
-    const passwordError = document.querySelector('.password.error');
-
-    form.onsubmit = async function (e) {
-        e.preventDefault();
-
-        usernameError.innerText = '';
-        passwordError.innerText = '';
-
-        const username = form.username.value;
-        const password = form.password.value;
-
-        const data = { username, password };
-        const options = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data)
-        };
-
-        try {
-            const result = await fetch('/auth/login', options);
-            const resData = await result.json();
-            console.log(resData);
-
-            if (!resData.account) {
-                usernameError.innerText = resData.username;
-                passwordError.innerText = resData.password;
-            } else {
-                switch (resData.account) {
-                    case 1:
-                        location.assign('/admin');
-                        break;
-                    case 2:
-                        location.assign('/manager');
-                        break;
-                    case 3:
-                        location.assign('/user');
-                        break;
-                }
-            }
-        }
-        catch (e) {
-            console.log(e);
-        }
-    }
+  const form = document.querySelector('form'); const usernameError =
+  document.querySelector('.username.error'); const passwordError =
+  document.querySelector('.password.error'); form.onsubmit = async function (e)
+  { e.preventDefault(); usernameError.innerText = ''; passwordError.innerText =
+  ''; const username = form.username.value; const password =
+  form.password.value; const data = { username, password }; const options = {
+  method: 'POST', headers: { 'Content-Type': 'application/json', }, body:
+  JSON.stringify(data) }; try { const result = await fetch('/auth/login',
+  options); const resData = await result.json(); console.log(resData); if
+  (!resData.account) { usernameError.innerText = resData.username;
+  passwordError.innerText = resData.password; } else { switch (resData.account)
+  { case 1: location.assign('/admin'); break; case 2:
+  location.assign('/manager'); break; case 3: location.assign('/user'); break; }
+  } } catch (e) { console.log(e); } }
 
 </script>

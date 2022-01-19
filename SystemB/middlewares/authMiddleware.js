@@ -4,9 +4,7 @@ const { getAccount } = require("../models/user/account");
 
 //Check current user
 exports.getUser = (req, res, next) => {
-  console.log(req.cookies);
-  const token = req.cookies.jwt;
-  console.log(token);
+  const token = req.cookies.jwt_payment;
   if (token) {
     jwt.verify(token, "secret", async (err, decodedToken) => {
       if (err) {
@@ -15,7 +13,7 @@ exports.getUser = (req, res, next) => {
         next();
       } else {
         //console.log(decodedToken);
-        let account = await getAccount("account_id", decodedToken.id);
+        let account = await getAccount("username", decodedToken.id);
         //console.log(account);
         res.locals.account = account;
         next();
@@ -28,7 +26,7 @@ exports.getUser = (req, res, next) => {
 };
 
 exports.requireAuth = (req, res, next) => {
-  const token = req.cookies.jwt;
+  const token = req.cookies.jwt_payment;
   if (token) {
     jwt.verify(token, "secret", async (err, decodedToken) => {
       if (err) {
@@ -36,9 +34,9 @@ exports.requireAuth = (req, res, next) => {
         res.redirect("/auth/login");
       } else {
         //console.log(decodedToken);
-        let account = await getAccount("account_id", decodedToken.id);
-        req.role = account.role_id;
-        req.account_id = account.account_id;
+        let account = await getAccount("username", decodedToken.id);
+        req.role = account.role;
+        req.username = account.username;
         next();
       }
     });
@@ -49,16 +47,8 @@ exports.requireAuth = (req, res, next) => {
 
 exports.checkUser = (req, res, next) => {
   const role = req.role;
-  if (role == 3 || role == 2 || role == 1) {
-    next();
-  } else {
-    res.json("Not Permission");
-  }
-};
-
-exports.checkManager = (req, res, next) => {
-  const role = req.role;
-  if (role == 2 || role == 1) {
+  console.log(role);
+  if (role == "user" || role == "admin") {
     next();
   } else {
     res.json("Not Permission");
@@ -67,7 +57,7 @@ exports.checkManager = (req, res, next) => {
 
 exports.checkAdmin = (req, res, next) => {
   const role = req.role;
-  if (role == 1) {
+  if (role == "admin") {
     next();
   } else {
     res.json("Not Permission");
@@ -76,7 +66,7 @@ exports.checkAdmin = (req, res, next) => {
 
 //Check access
 exports.checkAccess = (req, res, next) => {
-  const token = req.cookies.jwt;
+  const token = req.cookies.jwt_payment;
   if (token) {
     jwt.verify(token, "secret", async (err, decodedToken) => {
       if (err) {
@@ -84,16 +74,13 @@ exports.checkAccess = (req, res, next) => {
         res.redirect("/auth/login");
       } else {
         //console.log(decodedToken);
-        let account = await getAccount("account_id", decodedToken.id);
-        req.role = account.role_id;
+        let account = await getAccount("username", decodedToken.id);
+        req.role = account.role;
         switch (req.role) {
-          case 1:
+          case "admin":
             res.redirect("/admin");
             break;
-          case 2:
-            res.redirect("/manager");
-            break;
-          case 3:
+          case "user":
             res.redirect("/user");
             break;
         }

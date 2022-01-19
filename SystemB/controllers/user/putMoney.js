@@ -1,13 +1,20 @@
 const express = require("express");
 const router = express.Router();
-
+const { putMoneyAccount } = require("../../models/user/putMoney");
 router.get("/", (req, res) => {
-  res.render("user/putMoney.hbs");
+  const { putMoney } = req.query;
+  console.log(putMoney);
+  res.render("user/putMoney.hbs", {
+    putMoney: putMoney,
+  });
 });
 
-router.post("/", (req, res) => {
+router.post("/", async (req, res) => {
   const { balance_value } = req.body;
-  console.log(balance_value);
-  res.render("user/putMoney.hbs");
+  const data = await putMoneyAccount(req.username, balance_value);
+  if (data) {
+    return res.redirect("/");
+  }
+  res.render("user/putMoney.hbs?putMoney=success");
 });
 module.exports = router;

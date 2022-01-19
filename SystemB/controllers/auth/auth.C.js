@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { getAccount } = require("../../models/user/account");
+const { getAccount, setPassword } = require("../../models/user/account");
 
 const router = express.Router();
 
@@ -42,21 +42,25 @@ router.post("/login", async (req, res, next) => {
     const saltRounds = 10;
     //Kiểm tra username
     const account = await getAccount("username", username);
-    console.log(account);
     if (!account) {
       throw Error("Incorrect username");
     } else {
-      //Kiểm tra password
-      const auth = await bcrypt.compare(password, account.password);
-      if (!auth) {
-        throw Error("Incorrect password");
+      if (!account.password) {
+        const hashPass = await bcrypt.hash(password, saltRounds);
+        const data = await setPassword(account.username, hashPass);
+      } else {
+        //Kiểm tra password
+        const auth = await bcrypt.compare(password, account.password);
+        if (!auth) {
+          throw Error("Incorrect password");
+        }
       }
     }
 
     //Tạo jwt cho user, lưu vào cookie (đã đăng nhập)
-    const token = createJWToken(account.account_id);
-    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-    res.status(200).json({ account: account.role_id });
+    const token = createJWToken(account.username);
+    res.cookie("jwt_payment", token, { httpOnly: true, maxAge: maxAge * 1000 });
+    res.status(200).json({ account: account.role });
   } catch (e) {
     const err = handleErrors(e);
     res.status(400).json(err);
@@ -65,7 +69,7 @@ router.post("/login", async (req, res, next) => {
 
 //[GET] /auth/logout
 router.get("/logout", (req, res, next) => {
-  res.cookie("jwt", "", { maxAge: 1 });
+  res.cookie("jwt_payment", "", { maxAge: 1 });
   res.redirect("/auth/login");
 });
 
