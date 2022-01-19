@@ -17,3 +17,21 @@ exports.changeAccount = async(IdentifyField, IdentifyValue, fieldName, value) =>
     );
     return rows[0];
 };
+
+exports.createAdminAccount = async(username, password) => {
+    const { rows } = await db.query(
+        `INSERT INTO public.account(
+            username, password, status, role_id, person_id)
+            VALUES ('${username}', '${password}', 'active', '1', null);`
+    );
+    return rows[0];
+};
+
+exports.createUserAccount = async(username, password) => {
+    const { rows } = await db.query(
+        `INSERT INTO public.account(
+            username, password, status, role_id, person_id)
+            VALUES ('${username}', '${password}', 'active', '3', null);`
+    );
+    return rows[0];
+};
