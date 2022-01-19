@@ -2,9 +2,9 @@
 
 PTUDWEB 11– 2021
 1
-PROJECT Phát triển ứng dụng Web
-Xây dựng ứng dụng “Quản lý thông tin Covid-19” gồm 2 hệ thống với các chức
-năng sau:
+#PROJECT Phát triển ứng dụng Web
+##Xây dựng ứng dụng “Quản lý thông tin Covid-19” gồm 2 hệ thống với các chức
+##năng sau:
 1 Hệ thống Quản lý Covid
 1.1 Đăng nhập, khởi tạo ban đầu
 ✓ Khi chương trình khởi động thì cần yêu cầu đăng nhập. Tùy thuộc vào phân
