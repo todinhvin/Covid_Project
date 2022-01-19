@@ -20,7 +20,7 @@ create table payment_history (
     payment_his_id serial,
     username varchar(50),
     total_money real,
-    payment_time datetime,
+    payment_time timestamp,
     package_name varchar(100)
     constraint fk_pm_his_acc
         foreign key (username) references account

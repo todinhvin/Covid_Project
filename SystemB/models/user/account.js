@@ -52,3 +52,17 @@ exports.changeAccount = async (
   );
   return rows[0];
 };
+
+
+
+exports.addPaymentHis = async ({username,total_money,payment_time,package_name}) => {
+  try{
+    const {rows} = await db.query(
+      "INSERT INTO accoupayment_historynt(username,total_money,payment_time,package_name) values($1,$2,$3,$4) ",
+      [username,total_money,payment_time,package_name]
+    );
+    return rows[0];
+  }catch(error) {
+    return
+  }
+};
