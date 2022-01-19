@@ -1,0 +1,84 @@
+<div class="container">
+  <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
+    Thêm người liên quan Covid
+  </h2>
+  <form
+    class="form-create-victim row"
+    action="/manager/patient/create"
+    method="POST"
+  >
+    <div class="col col-6">
+      <div class="">
+        <label class="flabel mb-1" for="name">Họ và tên</label><input
+          class="form-control"
+          type="text"
+          name="full_name"
+          required="required"
+        />
+      </div>
+      <div class="">
+        <label class="flabel mb-1" for="cmt">Số CMT/CCCD</label><input
+          class="form-control"
+          type="text"
+          name="cccd"
+          title="Số CMT/CCCD phải có từ 9-12 chữ số"
+        />
+      </div>
+      <div class="form-div">
+        <label class="flabel mb-1" for="birth">Ngày sinh</label><input
+          class="form-control"
+          type="date"
+          name="birthday"
+          required="required"
+        />
+      </div>
+      <div class="form-div">
+        <label class="flabel mb-1" for="sex">Trạng thái</label><select
+          class="form-select"
+          name="status"
+        >
+          <option value="F0">F0</option>
+          <option value="F1">F1</option>
+          <option value="F2">F2</option>
+        </select>
+      </div>
+    </div>
+    <div class="col col-6">
+      <div class="form-div">
+        <label class="flabel mb-1" for="sex">Địa chỉ nơi ở</label><select
+          class="form-select"
+          name="address_id"
+        >
+          {{#each addresses}}
+            <option value={{address_id}}>{{xa}}-{{huyen}}-{{tinh}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="form-div">
+        <label class="flabel mb-1" for="sex">Nơi đang điều trị</label><select
+          class="form-select"
+          name="treatment_id"
+        >
+          {{#each treatments}}
+            <option value={{treatment_id}}>{{name}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="form-div">
+        <label class="flabel mb-1">Liên quan đến người COVID</label><input
+          class="form-control"
+          type="text"
+          name="related_person_cccd"
+          placeholder="Nhập CMND/CCCD người COVID"
+        />
+      </div>
+
+      <div class="d-flex justify-content-around" style="margin-top: 20px">
+        <button class="btn btn-tung" type="submit">Lưu</button><a
+          class="btn btn-tung"
+          href="/nhan-khau"
+        >Hủy</a>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,45 @@
+<div class="container" style="margin-bottom:40px;">
+
+  
+   <div class="victim-category" style="margin-bottom: 16px;">
+
+       <p>Thống kê theo thời gian:</p>
+      <form action="{{url}}" method="get" class="form-inline md-form" style=" display: flex;align-items: center;justify-content: space-around;flex:2">
+         <select class="custom-select" name="filter" style="width: 80%;">
+            <option >Lựa chọn</option>
+            <option {{#compareString filter "week"}}selected{{/compareString}} value="week">1 tuần</option>
+            <option {{#compareString filter "one_month"}}selected{{/compareString}} value="one_month">1 tháng</option>
+            <option {{#compareString filter "three_month"}}selected{{/compareString}} value="three_month">3 tháng</option>
+            <option {{#compareString filter "year"}}selected{{/compareString}} value="year">1 năm</option>
+        </select>
+        <button class="btn" style="background: #3fa4e2" type="submit">
+          Lựa chọn
+        </button>
+      </form>
+      
+    </div>
+    <div style="background:#FFFFFF;border-radius:8px;padding:40px;">
+      <h2 style="margin-bottom:16px">Thống kê số lượng F0, F1, F2 và khỏi bệnh</h2>
+     
+         <canvas id="barChart1" ></canvas>
+      <input type="hidden" id="total_patients" value="{{totalPatients}}" >
+
+        <h2 style="margin:16px 0">Số chuyển trạng thái</h2>
+            <canvas id="barChart2" ></canvas>
+      <input type="hidden" id="total_patients_change" value="{{totalPatientsChange}}" >
+
+    </div>
+ 
+</div>
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="../../../js/chart.js"></script>
+
+<script>
+      const labels1 = ['NGƯỜI BỆNH F0','NGƯỜI BỆNH F1','NGƯỜI BỆNH F2','NGƯỜI KHỎI BỆNH']
+      const totalPatiens =JSON.parse(document.getElementById('total_patients').value) 
+      const labels2 = ['F1->F0','F2->F1','F0->KB']
+      const totalPatientsChange = JSON.parse(document.getElementById('total_patients_change').value);
+      createBars(labels1,totalPatiens,'barChart1')
+      createBars(labels1,totalPatientsChange,'barChart2')
+</script>
