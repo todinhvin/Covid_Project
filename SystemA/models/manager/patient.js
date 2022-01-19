@@ -2,36 +2,34 @@ const db = require("../db");
 
 const { getAddressByID } = require("./address");
 const {
-  getTreatmentByID,
-  getCurrentPatientsContain,
-  getCapacityTreamentByID,
+    getTreatmentByID,
+    getCurrentPatientsContain,
+    getCapacityTreamentByID,
 } = require("./treatment");
 const { addStatusPerson, getStatusHPerson } = require("./status_history");
 const {
-  addTreatmentPerson,
-  getTreatmentsHPerson,
+    addTreatmentPerson,
+    getTreatmentsHPerson,
 } = require("./treatment_history");
 
-const getTotalPatients = async () => {
-  const { rows } = await db.query(
-    "SELECT COUNT(*) FROM person WHERE status!=$1",
-    ["KB"]
-  );
-  return rows[0].count;
+const getTotalPatients = async() => {
+    const { rows } = await db.query(
+        "SELECT COUNT(*) FROM person WHERE status!=$1", ["KB"]
+    );
+    return rows[0].count;
 };
 
-const getTotalPatientsKB = async () => {
-  const { rows } = await db.query(
-    "SELECT COUNT(*) FROM person WHERE status!=$1",
-    ["KB"]
-  );
-  return rows[0].count;
+const getTotalPatientsKB = async() => {
+    const { rows } = await db.query(
+        "SELECT COUNT(*) FROM person WHERE status!=$1", ["KB"]
+    );
+    return rows[0].count;
 };
 
-exports.getPatients = async ({ page = 1, per_page = 6, filter }) => {
-  const offset = (page - 1) * per_page;
-  const { rows } = await db.query(
-    `SELECT * FROM person  WHERE status!=$1  ${
+exports.getPatients = async({ page = 1, per_page = 6, filter }) => {
+        const offset = (page - 1) * per_page;
+        const { rows } = await db.query(
+                `SELECT * FROM person  WHERE status!=$1  ${
       filter ? `ORDER BY ${filter} ASC` : ""
     } LIMIT $2 OFFSET $3`,
     ["KB", per_page, offset]
