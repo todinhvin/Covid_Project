@@ -26,7 +26,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary btn-admin">Save changes</button>
         </div>
         </form>
     </div>
@@ -72,18 +72,18 @@
                 <span class="badge bg-warning text-dark">Inactive</span>
                 {{/if}}
             </td>
-            <td>
-                <a href="/admin/manager/history/treatment/{{this.account_id}}" class="btn btn-primary">Treatment history</a>
-                <a href="/admin/manager/history/status/{{this.account_id}}" class="btn btn-primary">Status history</a>
+            <td class="btns-admin">
+                <a href="/admin/manager/history/treatment/{{this.account_id}}" class="btn btn-primary mT8 btn-admin">Treatment history</a>
+                <a href="/admin/manager/history/status/{{this.account_id}}" class="btn btn-primary mT8 btn-admin">Status history</a>
                 {{#if this.isActive}}
                 <form action="/admin/manager/disable/" method="post">
                     <input type="hidden" name="account_id" value={{this.account_id}}>
-                    <button type="submit" class="btn btn-danger">Disable</button>
+                    <button type="submit" class="btn btn-danger mT8 btn-admin">Disable</button>
                 </form>
                 {{else}}
                 <form action="/admin/manager/enable/" method="post">
                     <input type="hidden" name="account_id" value={{this.account_id}}>
-                    <button type="submit" class="btn btn-success">Enable</button>
+                    <button type="submit" class="btn btn-success mT8 btn-admin">Enable</button>
                 </form>
                 {{/if}}
             </td>
