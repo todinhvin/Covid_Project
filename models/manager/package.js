@@ -14,6 +14,14 @@ const getTotalPackage = async() => {
     const { rows } = await db.query(`SELECT count(*) FROM public."package" WHERE "state"= 'true'`);
     return rows[0].count;
 }
+const countPacksBySearch = async(search) => {
+
+    const { rows } = await db.query(`SELECT count(package_id) FROM public."package" WHERE "state" = 'true'
+  AND "name" like '%${search}%'`)
+
+    return rows[0].count;
+}
+
 
 exports.getPackageByIdPack = async(idPack) => {
     const { rows } = await db.query(`SELECT * FROM public."package" WHERE "state"= 'true'
@@ -22,7 +30,32 @@ exports.getPackageByIdPack = async(idPack) => {
 
     return rows;
 }
+exports.getPacksBySearch = async({ page = 1, per_page = 6, search, filter }) => {
 
+        const offset = (page - 1) * per_page;
+        const { rows } = await db.query(
+                `SELECT PK.package_id,PK.name, date(due_date),count(*) as amount
+          FROM public.package_item IM
+          JOIN public."package" PK ON IM.package_id = PK.package_id, public.item IT
+          WHERE IT.state ='true' and IT.item_id = IM.item_id and PK.state ='true' and PK.name like '%${search}%'
+          GROUP BY PK.package_id ,PK.name,PK.due_date
+          ${filter ? `ORDER BY ${filter} ASC` : ""}
+          LIMIT $1 OFFSET $2 
+          `, [per_page, offset]
+      );
+
+        const totalNec = await countPacksBySearch(search);
+        console.log(totalNec)
+        const totalPage =
+          totalNec % per_page === 0 ?
+          totalNec / per_page :
+          Math.floor(totalNec / per_page) + 1;
+
+        return {
+          totalPage: totalPage,
+          packages: rows,
+        };
+}
 exports.getPackages = async({ page = 1, per_page = 6, filter }) => {
         const offset = (page - 1) * per_page;
         const { rows } = await db.query(
@@ -89,11 +122,10 @@ exports.delItemByPackId = async(idPack) => {
   return rows;
 }
 
-exports.getPackByName = async(idPack,name) => {
+exports.getPackByName = async(name) => {
 
   const { rows } = await db.query(`SELECT * FROM public."package" 
-    WHERE  "name" = '${name}' and "package_id" = '${idPack}' and "state"= 'true'
-    `);
+    WHERE  "name" = '${name}' and "state" ='true'`);
 
     return rows;
 }

@@ -56,3 +56,10 @@
 </div>
 
 
+{{#compareString status "001"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Tên của nhu yếu phẩm đã tồn tại")
+    }
+  </script>
+{{/compareString}}

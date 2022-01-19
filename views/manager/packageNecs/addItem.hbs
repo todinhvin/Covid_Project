@@ -51,6 +51,13 @@
     }
   </script>
 {{/compareString}}
+{{#compareString status "002"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Số lượng hoặc giới hạn không phù hợp")
+    }
+  </script>
+{{/compareString}}
 
 
 

@@ -7,6 +7,37 @@ const getTotalNec = async() => {
     return rows[0].count;
 };
 
+const countItemBySearch = async(search) => {
+
+    const { rows } = await db.query(`SELECT count(item_id) FROM item WHERE "state" = 'true'
+    AND "name" like '%${search}%'`)
+
+    return rows[0].count;
+}
+
+
+exports.getNecsBySearch = async({ page = 1, per_page = 6, search, filter }) => {
+
+        const offset = (page - 1) * per_page;
+        const { rows } = await db.query(
+                `SELECT * FROM item  WHERE "state" ='true' AND "name" like '%${search}%'
+        ${filter ? `ORDER BY ${filter} ASC` : ""}
+        LIMIT $1 OFFSET $2`, [per_page, offset]
+    );
+
+    const totalNec = await countItemBySearch(search);
+    console.log(totalNec)
+    const totalPage =
+        totalNec % per_page === 0 ?
+        totalNec / per_page :
+        Math.floor(totalNec / per_page) + 1;
+
+    return {
+        totalPage: totalPage,
+        items: rows,
+    };
+}
+
 exports.getAllItems = async() => {
     const { rows } = await db.query(`SELECT * FROM item where "state" ='true'`);
 
@@ -84,13 +115,12 @@ exports.getNecsByName = async (name) =>{
 
 
 // Update một sản phẩm mới
-exports.updateNecs = async (id,name,price,unit,created_on,manager_id) => {
+exports.updateNecs = async (id,name,price,unit,created_on) => {
   
   const { rows } = await db.query(
     `
         UPDATE public.item
-        SET "name" = '${name}',"price" = '${price}',"unit" = '${unit}',"created_on" = '${created_on}',
-        "manager_id" = '${manager_id}'
+        SET "name" = '${name}',"price" = '${price}',"unit" = '${unit}',"created_on" = '${created_on}'
         WHERE  "item_id" ='${id}' 
         Returning *;`
   )
