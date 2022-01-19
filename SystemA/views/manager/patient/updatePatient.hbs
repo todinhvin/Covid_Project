@@ -2,6 +2,10 @@
   <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
     Cập nhật thông tin người liên quan Covid
   </h2>
+
+  <div id="toast">
+
+  </div>
   <form class="form-create-victim row" action="/manager/patient/{{patient.person_id}}/update" method="POST">
     <div class="col col-6">
       <div class="">
@@ -84,3 +88,12 @@
     </div>
   </form>
 </div>
+
+
+{{#compareString status "001"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Chứng minh thư không đúng")
+    }
+  </script>
+{{/compareString}}

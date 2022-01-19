@@ -2,6 +2,10 @@
   <h2 style="color: #fff; margin-top: 20px; margin-right: auto">
     Thêm người liên quan Covid
   </h2>
+
+  <div id="toast">
+
+  </div>
   <form
     class="form-create-victim row"
     action="/manager/patient/create"
@@ -76,9 +80,18 @@
       <div class="d-flex justify-content-around" style="margin-top: 20px">
         <button class="btn btn-tung" type="submit">Lưu</button><a
           class="btn btn-tung"
-          href="/nhan-khau"
+          href="/manager/patient"
         >Hủy</a>
       </div>
     </div>
   </form>
 </div>
+
+
+{{#compareString status "001"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Chứng minh thư không đúng")
+    }
+  </script>
+{{/compareString}}
