@@ -1,6 +1,10 @@
 drop table if exists account
 cascade;
 
+drop table if exists payment_history
+cascade;
+
+
 create table account
 (
     username varchar(50) unique ,
@@ -11,6 +15,16 @@ create table account
     primary key (username)
 
 );
+
+create table payment_history (
+    payment_his_id serial,
+    username varchar(50),
+    total_money real,
+    payment_time datetime,
+    package_name varchar(100)
+    constraint fk_pm_his_acc
+        foreign key (username) references account
+)
 
 
 
