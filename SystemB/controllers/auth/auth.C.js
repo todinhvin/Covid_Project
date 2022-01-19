@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { getAccount, setPassword } = require("../../models/user/account");
+const { getAccount, setPassword, createAdminAccount } = require("../../models/user/account");
 
 const router = express.Router();
 
@@ -17,6 +17,21 @@ const handleErrors = (e) => {
 
     if (e.message === "Incorrect password") {
         err.password = "Incorrect password";
+        return err;
+    }
+
+    if (e.message === 'Minimum password length is 6 characters') {
+        err.password = 'Minimum password length is 6 characters';
+        return err;
+    }
+
+    if (e.message === "User already login before") {
+        err.username = "User already login before";
+        return err;
+    }
+
+    if (e.message === "Username not in the system") {
+        err.username = "Username not in the system";
         return err;
     }
 
@@ -71,6 +86,39 @@ router.post("/login", async(req, res, next) => {
 router.get("/logout", (req, res, next) => {
     res.cookie("jwt_payment", "", { maxAge: 1 });
     res.redirect("/auth/login");
+});
+
+//[GET] /auth/signupAdmin
+router.get("/signupAdmin", (req, res, next) => {
+    res.render("auth/signupAdmin");
+})
+
+//[POST] /auth/signupAdmin
+router.post("/signupAdmin", async(req, res, next) => {
+    try {
+        const { username, password } = req.body;
+        if (password.length < 6) {
+            throw Error('Minimum password length is 6 characters');
+        }
+
+        //Hash password trước khi lưu và DB
+        console.log('admin about to be created & saved', username, password);
+        const salt = 10;
+        const passwordHashed = await bcrypt.hash(password, salt);
+
+        //Lưu user vào DB
+        const admin = await createAdminAccount(username, passwordHashed);
+        const account = await getAccount('role', 'admin');
+        console.log('admin was created & saved', account);
+
+        //Tạo jwt cho user, lưu vào cookie (đã đăng nhập)
+        const token = createJWToken(account.account_id);
+        res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+        res.status(200).json({ account: account.role_id });
+    } catch (e) {
+        const err = handleErrors(e);
+        res.status(400).json(err);
+    }
 });
 
 //[GET] /auth
