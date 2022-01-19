@@ -767,75 +767,75 @@ values (50000, '2023-01-01', 3, 50000, false);
 insert into item
     ( name, image, price, unit, created_on, manager_id, state)
 values
-    ( 'Mit Thai', null, 29000, 'kg', '1-19-2022', 2, true);
+    ( 'Mit Thai', null, 29000, 'kg', '2022-1-18', 2, true);
 insert into item
     ( name, image, price, unit, created_on, manager_id, state)
 values
-    ( 'Xoai Dai Loan', null, 12000, 'kg', '1-19-2022', 2, true);
+    ( 'Xoai Dai Loan', null, 12000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Dua Hau', null, 20000, 'kg', '1-19-2022', 2, true);
+        ( 'Dua Hau', null, 20000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Thanh Long Ruot Do', null, 18000, 'kg', '1-19-2022', 2, true);
+        ( 'Thanh Long Ruot Do', null, 18000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Dua Xiem', null, 19000, 'kg', '1-19-2022', 2, true);
+        ( 'Dua Xiem', null, 19000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Cai Thia', null, 13000, 'kg', '1-19-2022', 2, true);
+        ( 'Cai Thia', null, 13000, 'kg', '2022-1-18', 2, true);
 
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Khoai Lang Nhat', null, 37000, 'kg', '1-19-2022', 2, true);
+        ( 'Khoai Lang Nhat', null, 37000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Nho Khong Hat Uc', null, 237000, 'kg', '1-19-2022', 2, true);
+        ( 'Nho Khong Hat Uc', null, 237000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Nho Den Ngon Tay Uc', null, 247000, 'kg', '1-19-2022', 2, true);
+        ( 'Nho Den Ngon Tay Uc', null, 247000, 'kg', '2022-1-18', 2, true);
 
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Cam My', null, 150000, 'kg', '1-19-2022', 2, true);
+        ( 'Cam My', null, 150000, 'kg', '2022-1-18', 2, true);
 
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Cai xoan Kale', null, 22000, 'kg', '1-19-2022', 2, true);
+        ( 'Cai xoan Kale', null, 22000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Dua Leo Baby', null, 31000, 'kg', '1-19-2022', 2, true);
+        ( 'Dua Leo Baby', null, 31000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Bap Bo Uc cat lat', null, 252000, 'kg', '1-19-2022', 2, true);
+        ( 'Bap Bo Uc cat lat', null, 252000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Nac dui heo', null, 134000, 'kg', '1-19-2022', 2, true);
+        ( 'Nac dui heo', null, 134000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Ba chi Bo', null, 130000, 'kg', '1-19-2022', 2, true);
+        ( 'Ba chi Bo', null, 130000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Ba chi heo', null, 125000, 'kg', '1-19-2022', 2, true);
+        ( 'Ba chi heo', null, 125000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Duoi heo dong lanh', null, 100000, 'kg', '1-19-2022', 2, true);
+        ( 'Duoi heo dong lanh', null, 100000, 'kg', '2022-1-18', 2, true);
 insert into item
         ( name, image, price, unit, created_on, manager_id, state)
     values
-        ( 'Ba chi heo dong lanh', null, 117000, 'kg', '1-19-2022', 2, true);
+        ( 'Ba chi heo dong lanh', null, 117000, 'kg', '2022-1-18', 2, true);
