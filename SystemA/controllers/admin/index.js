@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const bcrypt = require('bcrypt');
+
 const {
   countManager,
   countTreatment,
@@ -17,6 +19,8 @@ const {
   updateTreatmentManager,
   createTreatment,
 } = require('../../models/admin/index');
+
+const saltRounds = 10;
 
 // [GET] /admin/
 router.get('/', async (req, res) => {
@@ -114,10 +118,11 @@ router.post('/manager/enable', async (req, res) => {
 router.post('/manager/create', async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
+  const salt = bcrypt.genSaltSync(saltRounds);
+  const hash = bcrypt.hashSync(password, salt);
+  console.log(username + ' ' + hash);
 
-  console.log(username + ' ' + password);
-
-  const createRes = await createManager(username, password);
+  const createRes = await createManager(username, hash);
   return res.redirect('/admin/manager');
 });
 
@@ -126,7 +131,29 @@ router.post('/treatment/updateCapacity', async (req, res) => {
   const newCapacity = +req.body.newCapacity;
   console.log(treatmentId + ' ' + newCapacity);
   const updateRes = await updateTreatmentCapacity(treatmentId, newCapacity);
-  return res.redirect('/admin/treatment');
+  if (updateRes) {
+    return res.redirect('/admin/treatment');
+  } else {
+    const pageIndex = +req.query.pageIndex || 1;
+    const treatments = await getAllTreatments();
+    const treatmentPaged = paginate(treatments, pageIndex, 10);
+    const treatmentFind = treatments.find(
+      (treatment) => (treatment.treatment_id = treatmentId)
+    );
+    console.log(treatmentFind);
+    return res.render('admin/treatment', {
+      currentTreatment: treatmentFind.name,
+      updateFailed: true,
+      treatmentList: treatmentPaged.data,
+      indexList: treatmentPaged.indexList,
+      previous: treatmentPaged.prev,
+      next: treatmentPaged.next,
+      hasNext: treatmentPaged.hasNext,
+      hasPrevious: treatmentPaged.hasPrevious,
+      pageIndex: treatmentPaged.pageIndex,
+      totalPage: treatmentPaged.totalPage,
+    });
+  }
 });
 
 router.post('/treatment/updateManager', async (req, res) => {

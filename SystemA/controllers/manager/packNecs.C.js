@@ -1,18 +1,37 @@
 const express = require("express");
 const { get } = require("express/lib/response");
-const { getAllPackage, getPackByName, getPackages, getPackageByIdPack, addNewPack, delItemByPackId, updatePack } = require("../../models/manager/package")
+const { getPacksBySearch, getPackByName, getPackages, getPackageByIdPack, addNewPack, delItemByPackId, updatePack } = require("../../models/manager/package")
 const { countItemByIdPack, updateItemInPack, delItemInPack, addItemInPack, getItemById } = require("../../models/manager/packageItem.M")
 const { getNecsByPackId, getAllItems } = require("../../models/manager/necessity.M")
 const router = express.Router();
 const { convertDate } = require("../../helper");
 
 
+//[GET] packages/search
+router.get('/search', async(req, res) => {
+    const { page = 1, search, filter } = req.query;
+
+    const { totalPage, packages } = await getPacksBySearch({ page, search, filter });
+
+    res.render("manager/packageNecs/packNecs", {
+        totalPage: totalPage,
+        page,
+        search,
+        url: "/manager/packages",
+        title: "Gói nhu yếu phẩm",
+        packages: packages,
+        filter,
+
+    })
+
+})
+
+//[GET] packages/
 router.get('/', async(req, res) => {
+
 
     const { page = 1, filter, create, update, del } = req.query;
     const { totalPage, packages } = await getPackages({ page, filter });
-
-    // console.log(packages);
     res.render('manager/packageNecs/packNecs', {
         title: "Gói nhu yếu phẩm",
         packages: packages,
@@ -30,7 +49,6 @@ router.get('/:id/detail', async(req, res) => {
 
     const idPackage = req.params.id;
     const { add, del } = req.query;
-    console.log("idpackage get- detail: ", idPackage);
     const Package = await getPackageByIdPack(idPackage);
 
     const data = await getNecsByPackId(idPackage);
@@ -51,7 +69,6 @@ router.get('/:id/delete-item', async(req, res) => {
 
 
     const countItem = await countItemByIdPack(idPackage);
-    console.log("countItem", typeof(parseInt(countItem)));
     if (parseInt(countItem) < 3) {
         return res.redirect(`/manager/packages/${idPackage}/detail?del=001`)
     } else {
@@ -70,11 +87,12 @@ router.get('/:id/delete-item', async(req, res) => {
 
 router.get('/create', async(req, res) => {
 
-
+    const status = req.query.status;
     const data = await getAllItems();
     res.render('manager/packageNecs/createPack', {
         items: data,
-        title: 'Tạo gói nhu yếu phẩm mới'
+        title: 'Tạo gói nhu yếu phẩm mới',
+        status,
     });
 
 })
@@ -83,34 +101,42 @@ router.get('/create', async(req, res) => {
 
 router.post('/create', async(req, res) => {
 
-    console.log(req.body);
-
 
     const { name, due_date, first, amount01, limit01, second, amount02, limit02 } = req.body;
-    const a = new Date();
-    const year = a.getFullYear();
-    const month = a.getMonth();
-    const date = a.getDate();
-    const created_on = `${year}-${month+1}-${date}`;
+    const pack = await getPackByName(name);
+    if (pack.length != 0) {
+        res.redirect('/manager/packages/create?status=001');
 
-    // console.log(name, due_date.split('-')[0], created_on);
+    } else if (first == second) {
+        res.redirect('/manager/packages/create?status=004');
+    } else if (amount01 > limit01 || amount02 > limit02) {
+        res.redirect('/manager/packages/create?status=002');
+    } else if (0 > amount01 || 0 > amount02 || amount01 > limit01 || amount02 > limit02) {
+        res.redirect('/manager/packages/create?status=003');
+
+    } else {
+        const a = new Date();
+        const year = a.getFullYear();
+        const month = a.getMonth();
+        const date = a.getDate();
+        const created_on = `${year}-${month+1}-${date}`;
+
+        const yearDueDate = due_date.split('-')[0];
+        const monthDueDate = due_date.split('-')[1];
+        const dateDueDate = due_date.split('-')[2];
+
+        const dueDate = `${yearDueDate}-${monthDueDate}-${dateDueDate}`;
 
 
-    const yearDueDate = due_date.split('-')[0];
-    const monthDueDate = due_date.split('-')[1];
-    const dateDueDate = due_date.split('-')[2];
-    // console.log(yearDueDate, monthDueDate, dateDueDate);
-    // res.json({ status: "fail" }) 
-    const dueDate = `${yearDueDate}-${monthDueDate}-${dateDueDate}`;
-    console.log(dueDate)
+        const data = await addNewPack(name, dueDate, created_on);
+        const package_id = data[0].package_id;
+        const item01 = await addItemInPack(package_id, first, amount01, limit01);
+        const item02 = await addItemInPack(package_id, second, amount02, limit02);
 
-    const data = await addNewPack(name, dueDate, created_on);
-    console.log(data[0].package_id);
-    const package_id = data[0].package_id;
-    const item01 = await addItemInPack(package_id, first, amount01, limit01);
-    const item02 = await addItemInPack(package_id, second, amount02, limit02);
-
-    res.redirect('/manager/packages/?status=success');
+        if (item01.length > 0 && item02.length > 0) {
+            res.redirect('/manager/packages/?create=success')
+        };
+    }
 })
 
 // [GET] /:id/delete
@@ -118,7 +144,6 @@ router.get('/:id/delete', async(req, res) => {
 
     const { status } = req.query;
     const id = req.params.id;
-    // console.log(id);
     const data = await delItemByPackId(id);
     if (data.length != 0) {
         res.redirect('/manager/packages/?del=success');
@@ -132,10 +157,8 @@ router.get('/:id/update-packs', async(req, res) => {
 
     const { status } = req.query;
     const id = req.params.id;
-    console.log(status);
     const pack = await getPackageByIdPack(id);
     const dueDate = convertDate(pack[0].due_date);
-    // console.log(date(dueDate));
     res.render('manager/packageNecs/updatePack', {
         name: pack[0].name,
         due_date: dueDate,
@@ -150,11 +173,11 @@ router.get('/:id/update-packs', async(req, res) => {
 router.post('/:id/update-packs', async(req, res) => {
     const id = req.params.id;
 
-    const { name, due_date } = req.body;
-    const pack = await getPackByName(id, name);
-    if (pack.length != 0) {
-        console.log(pack)
-            // return res.redirect(`/manager/packages/${id}/update-packs?status=001`);
+    var { name, due_date } = req.body;
+    name = name.trim();
+    const pack = await getPackByName(name);
+    if (pack.length != 0 && pack[0].package_id != id) {
+        return res.redirect(`/manager/packages/${id}/update-packs?status=001`);
 
     } else {
         const a = new Date();
@@ -162,11 +185,9 @@ router.post('/:id/update-packs', async(req, res) => {
         const month = a.getMonth();
         const date = a.getDate();
         const created_on = `${year}-${month+1}-${date}`;
-        // console.log(req.body)
 
         const newPack = await updatePack(id, name, due_date, created_on);
 
-        console.log(newPack);
         if (newPack) {
             res.redirect(`/manager/packages/?update=success&filter=package_id`)
         } else {
@@ -184,7 +205,6 @@ router.get('/:id/addItem', async(req, res) => {
     const pack = await getPackageByIdPack(id);
     const dueDate = convertDate(pack[0].due_date);
     const data = await getAllItems();
-    // console.log(date(dueDate));
     res.render('manager/packageNecs/addItem', {
         items: data,
         title: 'Thêm nhu yếu phẩm mới vào gói',
@@ -199,9 +219,10 @@ router.post('/:id/addItem', async(req, res) => {
 
     const idPack = req.params.id;
     const { first, amount01, limit01 } = req.body;
-    // console.log(idPack, first);
+    if (0 > amount01 || amount01 > limit01) {
+        return res.redirect(`/manager/packages/${idPack}/addItem?status=002`)
+    }
     const data = await getItemById(idPack, first);
-    // console.log("additem", idPack)
     if (data.length != 0) {
         return res.redirect(`/manager/packages/${idPack}/addItem?status=001`)
     }
@@ -220,7 +241,6 @@ router.get('/:id/update-item', async(req, res) => {
 
     const { update, status } = req.query;
     const idPackage = req.params.id;
-    console.log("result update: ", status);
 
     const data = await getNecsByPackId(idPackage);
     const name = await getPackageByIdPack(idPackage);
@@ -237,28 +257,12 @@ router.get('/:id/update-item', async(req, res) => {
 // [POST]
 router.post('/:id/update-item', async(req, res) => {
 
-    // const { status } = req.query;
     const idPack = req.params.id;
-    console.log("id - post - update-item", idPack);
-    // const pack = await getPackageByIdPack(id);
-    // const dueDate = convertDate(pack[0].due_date);
-    // const { idPackage } = req.query;
 
-    // const data = await getNecsByPackId(idPackage);
-
-    // res.render('manager/packageNecs/updateItem', {
-    //     items: data,
-    //     idPackage,
-    // })
-
-    // console.log(req.body);
     const { id, amount01, limit01 } = req.body;
-    console.log(req.body);
     for (let i = 0; i < amount01.length; i++) {
 
         if (amount01[i] <= 0) {
-            console.log('false');
-            console.log(idPack);
             return res.redirect(`/manager/packages/${idPack}/update-item?status=002`);
         } else {
 

@@ -1,4 +1,17 @@
 <div class="container">
+    <style type="text/css">
+
+    .form-amount {
+        width: 100%;
+        padding: 0.375rem 1rem 0.375rem 0.75rem;
+        font-size: 1.1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        border-radius: 5px;
+        border: none;
+    }
+  </style>
+
   <h2 style="color: #fff; margin-top: 20px; margin-right: auto; text-align:center">
     Hãy nhập thông tin gói nhu yêu phẩm mới 
   </h2>
@@ -48,6 +61,13 @@
   <script>
     window.onload = function showAnnouncement() {
       showErrorToast("Nhu yếu phẩm đã tồn tại trong gói")
+    }
+  </script>
+{{/compareString}}
+{{#compareString status "002"}}
+  <script>
+    window.onload = function showAnnouncement() {
+      showErrorToast("Số lượng hoặc giới hạn không phù hợp")
     }
   </script>
 {{/compareString}}
