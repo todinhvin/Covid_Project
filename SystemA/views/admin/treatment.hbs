@@ -27,7 +27,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary btn-admin">Save changes</button>
         </div>
         </form>
     </div>
@@ -37,6 +37,14 @@
 <div class="container">
     <h1><span class="badge bg-secondary">Treatment places</span></h1>
     <section>
+        {{#if updateFailed}}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Update failed</strong> {{currentTreatment}}'s capacity must be larger or equal to current capacity
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        {{/if}}
     <table class="table table-striped" style="background-color: #ffffff">
     <thead>
       <tr style="text-align: left">
@@ -56,9 +64,9 @@
             <td>{{capacity}}</td>
             <td>{{current_capacity}}</td>
             <td>{{manager}}</td>
-            <td>
+            <td class="btns-admin">
                 {{!-- Modal Button 1 --}}
-                <a href="/admin/manager/history/treatment/{{account_id}}" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateCapacity{{treatment_id}}">Update capacity</a>
+                <a href="/admin/manager/history/treatment/{{account_id}}" class="btn btn-primary mT8 btn-admin" data-bs-toggle="modal" data-bs-target="#updateCapacity{{treatment_id}}">Update capacity</a>
                 {{!-- Modal 1 --}}
                 <!-- Modal -->
                 <div class="modal fade" id="updateCapacity{{treatment_id}}" tabindex="-1">
@@ -80,14 +88,14 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary btn-admin">Save changes</button>
                         </div>
                         </form>
                     </div>
                 </div>
                 </div>
                 {{!-- Modal Button 2 --}}
-                <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateManager{{treatment_id}}">Update manager</a>
+                <a href="#" class="btn btn-primary mT8 btn-admin" data-bs-toggle="modal" data-bs-target="#updateManager{{treatment_id}}">Update manager</a>
                 <!-- Modal 2 -->
                 <div class="modal fade modal-manager" id="updateManager{{treatment_id}}" tabindex="-1">
                 <div class="modal-dialog">
@@ -126,7 +134,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save changes</button>
+                            <button type="submit" class="btn btn-primary btn-admin">Save changes</button>
                         </div>
                         </form>
                     </div>

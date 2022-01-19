@@ -17,6 +17,28 @@ exports.setPassword = async (username, password) => {
   return rows[0];
 };
 
+exports.changeStateAccount = async (username, state) => {
+  await db.query(
+    "UPDATE account set state = $1 where username=$2 ",
+    [state, username]
+  );
+};
+
+exports.addAccount = async (username) => {
+  await db.query(
+    "INSERT INTO account(username) values($1) ",
+    [username]
+  );
+};
+
+exports.getStateAccount = async (username) => {
+  const { rows } = await db.query(
+    "select state from account where username=$1",
+    [username]
+  );
+  return rows[0].state;
+};
+
 exports.changeAccount = async (
   IdentifyField,
   IdentifyValue,

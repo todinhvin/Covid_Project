@@ -1,5 +1,5 @@
 <div class="manage-home">
-  <a href="/user/buy" class="box">
+  <a href="/user/account-balance" class="box">
     <h2 style="font-weight: 900; font-size: 25px">SỐ DƯ</h2>
     <span style="font-size: 35px"><i
         style="margin-left: 8px"
@@ -17,3 +17,13 @@
     <p>NẠP TIỀN VÀO TÀI KHOẢN</p>
   </a>
 </div>
+
+<div id="toast">
+
+</div>
+
+{{#compareString state "error"}}
+  <script>
+    window.onload = ()=> { showErrorToast('Tài khoản đang được sử dụng ở thiết bị khác') }
+  </script>
+{{/compareString}}

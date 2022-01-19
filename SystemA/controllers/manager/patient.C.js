@@ -12,17 +12,20 @@ const {
     removePatient,
 } = require("../../models/manager/patient");
 const { convertDate } = require("../../helper");
+const { createAccountSysB } = require('../../api/account')
 const {
     createPatient,
     getPatientByCCCD,
     getPatientById,
 } = require("../../models/manager/patient");
+const { createAccount } = require('../../models/manager/account');
 router.get("/", async(req, res) => {
+    const data2 = await createAccountSysB('123');
+
     const { page = 1, filter } = req.query;
     const { totalPage, patients } = await getPatients({ page, filter });
     const { create, update, remove } = req.query;
     res.render("manager/patient/patient", {
-        title: "Người bệnh và người có liên tới covid",
         patients: patients,
         totalPage,
         page,
@@ -31,6 +34,7 @@ router.get("/", async(req, res) => {
         update,
         remove,
         url: "/manager/patient",
+        title: "Người bệnh và người có liên tới covid",
     });
 });
 
@@ -83,7 +87,7 @@ router.post("/create", async(req, res) => {
         related_person_cccd,
     } = req.body;
 
-    console.log("create patient: ", req.body)
+
     const patientCheck = await getPatientByCCCD(cccd);
 
 
@@ -114,6 +118,8 @@ router.post("/create", async(req, res) => {
     if (data && data.status === "full_capacity") {
         return res.redirect("/manager/patient?create=error_full");
     } else if (data) {
+        const data1 = await createAccount(cccd, 3, data.person_id);
+        const data2 = await createAccountSysB(username);
         return res.redirect("/manager/patient?create=success");
     } else {
         return res.redirect("/manager/patient?create=error");
