@@ -81,8 +81,7 @@ exports.createTreatment = async (name, capacity) => {
 exports.countPersonByTreatmentId = async (treatment_id) => {
   const { rows } = await db.query(
     `SELECT count(*)
-	  FROM public.treatment_history as th WHERE time = (SELECT MAX(time) from public.treatment_history 
-	  where person_id = th.person_id) AND treatment_id = ${treatment_id}`
+	  FROM public.person where treatment_id = ${treatment_id}`
   );
   const count = +rows[0].count;
   return count;

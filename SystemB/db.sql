@@ -29,11 +29,11 @@ create table account
 
 create table payment_history (
     payment_his_id serial,
-    account_id serial,
+    username varchar(50),
     total_money real,
     payment_time timestamp,
     constraint fk_pm_his_acc
-        foreign key (account_id) references account
+        foreign key (username) references account
 );
 
 insert into role

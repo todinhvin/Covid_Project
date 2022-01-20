@@ -602,19 +602,165 @@ insert into role
 
     -- Person
     -- ALTER TABLE person ALTER COLUMN related_person_id  DROP NOT NULL;
-
+--     Treatment 1
     insert into person
         ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
         manager_id)
     values
         ( 'Nguyen van customer', '0011223344', '2000-1-1', 1, -1, 1, 'F0', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Pham Thi customer', '999993344', '2001-1-1', 2, 1, 1, 'F1', 2);
 
     insert into person
         ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
         manager_id)
     values
-        ( 'Pham Thi customer', '999993344', '2001-1-1', 1, 1, 1, 'F1', 2);
+        ( 'Nguyen A', '1111111111111', '1980-1-1', 3, 1, 1, 'F1', 2);
+    
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Nguyen B', '2222222222222', '1989-1-1', 4, 1, 1, 'F1', 2);
+    
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Nguyen C', '3333333333333', '2000-1-1', 5, 1, 1, 'F1', 2);
+--     Treatment 2
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Tran A', '1212121212121', '1984-1-1', 26, -1, 2, 'F0', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Tran B', '1313131313131', '2004-1-1', 27, 6, 2, 'F1', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Tran C', '346298234922222', '1994-1-1', 28, 6, 2, 'F1', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Tran D', '237232372320', '1984-1-10', 29, 6, 2, 'F1', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Tran E', '703272392455', '1984-5-1', 30, 6, 2, 'F1', 2);
 
+--     Treatment 3
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Truong A', '1264912812109', '2009-1-1', 51, -1, 3, 'F0', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Truong B', '122222210240012', '1999-1-1', 52, 11, 3, 'F1', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Truong C', '3414521464226462', '1969-1-1', 53, 11, 3, 'F1', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Truong D', '3413123453454', '2007-1-1', 54, 11, 3, 'F1', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Truong E', '14222225325523', '2001-1-1', 55, 11, 3, 'F1', 2);
+-- Treatment 4
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Trinh A', '2364892639922', '2000-1-1', 76, -1, 4, 'F0', 2);
+insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Trinh A', '27373223232839', '1974-1-1', 77, 16, 4, 'F1', 2);
+insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Trinh B', '0238232300230', '1964-1-1', 78, 16, 4, 'F1', 2);
+insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Trinh D', '239987923732', '1946-1-1', 79, 16, 4, 'F1', 2);
+insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Trinh E', '277423902308032', '1974-1-1', 80, 16, 4, 'F1', 2);
+-- Treatment 5
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Le A', '237232309092203', '1999-1-1', 101, -1, 5, 'F0', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Le B', '578947347349034', '1999-1-1', 102, 21, 5, 'F1', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Le C', '092119029021821', '1999-1-1', 103, 21, 5, 'F1', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Le D', '0122190219074174', '1999-1-1', 104, 21, 5, 'F1', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Le E', '091279348263639923', '1999-1-1', 105, 21, 5, 'F1', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Cao C', '9529382102102903', '1999-1-1', 106, 21, 5, 'F1', 2);
+    insert into person
+        ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+        manager_id)
+    values
+        ( 'Cao D', '2390293090230923023', '1999-1-1', 106, 21, 5, 'F1', 2);
+    insert into person
+            ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+            manager_id)
+        values
+            ( 'Cao E', '926834960230902', '1999-1-1', 107, 21, 5, 'F1', 2);
+insert into person
+            ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+            manager_id)
+        values
+            ( 'Cao A', '328490329293023023', '1999-1-1', 108, 21, 5, 'F1', 2);
+insert into person
+            ( full_name, cccd, birthday, address_id, related_person_id, treatment_id, status,
+            manager_id)
+        values
+            ( 'Cao B', '29302308239032903', '1999-1-1', 109, 21, 5, 'F1', 2);
     -- Treatment history
     insert into treatment_history
         ( treatment_id, person_id, "time", manager_id)
@@ -628,6 +774,7 @@ insert into role
         ( treatment_id, person_id, "time", manager_id)
     values
         ( 1, 2, '2021-12-31', 2);
+
 
     -- Status history
     insert into status_history
@@ -739,10 +886,6 @@ values (420000, '2023-01-01', 4, 50000, false);
     values
         ( '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 4, 2000000);
 
-
--- Tạo ph cho user2
-insert into payment_history ( account_id, payment_on, checkout_id, total_money)
-values (4, '2022-01-10', 1, 420000);
 -- Trừ nợ
 insert into public.indept ( indept, due_date, account_id, minimum_pay, state)
 values (0, '2023-01-01', 4, 50000, true);
