@@ -48,12 +48,12 @@ insert into role
 insert into account
         ( username, password, role, account_balance, state)
     values
-        ( 'admin', '123456', 1, 0, 'unlock');
+        ( 'admin', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 1, 0, 'unlock');
 insert into account
         ( username, password, role, account_balance, state)
     values
-        ( '123456789', '123456', 3, 0, 'unlock');
+        ( '123456789', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 3, 0, 'unlock');
 insert into account
         ( username, password, role, account_balance, state)
     values
-        ( '12345678', '123456', 3, 0, 'unlock');
+        ( '12345678', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 3, 0, 'unlock');

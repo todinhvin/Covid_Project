@@ -22,7 +22,6 @@ router.get("/", checkAccess);
 
 router.use("/auth", authRoute);
 
-
 router.use("/api", require("../controllers/api/account.js"));
 
 router.use("/user", requireAuth, checkUser, userRoute);
