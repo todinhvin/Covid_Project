@@ -7,6 +7,7 @@ module.exports = (app) => {
       saveUninitialized: true,
       secret: "123456",
       cookie: { maxAge: 60 * 60 * 24 * 1000 },
+      
     })
   );
 };

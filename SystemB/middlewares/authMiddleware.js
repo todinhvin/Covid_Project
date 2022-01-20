@@ -1,18 +1,11 @@
 const jwt = require("jsonwebtoken");
-
 const { getAccount } = require("../models/user/account");
 
 //Check current user
 exports.getUser = (req, res, next) => {
     const jwtInfo = req.url.split('/')[2]
-    let decodedInfo
-    if (jwtInfo && jwtInfo.length > 50) {
-        res.locals.jwtRe = jwtInfo
-        decodedInfo = jwt.verify(jwtInfo, 'secret');
-
-    }
-    if (decodedInfo && decodedInfo.data) {
-        res.locals.decodedInfo = decodedInfo.data
+    if (jwtInfo && jwtInfo.length > 100) {
+        res.cookie('data_req',jwtInfo) 
     }
     const token = req.cookies.jwt_payment;
     if (token) {
@@ -42,7 +35,6 @@ exports.getUser = (req, res, next) => {
 };
 
 exports.requireAuth = (req, res, next) => {
-    console.log(res.locals.decodedInfo)
     const token = req.cookies.jwt_payment;
     if (token) {
         jwt.verify(token, "secret", async(err, decodedToken) => {
@@ -57,12 +49,7 @@ exports.requireAuth = (req, res, next) => {
                     return res.redirect("/auth/login");
                 }
                 req.role = account.role;
-                req.username = account.username;
-                if (res.locals.decodedInfo) {
-                    console.log('ok')
-                    res.usernameRed = res.locals.decodedInfo.username;
-                    res.jwtRe = res.locals.jwtRe
-                }
+                req.username = account.username; 
                 next();
             }
         });
@@ -72,7 +59,6 @@ exports.requireAuth = (req, res, next) => {
 };
 
 exports.checkUser = (req, res, next) => {
-    console.log(req.usernameRed, req.jwtRe)
     const role = req.role;
     console.log(role);
     if (role == 3) {
@@ -108,7 +94,13 @@ exports.checkAccess = (req, res, next) => {
                         res.redirect("/admin");
                         break;
                     case 3:
-                        res.redirect("/user");
+                        const jwt = req.cookies.data_req;
+                        console.log(jwt)
+                        if(jwt) {
+                            return res.redirect(`/user/${jwt}`);
+
+                        }
+                         res.redirect("/user");
                         break;
                 }
             }

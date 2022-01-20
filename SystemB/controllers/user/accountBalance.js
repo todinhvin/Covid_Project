@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { putMoneyAccount ,} = require("../../models/user/putMoney");
+const { putMoneyAccount ,} = require("../../models/user/money");
 const {changeStateAccount, getAccount} = require('../../models/user/account')
 router.get("/",async (req, res) => {
   const account = await getAccount('username',req.username);

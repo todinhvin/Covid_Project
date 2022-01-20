@@ -54,11 +54,30 @@
                     case 1:
                         location.assign('/admin');
                         break;
-                    case 2:
-                        location.assign('/manager');
-                        break;
                     case 3:
-                        location.assign('/user');
+                        window.getCookie = function (name) {
+                            var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+                            if (match) return match[2];
+                        }
+
+                        function setCookie(name, value, days) {
+                            var expires = "";
+                            if (days) {
+                                var date = new Date();
+                                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                                expires = "; expires=" + date.toUTCString();
+                            }
+                            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+                        }
+
+                        const jwt = getCookie('data_req');
+
+                        if (jwt) {
+                            location.assign(`/user/${jwt}`);
+
+                        } else {
+                            location.assign('/user');
+                        }
                         break;
                 }
             }

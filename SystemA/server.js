@@ -11,9 +11,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.options("*", cors());
 app.use(cors());
-app.use(routes);
 require('./middlewares/handlebars')(app);
 require('./middlewares/session')(app);
+app.use(routes);
 // Public thư mục ra ngoài
 app.use(express.static(`${__dirname}/public`));
 

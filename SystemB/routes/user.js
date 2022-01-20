@@ -6,7 +6,6 @@ router.use("/", function (req, res, next) {
   req.app.locals.layout = "user";
   next();
 });
-router.use("/", require("../controllers/user/home.js"));
 
 const checkLockAccount = async (req, res, next) => {
   const username = req.username;
@@ -20,10 +19,12 @@ const checkLockAccount = async (req, res, next) => {
 router.use(
   "/put-money",
   checkLockAccount,
-  require("../controllers/user/putMoney.js")
+  require("../controllers/user/money.js")
 );
 router.use(
   "/account-balance",
   require("../controllers/user/accountBalance.js")
 );
+router.use("/", require("../controllers/user/home.js"));
+
 module.exports = router;

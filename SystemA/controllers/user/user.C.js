@@ -84,9 +84,7 @@ router.get("/indept/:id", async(req, res) => {
     indepts.forEach(indept => {
         indept.due_date = convertDate(indept.due_date);
     })
-    console.log(indepts)
 
-    //console.log(indepts);
 
     res.render("user/indept", {
         indepts: indepts,
@@ -110,7 +108,6 @@ router.get('/payment/:id', async (req,res) => {
         return res.redirect('home?payment=error')
     }
 
-    const key="123"
     const token = jwt.sign({
         exp: Math.floor(Date.now() / 1000) + (60 * 60),
         data: { indept_id: indept.indept_id,indept:indept.indept,account_id:indept.account_id,username:user.cccd }
@@ -118,16 +115,6 @@ router.get('/payment/:id', async (req,res) => {
     res.redirect(`http://127.0.0.1:4000/user/${token}`)
 })
 
-router.get('/payment/response',async (req,res)=> {
-    const {indept_id,payment_on,indept,cccd} =req.body;
-    const patient = await getPatientByCCCD(cccd);
-    const account = getAccount('person_id',patient.person_id)
-    const data = await changeStateIndept(indept_id,'true');
-    const data1 = await createPaymentHistory(account.account_id,payment_on,indept)
-    if(data &&data1) {
-        return res.json('success')
-    }else return res.json('error')
-})
 
 //[GET] /user/paymentHistory/:id
 router.get("/paymentHistory/:id", async(req, res) => {

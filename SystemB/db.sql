@@ -29,7 +29,7 @@ create table account
 
 create table payment_history (
     payment_his_id serial,
-    account_id varchar(50),
+    account_id serial,
     total_money real,
     payment_time timestamp,
     constraint fk_pm_his_acc
@@ -57,3 +57,8 @@ insert into account
         ( username, password, role, account_balance, state)
     values
         ( '12345678', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 3, 0, 'unlock');
+
+insert into account
+        ( username, password, role, account_balance, state)
+    values
+        ( '0011223344', '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 3, 0, 'unlock');

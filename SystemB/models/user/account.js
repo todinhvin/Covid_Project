@@ -9,6 +9,7 @@ exports.getAccount = async(fieldName, value) => {
     return rows[0];
 };
 
+
 exports.setPassword = async(username, password) => {
     const { rows } = await db.query(
         "UPDATE account set password = $1 where username=$2 returning *", [password, username]
@@ -49,16 +50,24 @@ exports.changeAccount = async(
     return rows[0];
 };
 
-exports.addPaymentHis = async ({username,total_money,payment_time,package_name}) => {
+exports.addPaymentHis = async (account_id,total_money,payment_time) => {
   try{
     const {rows} = await db.query(
-      "INSERT INTO accoupayment_historynt(username,total_money,payment_time,package_name) values($1,$2,$3,$4) ",
-      [username,total_money,payment_time,package_name]
+      "INSERT INTO payment_history(account_id,total_money,payment_time) values($1,$2,$3) returning * ",
+      [account_id,total_money,payment_time]
     );
     return rows[0];
   }catch(error) {
     return
   }
+}
+
+exports.getAccountBalance = async (username) => {
+    const {rows } = await db.query(
+        "SELECT account_balance FROM account WHERE username=$1",
+        [ username]
+      );
+    return rows[0].account_balance
 }
 exports.createAdminAccount = async(username, password) => {
     const { rows } = await db.query(
