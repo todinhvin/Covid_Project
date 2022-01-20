@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { getAccount, createAdminAccount, createUserAccount } = require("../../models/user/account");
+const { getAccount, createAdminAccount, updateUserAccount } = require("../../models/user/account");
 const { getOneUser } = require("../../models/user/user");
 
 const router = express.Router();
@@ -108,7 +108,7 @@ router.post("/newUserLogin", async(req, res, next) => {
         const passwordHashed = await bcrypt.hash(password, salt);
 
         //Lưu user vào DB
-        const user = await createUserAccount(username, passwordHashed, person.person_id);
+        const user = await updateUserAccount(username, passwordHashed);
         const accountx = await getAccount("username", username);
 
         //Tạo jwt cho user, lưu vào cookie (đã đăng nhập)

@@ -6,10 +6,10 @@ const router = express.Router();
 const { allUser, getOneUser } = require("../../models/user/user");
 const { getStatusHistory } = require("../../models/user/statusHistory");
 const { getTreatmentHistory } = require("../../models/user/treatmentHistory");
-const { getAccount, changeAccount,getPatientByCCCD } = require("../../models/user/account");
+const { getAccount, changeAccount, getPatientByCCCD } = require("../../models/user/account");
 const { getCheckout, createCheckout } = require("../../models/user/checkout");
-const { getIndept, getTotalIndebt,changeStateIndept } = require("../../models/user/indept");
-const { getPaymentHistory ,createPaymentHistory } = require("../../models/user/paymentHistory");
+const { getIndept, changeStateIndept } = require("../../models/user/indept");
+const { getPaymentHistory, createPaymentHistory } = require("../../models/user/paymentHistory");
 const { getAddress } = require("../../models/user/address");
 const { getTreatment } = require("../../models/user/treatment");
 const { getAllPackage, getPackageById, getPackageDetail } = require('../../models/user/buy')
@@ -79,8 +79,6 @@ router.get("/indept/:id", async(req, res) => {
     const account = await getAccount("person_id", req.params.id);
     const indepts = await getIndept("account_id", account.account_id);
 
-    let price = await getTotalIndebt("account_id", account.account_id);
-
     indepts.forEach(indept => {
         indept.due_date = convertDate(indept.due_date);
     })
@@ -88,29 +86,28 @@ router.get("/indept/:id", async(req, res) => {
 
     res.render("user/indept", {
         indepts: indepts,
-        price: price,
     });
 });
 
-router.get('/payment/:id', async (req,res) => {
-    const {id} = req.params;
+router.get('/payment/:id', async(req, res) => {
+    const { id } = req.params;
     const indeptArr = await getIndept("indept_id", id);
-    const indept = indeptArr.length>0 ?indeptArr[0]:undefined
+    const indept = indeptArr.length > 0 ? indeptArr[0] : undefined
     let account, user
-    if(indept) {
+    if (indept) {
         account = await getAccount("account_id", indept.account_id);
-        if(account) {
+        if (account) {
             user = await getOneUser("person_id", account.person_id);
         }
     }
 
-    if(!user.cccd) {
+    if (!user.cccd) {
         return res.redirect('home?payment=error')
     }
 
     const token = jwt.sign({
         exp: Math.floor(Date.now() / 1000) + (60 * 60),
-        data: { indept_id: indept.indept_id,indept:indept.indept,account_id:indept.account_id,username:user.cccd }
+        data: { indept_id: indept.indept_id, indept: indept.indept, account_id: indept.account_id, username: user.cccd }
     }, 'secret');
     res.redirect(`http://127.0.0.1:4000/user/${token}`)
 })
@@ -209,18 +206,18 @@ router.get("/", (req, res) => {
 
 //[GET] /buy
 router.get('/buy', async(req, res) => {
-  const { page = 1, filter, search } = req.query;
-  //console.log("filter = ", filter, " search = ", search);
+    const { page = 1, filter, search } = req.query;
+    //console.log("filter = ", filter, " search = ", search);
 
-  const { totalPage, Packages } = await getAllPackage({ page, filter, search });
+    const { totalPage, Packages } = await getAllPackage({ page, filter, search });
 
-  res.render('user/buy/buyList', {
-      Packages: Packages,
-      totalPage,
-      page,
-      filter,
-      search,
-  });
+    res.render('user/buy/buyList', {
+        Packages: Packages,
+        totalPage,
+        page,
+        filter,
+        search,
+    });
 })
 
 /*
@@ -235,20 +232,20 @@ router.get('/buy', async(req, res) => {
 
 //[GET] /buy/:id/detail
 router.get('/buy/:id/detail', async(req, res) => {
-  let tempid = req.params.id;
-  let pd = await getPackageById(tempid);
+    let tempid = req.params.id;
+    let pd = await getPackageById(tempid);
 
-  let its = await getPackageDetail(tempid);
-  
-  let count = its.length;
+    let its = await getPackageDetail(tempid);
 
-  res.render('user/buy/buyDetail', {
-      name: pd.name,
-      price: pd.price,
-      Id: tempid,
-      Items: its,
-      countItems: count,
-  });
+    let count = its.length;
+
+    res.render('user/buy/buyDetail', {
+        name: pd.name,
+        price: pd.price,
+        Id: tempid,
+        Items: its,
+        countItems: count,
+    });
 })
 
 
@@ -264,7 +261,7 @@ router.post('/buy/:id/detail', async(req, res) => {
 
     // Lấy package id
     let pid = req.params.id;
-    
+
     // Đọc dữ liệu từ form
     uqObject = req.body;
     uqArray = Object.entries(uqObject);
@@ -304,7 +301,7 @@ router.post('/buy/:id/detail', async(req, res) => {
         countItems: count,
         result: createRes,
     });
-  })
+})
 
 //[GET] /user/indept
 router.get("/indept", async(req, res) => {
@@ -315,8 +312,7 @@ router.get("/indept", async(req, res) => {
         account = await getAccount("account_id", decodedToken.id);
     });
     const indepts = await getIndept("account_id", account.account_id);
-    let price = await getTotalIndebt("account_id", account.account_id);
-    
+
     indepts.forEach(indept => {
         indept.due_date = convertDate(indept.due_date);
     })
@@ -325,7 +321,6 @@ router.get("/indept", async(req, res) => {
 
     res.render("user/indept", {
         indepts: indepts,
-        price: price,
     });
 });
 

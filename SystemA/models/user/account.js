@@ -27,18 +27,18 @@ exports.createAdminAccount = async(username, password) => {
     return rows[0];
 };
 
-exports.createUserAccount = async(username, password, person_id) => {
+exports.updateUserAccount = async(username, password) => {
     const { rows } = await db.query(
-        `INSERT INTO public.account(
-            username, password, status, role_id, person_id)
-            VALUES ('${username}', '${password}', 'active', '3', '${person_id}');`
+        `UPDATE public.account
+        SET password='${password}'
+        WHERE username = '${username}';`
     );
     return rows[0];
 };
 
-exports.getPatientByCCCD = async (cccd) => {
+exports.getPatientByCCCD = async(cccd) => {
     const { rows } = await db.query('SELECT * FROM person where "cccd" =$1 ', [
-      cccd,
+        cccd,
     ]);
     return rows[0];
 };
