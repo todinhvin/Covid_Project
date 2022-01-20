@@ -27,11 +27,11 @@ exports.createAdminAccount = async(username, password) => {
     return rows[0];
 };
 
-exports.createUserAccount = async(username, password) => {
+exports.createUserAccount = async(username, password, person_id) => {
     const { rows } = await db.query(
         `INSERT INTO public.account(
             username, password, status, role_id, person_id)
-            VALUES ('${username}', '${password}', 'active', '3', null);`
+            VALUES ('${username}', '${password}', 'active', '3', '${person_id}');`
     );
     return rows[0];
 };
