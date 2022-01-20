@@ -6,14 +6,14 @@ const router = express.Router();
 router.get("/:info", (req, res) => {
   try {
     const { info } = req.params;
-
-    res.render("homeUser", {
-  });
     var decoded = jwt.verify(info, 'secret');
     req.jwt  = jwt;
     req.account
     console.log(req.url)
     console.log(decoded)
+
+    res.render("user/payment");
+    
 
   } catch(err) {
     console.log(err)

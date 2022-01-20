@@ -35,3 +35,10 @@ exports.createUserAccount = async(username, password) => {
     );
     return rows[0];
 };
+
+exports.getPatientByCCCD = async (cccd) => {
+    const { rows } = await db.query('SELECT * FROM person where "cccd" =$1 ', [
+      cccd,
+    ]);
+    return rows[0];
+};
