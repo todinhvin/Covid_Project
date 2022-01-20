@@ -5,13 +5,13 @@ const { getAccount } = require("../models/user/account");
 //Check current user
 exports.getUser = (req, res, next) => {
     const jwtInfo = req.url.split('/')[2]
-    let  decodedInfo
-    if(jwtInfo && jwtInfo.length>50) {
+    let decodedInfo
+    if (jwtInfo && jwtInfo.length > 50) {
         res.locals.jwtRe = jwtInfo
         decodedInfo = jwt.verify(jwtInfo, 'secret');
 
     }
-    if(decodedInfo &&decodedInfo.data) {
+    if (decodedInfo && decodedInfo.data) {
         res.locals.decodedInfo = decodedInfo.data
     }
     const token = req.cookies.jwt_payment;
@@ -29,13 +29,13 @@ exports.getUser = (req, res, next) => {
                 } else {
                     res.locals.account = account;
                 }
-              
+
 
                 next();
             }
         });
     } else {
-      
+
         res.locals.account = null;
         next();
     }
@@ -58,7 +58,7 @@ exports.requireAuth = (req, res, next) => {
                 }
                 req.role = account.role;
                 req.username = account.username;
-                if(res.locals.decodedInfo) {
+                if (res.locals.decodedInfo) {
                     console.log('ok')
                     res.usernameRed = res.locals.decodedInfo.username;
                     res.jwtRe = res.locals.jwtRe
@@ -72,10 +72,10 @@ exports.requireAuth = (req, res, next) => {
 };
 
 exports.checkUser = (req, res, next) => {
-    console.log(req.usernameRed,req.jwtRe)
+    console.log(req.usernameRed, req.jwtRe)
     const role = req.role;
     console.log(role);
-    if (role == "user" || role == "admin") {
+    if (role == 3) {
         next();
     } else {
         res.json("Not Permission");
@@ -84,7 +84,7 @@ exports.checkUser = (req, res, next) => {
 
 exports.checkAdmin = (req, res, next) => {
     const role = req.role;
-    if (role == "admin") {
+    if (role == 1) {
         next();
     } else {
         res.json("Not Permission");
@@ -104,10 +104,10 @@ exports.checkAccess = (req, res, next) => {
                 let account = await getAccount("username", decodedToken.id);
                 req.role = account.role;
                 switch (req.role) {
-                    case "admin":
+                    case 1:
                         res.redirect("/admin");
                         break;
-                    case "user":
+                    case 3:
                         res.redirect("/user");
                         break;
                 }
@@ -120,7 +120,7 @@ exports.checkAccess = (req, res, next) => {
 
 //Check first access
 exports.checkFirstAccess = async(req, res, next) => {
-    const account = await getAccount("role", "admin");
+    const account = await getAccount("role", 1);
     if (!account) {
         res.redirect('/auth/signupAdmin');
     }
