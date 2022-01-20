@@ -108,7 +108,7 @@ router.post("/newUserLogin", async(req, res, next) => {
         const passwordHashed = await bcrypt.hash(password, salt);
 
         //Lưu user vào DB
-        const user = await createUserAccount(username, passwordHashed);
+        const user = await createUserAccount(username, passwordHashed, person.person_id);
         const accountx = await getAccount("username", username);
 
         //Tạo jwt cho user, lưu vào cookie (đã đăng nhập)
