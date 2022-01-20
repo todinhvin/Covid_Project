@@ -15,7 +15,7 @@ router.post('/payment_indept', async(req, res) => {
     const payment_time = new Date();
     let data2;
     if (data1) {
-        data2 = await addPaymentHis(account.account_id, dataParse.indept, payment_time);
+        data2 = await addPaymentHis(account.account_id, -dataParse.indept, payment_time);
     }
     if (data1 && data2) {
         const { indept_id, indept, username } = dataParse;

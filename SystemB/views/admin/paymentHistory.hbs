@@ -1,0 +1,26 @@
+<div class="container container-details">
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h2><b>Payment History</b></h2>
+    </div>
+
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Account Id</th>
+                <th scope="col">Balance Change</th>
+                <th scope="col">Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each payment_historys}}
+            <tr>
+                {{!-- <th scope="row">{{this.payment_history_id}}</th> --}}
+                <td>{{this.account_id}}</td>
+                <td>{{this.total_money}}</td>
+                <td>{{this.payment_time}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+</div>
