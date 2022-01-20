@@ -7,11 +7,12 @@ exports.getUser = (req, res, next) => {
     const jwtInfo = req.url.split('/')[2]
     let  decodedInfo
     if(jwtInfo && jwtInfo.length>50) {
+        res.locals.jwtRe = jwtInfo
         decodedInfo = jwt.verify(jwtInfo, 'secret');
 
     }
-    if(decodedInfo) {
-        req.decodedInfo = decodedInfo
+    if(decodedInfo &&decodedInfo.data) {
+        res.locals.decodedInfo = decodedInfo.data
     }
     const token = req.cookies.jwt_payment;
     if (token) {
@@ -28,20 +29,20 @@ exports.getUser = (req, res, next) => {
                 } else {
                     res.locals.account = account;
                 }
-                res.locals.username_correct = decodedInfo.username
+              
 
                 next();
             }
         });
     } else {
-        res.locals.username_correct = decodedInfo.username
+      
         res.locals.account = null;
         next();
     }
 };
 
 exports.requireAuth = (req, res, next) => {
-    console.log(req.locals.username_correct)
+    console.log(res.locals.decodedInfo)
     const token = req.cookies.jwt_payment;
     if (token) {
         jwt.verify(token, "secret", async(err, decodedToken) => {
@@ -57,6 +58,11 @@ exports.requireAuth = (req, res, next) => {
                 }
                 req.role = account.role;
                 req.username = account.username;
+                if(res.locals.decodedInfo) {
+                    console.log('ok')
+                    res.usernameRed = res.locals.decodedInfo.username;
+                    res.jwtRe = res.locals.jwtRe
+                }
                 next();
             }
         });
@@ -66,6 +72,7 @@ exports.requireAuth = (req, res, next) => {
 };
 
 exports.checkUser = (req, res, next) => {
+    console.log(req.usernameRed,req.jwtRe)
     const role = req.role;
     console.log(role);
     if (role == "user" || role == "admin") {
