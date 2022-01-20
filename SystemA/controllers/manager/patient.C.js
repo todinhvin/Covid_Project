@@ -84,7 +84,7 @@ router.post("/create", async(req, res) => {
         treatment_id,
         related_person_cccd,
     } = req.body;
-
+    console.log(req.body);
 
     const patientCheck = await getPatientByCCCD(cccd);
 
@@ -96,9 +96,12 @@ router.post("/create", async(req, res) => {
     if (related_person_cccd.length != 0 && related_person_cccd.length != 9) {
         return res.redirect("/manager/patient/create?status=001");
     }
+
+    // LỖI
     if (patientCheck) {
         return res.redirect("/manager/patient?create=error");
     }
+
     let relatedPerson;
     if (related_person_cccd) {
         relatedPerson = await getPatientByCCCD(related_person_cccd);
@@ -158,11 +161,11 @@ router.post("/:id/update", async(req, res) => {
 
     //|| related_person_cccd.length != 0
     if (cccd.length != 0 && cccd.length != 9) {
-        return res.redirect("/manager/patient/create?status=001");
+        return res.redirect(`/manager/patient/${id}/update?status=001`);
     }
 
-    if (related_person_cccd.length != 0 && related_person_cccd.length != 9) {
-        return res.redirect("/manager/patient/create?status=001");
+    if (person_related.length != 0 && person_related.length != 9) {
+        return res.redirect(`/manager/patient/${id}/update?status=001`);
     }
     let relatedPerson;
     if (related_person_cccd) {

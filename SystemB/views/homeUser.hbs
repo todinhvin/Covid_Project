@@ -27,3 +27,16 @@
     window.onload = ()=> { showErrorToast('Tài khoản đang được sử dụng ở thiết bị khác') }
   </script>
 {{/compareString}}
+
+
+{{#compareString status  "error"}}
+  <script>
+    window.onload = ()=> { showErrorToast('Thanh toán không thành công') }
+  </script>
+{{/compareString}}
+
+{{#compareString status "success"}}
+  <script>
+    window.onload = ()=> { showSuccessToast('Thanh toán thành công') }
+  </script>
+{{/compareString}}
