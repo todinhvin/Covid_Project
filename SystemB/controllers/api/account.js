@@ -21,6 +21,18 @@ router.post('/add-payment-his',async (req,res) => {
 })
 
 
+router.post('/payment',async (req,res) => {
+    const {username,indept} = req.body;
+    const payment_time = new Date();
+    const data = await addPaymentHis({username,total_money,payment_time})
+    if(data) {
+        return res.json('success')
+    }
+    return res.json('error')
+})
+
+
+
 
 module.exports = router;
 

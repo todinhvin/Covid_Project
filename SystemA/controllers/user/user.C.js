@@ -84,6 +84,7 @@ router.get("/indept/:id", async(req, res) => {
     indepts.forEach(indept => {
         indept.due_date = convertDate(indept.due_date);
     })
+    console.log(indepts)
 
     //console.log(indepts);
 
@@ -92,6 +93,30 @@ router.get("/indept/:id", async(req, res) => {
         price: price,
     });
 });
+
+router.get('/payment/:id', async (req,res) => {
+    const {id} = req.params;
+    const indeptArr = await getIndept("indept_id", id);
+    const indept = indeptArr.length>0 ?indeptArr[0]:undefined
+    let account, user
+    if(indept) {
+        account = await getAccount("account_id", indept.account_id);
+        if(account) {
+            user = await getOneUser("person_id", account.person_id);
+        }
+    }
+
+    if(!user.cccd) {
+        return res.redirect('home?payment=error')
+    }
+
+    const key="123"
+    const token = jwt.sign({
+        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+        data: { indept_id: indept.indept_id,indept:indept.indept,account_id:indept.account_id,username:user.cccd }
+    }, 'secret');
+    res.redirect(`http://127.0.0.1:4000/user/${token}`)
+})
 
 //[GET] /user/paymentHistory/:id
 router.get("/paymentHistory/:id", async(req, res) => {

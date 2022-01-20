@@ -116,8 +116,10 @@ router.post("/create", async(req, res) => {
     if (data && data.status === "full_capacity") {
         return res.redirect("/manager/patient?create=error_full");
     } else if (data) {
-        await createAccount(cccd,3,data.person_id);
-        await createAccountSysB(cccd);
+        if(cccd) {
+            await createAccount(cccd,3,data.person_id);
+            await createAccountSysB(cccd);
+        }
         return res.redirect("/manager/patient?create=success");
     } else {
         return res.redirect("/manager/patient?create=error");
