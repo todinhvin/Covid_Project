@@ -50,30 +50,28 @@ exports.changeAccount = async(
     return rows[0];
 };
 
-exports.addPaymentHis = async (account_id,total_money,payment_time) => {
-  try{
-    const {rows} = await db.query(
-      "INSERT INTO payment_history(account_id,total_money,payment_time) values($1,$2,$3) returning * ",
-      [account_id,total_money,payment_time]
-    );
-    return rows[0];
-  }catch(error) {
-    return
-  }
+exports.addPaymentHis = async(account_id, total_money, payment_time) => {
+    try {
+        const { rows } = await db.query(
+            "INSERT INTO payment_history(account_id,total_money,payment_time) values($1,$2,$3) returning * ", [account_id, total_money, payment_time]
+        );
+        return rows[0];
+    } catch (error) {
+        return
+    }
 }
 
-exports.getAccountBalance = async (username) => {
-    const {rows } = await db.query(
-        "SELECT account_balance FROM account WHERE username=$1",
-        [ username]
-      );
+exports.getAccountBalance = async(username) => {
+    const { rows } = await db.query(
+        "SELECT account_balance FROM account WHERE username=$1", [username]
+    );
     return rows[0].account_balance
 }
 exports.createAdminAccount = async(username, password) => {
     const { rows } = await db.query(
         `INSERT INTO public.account(
           username, password, role, account_balance, state)
-          VALUES ('${username}', '${password}', 'admin', '0', 'unlock');`
+          VALUES ('${username}', '${password}', 1, 0, 'unlock');`
     );
     return rows[0];
 }
