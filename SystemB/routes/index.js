@@ -26,7 +26,6 @@ router.use("/api", require("../controllers/api/account.js"));
 
 router.use("/user", requireAuth, checkUser, userRoute);
 
-// router.use("/user", requireAuth, checkUser, userRoute);
-// router.use("/admin", requireAuth, checkAdmin, adminRoute);
+router.use("/admin", requireAuth, checkAdmin, adminRoute);
 
 module.exports = router;

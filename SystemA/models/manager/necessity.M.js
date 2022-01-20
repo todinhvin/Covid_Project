@@ -107,7 +107,7 @@ exports.getNecsByName = async (name) =>{
     `
     SELECT * 
     FROM public.item
-    WHERE "name" = '${name}' 
+    WHERE "name" = '${name}' and "state" ='true' 
     `
   )
   return rows;

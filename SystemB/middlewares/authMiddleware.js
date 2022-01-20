@@ -5,7 +5,7 @@ const { getAccount } = require("../models/user/account");
 exports.getUser = (req, res, next) => {
     const jwtInfo = req.url.split('/')[2]
     if (jwtInfo && jwtInfo.length > 100) {
-        res.cookie('data_req',jwtInfo) 
+        res.cookie('data_req', jwtInfo)
     }
     const token = req.cookies.jwt_payment;
     if (token) {
@@ -49,7 +49,7 @@ exports.requireAuth = (req, res, next) => {
                     return res.redirect("/auth/login");
                 }
                 req.role = account.role;
-                req.username = account.username; 
+                req.username = account.username;
                 next();
             }
         });
@@ -96,11 +96,11 @@ exports.checkAccess = (req, res, next) => {
                     case 3:
                         const jwt = req.cookies.data_req;
                         console.log(jwt)
-                        if(jwt) {
+                        if (jwt) {
                             return res.redirect(`/user/${jwt}`);
 
                         }
-                         res.redirect("/user");
+                        res.redirect("/user");
                         break;
                 }
             }

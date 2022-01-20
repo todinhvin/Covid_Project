@@ -29,7 +29,7 @@ create table account
 
 create table payment_history (
     payment_his_id serial,
-    username varchar(50),
+    account_id serial,
     total_money real,
     payment_time timestamp
 );
