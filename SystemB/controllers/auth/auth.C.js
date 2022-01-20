@@ -108,7 +108,7 @@ router.post("/signupAdmin", async(req, res, next) => {
 
         //Lưu user vào DB
         const admin = await createAdminAccount(username, passwordHashed);
-        const account = await getAccount('role', 'admin');
+        const account = await getAccount('role', 1);
         console.log('admin was created & saved', account);
 
         //Tạo jwt cho user, lưu vào cookie (đã đăng nhập)
