@@ -32,7 +32,7 @@
       rgba(115, 116, 128, 0.7),
       rgba(115, 116, 128, 0.7)
     ),
-    url("../img/background.jpg");
+    url('../img/background.jpg');
   background-size: 100%;
   height: 100vh;
   overflow: auto;
@@ -183,7 +183,7 @@
 }
 
 .pagination {
-  font-family: "Merriweather", serif;
+  font-family: 'Merriweather', serif;
   display: inline-flex;
 }
 
@@ -278,7 +278,7 @@
   line-height: 1.5;
   color: #212529;
   background-color: #fff;
-  background-image: url("../img/icon-down.svg");
+  background-image: url('../img/icon-down.svg');
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
   background-size: 16px 12px;
@@ -325,4 +325,16 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-gap: 40px;
   font-size: 20px;
+}
+
+/* Xin dung xoa CSS :( */
+.btns-admin {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: space-evenly;
+}
+
+.btn-admin {
+  width: 150px;
 }

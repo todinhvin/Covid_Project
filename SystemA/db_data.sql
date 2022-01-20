@@ -877,15 +877,16 @@ insert into person
 values (420000, '2023-01-01', 4, 50000, false);
 
     -- Account payment
-    insert into account_payment
-        ( password, account_id, balance)
-    values
-        ( '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 3, 2000000);
-    insert into account_payment
-        ( password, account_id, balance)
-    values
-        ( '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 4, 2000000);
-
+--     insert into account_payment
+--         ( password, account_id, balance)
+--     values
+--         ( '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 3, 2000000);
+--     insert into account_payment
+--         ( password, account_id, balance)
+--     values
+--         ( '$2b$10$5Uvopx3l2ILJYc4WSavvduC3WTFBgLjxV52SXomceckmgPEKsASnC', 4, 2000000);
+insert into payment_history ( account_id, payment_on, checkout_id, total_money)
+values (4, '2022-01-10', 1, 420000);
 -- Trừ nợ
 insert into public.indept ( indept, due_date, account_id, minimum_pay, state)
 values (0, '2023-01-01', 4, 50000, true);

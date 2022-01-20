@@ -109,16 +109,16 @@ create table item
     );
 
 
-    create table account_payment
-    (
-        account_payment_id serial,
-        password varchar(100),
-        account_id serial,
-        balance real,
-        primary key (account_payment_id),
-        constraint fk_accpay_acc
-        foreign key (account_id) references account
-    );
+    -- create table account_payment
+    -- (
+    --     account_payment_id serial,
+    --     password varchar(100),
+    --     account_id serial,
+    --     balance real,
+    --     primary key (account_payment_id),
+    --     constraint fk_accpay_acc
+    --     foreign key (account_id) references account
+    -- );
 
     create table treatment
     (
@@ -228,7 +228,19 @@ create table item
 --         foreign key (payment_history_id) references payment_history
     );
 
-
+    create table payment_history
+    (
+        payment_history_id serial,
+        account_id serial,
+        payment_on timestamp,
+        checkout_id integer null ,
+        total_money real,
+        primary key (payment_history_id),
+        constraint fk_payhis_acc
+        foreign key (account_id) references account,
+        constraint fk_payhis_ck
+        foreign key (checkout_id) references checkout
+    );
     create table checkout_item (
         checkout_item_id serial,
         checkout_id integer,
