@@ -89,11 +89,12 @@ router.post("/create", async(req, res) => {
     const patientCheck = await getPatientByCCCD(cccd);
 
 
-    if (cccd.length != 0 || related_person_cccd.length != 0) {
+    if (cccd.length != 0 && cccd.length != 9) {
+        return res.redirect("/manager/patient/create?status=001");
+    }
 
-        if (cccd.length != 9 || related_person_cccd.length != 9) {
-            return res.redirect("/manager/patient/create?status=001");
-        }
+    if (related_person_cccd.length != 0 && related_person_cccd.length != 9) {
+        return res.redirect("/manager/patient/create?status=001");
     }
     if (patientCheck) {
         return res.redirect("/manager/patient?create=error");
@@ -116,8 +117,8 @@ router.post("/create", async(req, res) => {
     if (data && data.status === "full_capacity") {
         return res.redirect("/manager/patient?create=error_full");
     } else if (data) {
-        if(cccd) {
-            await createAccount(cccd,3,data.person_id);
+        if (cccd) {
+            await createAccount(cccd, 3, data.person_id);
             await createAccountSysB(cccd);
         }
         return res.redirect("/manager/patient?create=success");
@@ -156,11 +157,12 @@ router.post("/:id/update", async(req, res) => {
     } = req.body;
 
     //|| related_person_cccd.length != 0
-    if (cccd.length != 0 || person_related.length != 0) {
+    if (cccd.length != 0 && cccd.length != 9) {
+        return res.redirect("/manager/patient/create?status=001");
+    }
 
-        if (cccd.length != 9 || person_related.length != 9) {
-            return res.redirect(`/manager/patient/${id}/update?status=001`);
-        }
+    if (related_person_cccd.length != 0 && related_person_cccd.length != 9) {
+        return res.redirect("/manager/patient/create?status=001");
     }
     let relatedPerson;
     if (related_person_cccd) {

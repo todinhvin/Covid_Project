@@ -91,7 +91,7 @@ router.post("/newUserLogin", async(req, res, next) => {
         //Kiểm tra username
         const account = await getAccount("username", username);
         console.log(account);
-        if (account) {
+        if (account.password) {
             throw Error("User already login before");
         }
         const person = await getOneUser("cccd", username);
