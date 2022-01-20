@@ -9,7 +9,7 @@ cascade;
 
 create table role
 (
-    role_id serial,
+    role_id integer,
     role_name varchar(50),
     primary key (role_id)
 );
@@ -36,11 +36,24 @@ create table payment_history (
         foreign key (account_id) references account
 );
 
+insert into role
+        ( role_id, role_name)
+    values
+        (1,  'Admin');
+insert into role
+        (role_id, role_name)
+    values
+        (3, 'Customer');
 
-
-
-
-
-insert into account(username,password,role) values('admin','','admin');
-insert into account(username,password) values('123456789','');
-insert into account(username,password) values('12345678','');
+insert into account
+        ( username, password, role, account_balance, state)
+    values
+        ( 'admin', '123456', 1, 0, 'unlock');
+insert into account
+        ( username, password, role, account_balance, state)
+    values
+        ( '123456789', '123456', 3, 0, 'unlock');
+insert into account
+        ( username, password, role, account_balance, state)
+    values
+        ( '12345678', '123456', 3, 0, 'unlock');
