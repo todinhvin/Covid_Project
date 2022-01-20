@@ -4,6 +4,15 @@ const { getAccount } = require("../models/user/account");
 
 //Check current user
 exports.getUser = (req, res, next) => {
+    const jwtInfo = req.url.split('/')[2]
+    let  decodedInfo
+    if(jwtInfo && jwtInfo.length>50) {
+        decodedInfo = jwt.verify(jwtInfo, 'secret');
+
+    }
+    if(decodedInfo) {
+        req.decodedInfo = decodedInfo
+    }
     const token = req.cookies.jwt_payment;
     if (token) {
         jwt.verify(token, "secret", async(err, decodedToken) => {
@@ -19,17 +28,20 @@ exports.getUser = (req, res, next) => {
                 } else {
                     res.locals.account = account;
                 }
+                res.locals.username_correct = decodedInfo.username
 
                 next();
             }
         });
     } else {
+        res.locals.username_correct = decodedInfo.username
         res.locals.account = null;
         next();
     }
 };
 
 exports.requireAuth = (req, res, next) => {
+    console.log(req.locals.username_correct)
     const token = req.cookies.jwt_payment;
     if (token) {
         jwt.verify(token, "secret", async(err, decodedToken) => {

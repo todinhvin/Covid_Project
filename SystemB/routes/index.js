@@ -16,7 +16,6 @@ const {
 const router = express.Router();
 
 router.get("*", getUser);
-router.get("*", getUser);
 
 router.get("/", checkFirstAccess);
 router.get("/", checkAccess);

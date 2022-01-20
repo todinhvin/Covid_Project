@@ -49,9 +49,6 @@ exports.changeAccount = async(
     return rows[0];
 };
 
-<<<<<<< HEAD
-
-
 exports.addPaymentHis = async ({username,total_money,payment_time,package_name}) => {
   try{
     const {rows} = await db.query(
@@ -62,7 +59,7 @@ exports.addPaymentHis = async ({username,total_money,payment_time,package_name})
   }catch(error) {
     return
   }
-=======
+}
 exports.createAdminAccount = async(username, password) => {
     const { rows } = await db.query(
         `INSERT INTO public.account(
@@ -70,5 +67,4 @@ exports.createAdminAccount = async(username, password) => {
           VALUES ('${username}', '${password}', 'admin', '0', 'unlock');`
     );
     return rows[0];
->>>>>>> 08bd09eece9fdad71d6dc873200ded8397227441
-};
+}

@@ -7,6 +7,7 @@ cascade;
 
 create table account
 (
+    account_id serial,
     username varchar(50) unique ,
     password varchar(100),
     role varchar(50) default 'user',
