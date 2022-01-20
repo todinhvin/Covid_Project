@@ -1,6 +1,6 @@
-<form method="POST" action="/auth/login">
+<form method="POST" action="/auth/signupAdmin">
     <div class="spacer"></div>
-    <h2>Log In</h2>
+    <h2>Sign Up For Admin</h2>
 
     <div class="form-group">
         <label for="username" class="form-label">UserName</label>
@@ -14,7 +14,7 @@
         <div class="password error"></div>
     </div>
 
-    <button type="submit" class="form-submit">Log In</button>
+    <button type="submit" class="form-submit">Sign Up</button>
 </form>
 
 <script>
@@ -41,26 +41,15 @@
         };
 
         try {
-            const result = await fetch('/auth/login', options);
-            console.log(1);
+            const result = await fetch('/auth/signupAdmin', options);
             const resData = await result.json();
-            console.log(2, resData);
+            console.log(resData);
 
             if (!resData.account) {
                 usernameError.innerText = resData.username;
                 passwordError.innerText = resData.password;
             } else {
-                switch (resData.account) {
-                    case 1:
-                        location.assign('/admin');
-                        break;
-                    case 2:
-                        location.assign('/manager');
-                        break;
-                    case 3:
-                        location.assign('/user');
-                        break;
-                }
+                location.assign('/admin');
             }
         }
         catch (e) {

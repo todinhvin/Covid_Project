@@ -101,3 +101,12 @@ exports.checkAccess = (req, res, next) => {
         res.redirect("/auth/login");
     }
 };
+
+//Check first access
+exports.checkFirstAccess = async(req, res, next) => {
+    const account = await getAccount("role_id", 1);
+    if (!account) {
+        res.redirect('/auth/signupAdmin');
+    }
+    next();
+};

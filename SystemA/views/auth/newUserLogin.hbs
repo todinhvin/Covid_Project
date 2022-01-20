@@ -1,6 +1,6 @@
-<form method="POST" action="/auth/login">
+<form method="POST" action="/auth/newUserLogin">
     <div class="spacer"></div>
-    <h2>Log In</h2>
+    <h2>New User Log In</h2>
 
     <div class="form-group">
         <label for="username" class="form-label">UserName</label>
@@ -41,26 +41,15 @@
         };
 
         try {
-            const result = await fetch('/auth/login', options);
-            console.log(1);
+            const result = await fetch('/auth/newUserLogin', options);
             const resData = await result.json();
-            console.log(2, resData);
+            console.log(resData);
 
             if (!resData.account) {
                 usernameError.innerText = resData.username;
                 passwordError.innerText = resData.password;
             } else {
-                switch (resData.account) {
-                    case 1:
-                        location.assign('/admin');
-                        break;
-                    case 2:
-                        location.assign('/manager');
-                        break;
-                    case 3:
-                        location.assign('/user');
-                        break;
-                }
+                location.assign('/user');
             }
         }
         catch (e) {
